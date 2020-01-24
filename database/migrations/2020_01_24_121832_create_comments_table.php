@@ -20,6 +20,8 @@ class CreateCommentsTable extends Migration
             $table->string('body');
             $table->boolean('enabled')->default(true);
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('place_id')->references('id')->on('places');
         });
     }
 
