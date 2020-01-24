@@ -14,8 +14,8 @@ class CreatePlaceTourTable extends Migration
     public function up()
     {
         Schema::create('place_tour', function (Blueprint $table) {
-            $table->bigIncrements('place_id');
-            $table->bigIncrements('tour_id');
+            $table->bigInteger('place_id')->unsigned();
+            $table->bigInteger('tour_id')->unsigned();
             $table->unique(['place_id', 'tour_id']);
             $table->boolean('isStartPlace')->default(false);
             $table->boolean('isFinishPlace')->default(false);
