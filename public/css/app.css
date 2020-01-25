@@ -11356,3 +11356,56 @@ a.text-dark:focus {
   }
 }
 
+.card {
+  box-shadow: 0 0 5px 4px black;
+  position: relative;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+          justify-content: center;
+  font-size: 1.5rem;
+  background-color: #43464B;
+  color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.btn-menu {
+  color: #fff;
+  font-size: 30px;
+  margin: 5px;
+  width: 20em;
+  background-color: #43464B;
+  border-color: #43464B;
+}
+
+.btn-menu:hover {
+  color: #fff;
+  font-size: 30px;
+  margin: 5px;
+  width: 20em;
+  background-color: #43464B;
+  border-color: #43464B;
+  box-shadow: 0 0 5px 4px black;
+}
+
+.photos-input {
+  height: 100px;
+}
+
