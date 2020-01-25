@@ -18,9 +18,13 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'admin'], function () {
-    if (Auth::user()->hasRole('admin')){
-        Route::get('/', function (){
-           return view('admin');
-        });
-    } else redirect()->back();
+    Route::get('/', function (){
+        if (Auth::user()->hasRole('admin')){
+            return view('admin');
+        }
+    });
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
