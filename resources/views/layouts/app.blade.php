@@ -76,5 +76,8 @@
             @yield('content')
         </main>
     </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqimykbFUtQSli-Gl9M1Jk77qoMQjTU1c&callback=initMap"
+            async defer>
+    </script>
 </body>
 </html>
