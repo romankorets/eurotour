@@ -11,6 +11,7 @@ class Tour extends Model
     ];
 
     public function places(){
-        return $this->belongsToMany(Place::class, 'place_tour', 'tour_id', 'place_id');
+        return $this->belongsToMany(Place::class, 'place_tour', 'tour_id', 'place_id')
+            ->withPivot('isStartPlace', 'isFinishPlace');
     }
 }

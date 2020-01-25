@@ -27,15 +27,15 @@ class PlaceController extends Controller
      */
     public function show($id)
     {
-        $post = Place::findOrFail($id);
+        $place = Place::findOrFail($id);
         return response()->json([
-            'name' => $post->name,
-            'slug' => $post->slug,
-            'description' => $post->description,
-            'rating' => $post->rating,
-            'photos' => $post->photos,
-            'lat' => $post->lat,
-            'lng' => $post->lng
+            'name' => $place->name,
+            'slug' => $place->slug,
+            'description' => $place->description,
+            'rating' => $place->rating,
+            'photos' => $place->photos,
+            'lat' => $place->lat,
+            'lng' => $place->lng
         ]);
     }
 
