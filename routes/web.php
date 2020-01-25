@@ -20,10 +20,24 @@ Route::get('/', function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function (){
         if (Auth::user()->hasRole('admin')){
-            return view('admin');
-        }
-    });
+            return view('admin.index');
+        } else return redirect()->back();
+    })->name('admin');
+
+    Route::resource('place', 'PlaceController', ['except' => [
+        'index', 'show'
+    ]]);
+
+    Route::resource('tour', 'TourController', ['except' => [
+        'index', 'show'
+    ]]);
 });
+
+Route::get('/place/{place}', 'PlaceController@show')->name('place.show');
+Route::get('/place/index', 'PlaceController@index')->name('place.index');
+
+Route::get('/tour/{tour}', 'TourController@show')->name('tour.show');
+Route::get('/tour/index', 'TourController@index')->name('tour.index');
 
 Auth::routes();
 
