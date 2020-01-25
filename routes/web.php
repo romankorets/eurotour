@@ -11,6 +11,16 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::group(['prefix' => 'admin'], function () {
+    if (Auth::user()->hasRole('admin')){
+        Route::get('/', function (){
+           return view('admin');
+        });
+    } else redirect()->back();
 });
