@@ -11,7 +11,7 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        $author = \App\Role::create([
+        $user = \App\Role::create([
             'name' => 'User',
             'slug' => 'user',
             'permissions' => [
@@ -19,7 +19,7 @@ class RolesTableSeeder extends Seeder
             ]
         ]);
 
-        $editor = \App\Role::create([
+        $admin = \App\Role::create([
             'name' => 'Admin',
             'slug' => 'admin',
             'permissions' => [
