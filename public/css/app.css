@@ -11409,3 +11409,10 @@ a.text-dark:focus {
   height: 100px;
 }
 
+.google-map {
+  width: 640px;
+  height: 480px;
+  margin: 0 auto;
+  background: gray;
+}
+

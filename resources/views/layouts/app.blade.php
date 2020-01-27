@@ -55,6 +55,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @can('admin')
+                                        <a class="dropdown-item" href="{{ route('admin') }}">Admin panel</a>
+                                    @endcan
+                                    <a class="dropdown-item" href="{{ route('home') }}">Home</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -76,8 +80,5 @@
             @yield('content')
         </main>
     </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqimykbFUtQSli-Gl9M1Jk77qoMQjTU1c&callback=initMap"
-            async defer>
-    </script>
 </body>
 </html>

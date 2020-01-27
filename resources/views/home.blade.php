@@ -13,10 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    You are logged in!
                 </div>
             </div>
+            <google-map></google-map>
         </div>
     </div>
 </div>
