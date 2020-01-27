@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-offset-9 col-md-9">
-                <form method="post" action="{{ route('place.store') }}">
+                <form method="post" action="{{ route('place.store')}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-md-6">
@@ -36,7 +36,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="photos">Фото</label>
-                                <input type="file" multiple="multiple" class="form-control photos-input" id="photos" name="photos">
+                                <input type="file" multiple="multiple" class="form-control photos-input" id="photos" name="photos[]">
                             </div>
                         </div>
                     </div>

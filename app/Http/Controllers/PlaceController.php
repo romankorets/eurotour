@@ -65,12 +65,17 @@ class PlaceController extends Controller
 
     public function store(Request $request)
     {
+        $photos = array();
+        foreach ($request->file('photos') as $photo)
+        {
+            $photos[] = $photo->store('uploads', 'public');
+        }
         $place = Place::create([
             'name' => $request->get('name'),
             'slug' => $request->get('slug'),
             'description' => $request->get('description'),
             'rating' => $request->get('rating'),
-            'photos' => $request->get('photos'),
+            'photos' => json_encode($photos),
             'lat' => $request->get('lat'),
             'lng' => $request->get('lng'),
         ]);
@@ -78,7 +83,7 @@ class PlaceController extends Controller
             return redirect()->back();
         }
         $request->session()->flash('flash_message', 'Нова локація додана');
-        return redirect()->route('/admin');
+        return redirect()->route('admin');
     }
 
     /**
