@@ -33,11 +33,11 @@ Route::group(['prefix' => 'admin'], function () {
     ]]);
 });
 
-Route::get('/place/{place}', 'PlaceController@show')->name('place.show');
-Route::get('/place/index', 'PlaceController@index')->name('place.index');
+Route::get('place/{place}', 'PlaceController@show')->name('place.show');
+Route::get('api/place/index', 'PlaceController@index')->name('place.index');
 
-Route::get('/tour/{tour}', 'TourController@show')->name('tour.show');
-Route::get('/tour/index', 'TourController@index')->name('tour.index');
+Route::get('tour/{tour}', 'TourController@show')->name('tour.show');
+Route::get('api/tour/index', 'TourController@index')->name('tour.index');
 
 Auth::routes();
 

@@ -1,37 +1,57 @@
 <template>
-    <div>
-        <h1>Google Maps Demo</h1>
-
-        <GmapMap :center="center" :map-type-id="mapTypeId" :zoom="5">
-            <GmapMarker
-                v-for="(item, index) in markers"
-                :key="index"
-                :position="item.position"
-                @click="center = item.position"
-            />
-        </GmapMap>
-    </div>
+    <div id="map"></div>
 </template>
 
 <script>
     export default {
-        data() {
+        data :function(){
             return {
-                center: { lat: -3.350235, lng: 111.995865 },
-                mapTypeId: "terrain",
-                markers: [
-                    { position: { lat: -0.48585, lng: 117.1466 } },
-                    { position: { lat: -6.9127778, lng: 107.6205556 } }
-                ]
-            };
-        }
-    };
-</script>
+                map : null,
+                places: [],
+                markers: []
+            }
+        },
+        mounted () {
+            this.init();
+            this.fetchPlaces();
+        },
+        methods: {
+            init () {
+                this.map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 4,
+                    center: new google.maps.LatLng(49.698753, 19.404233),
+                    mapTypeId: 'roadmap'
+                })
+            },
 
-<style lang="scss" scoped>
-    .vue-map-container {
-        height: 450px;
-        max-width: 992px;
-        width: 100%;
+             fetchPlaces(){
+                axios.get('api/place/index').then(response => {
+                        console.log(response.data);
+                        this.places = JSON.parse(response.data);
+                        console.log(this.places);
+                        console.log(this.places.length);
+                        console.log(this.places[0]['lat']);
+                        this.addMarkers();
+                    console.log(this.markers)
+                    }
+                ).catch(error => console.log(error));
+
+            },
+
+            addMarkers(){
+                console.log('adding markers');
+                for (let i = 0; i < this.places.length; i++){
+                    let coords = {
+                        lat: Number(this.places[i]['lat']),
+                        lng: Number(this.places[i]['lng'])
+                    };
+                    let marker = new google.maps.Marker({position: coords, map: this.map});
+                    this.markers.push({
+                        id: this.places[i].id,
+                        marker: marker
+                    });
+                }
+            },
+        }
     }
-</style>
+</script>

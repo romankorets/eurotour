@@ -18,9 +18,7 @@ class PlaceController extends Controller
     public function index()
     {
         $places = Place::all();
-        return response()->json([
-            'places' => $places
-        ]);
+        return response()->json(json_encode($places));
     }
 
     /**

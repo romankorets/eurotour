@@ -7,6 +7,8 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import "~vuetify/dist/vuetify.min.css";
+
 .card {
     box-shadow: 0 0 5px 4px black;
     position: relative;
@@ -58,10 +60,8 @@
     height: 100px;
 }
 
- .google-map {
-     width: 640px;
-     height: 480px;
-     margin: 0 auto;
-     background: gray;
- }
+#map{
+    height: 600px;
+    width: 100%;
+}
 
