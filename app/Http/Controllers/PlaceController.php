@@ -15,10 +15,20 @@ class PlaceController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function getPlaces()
     {
         $places = Place::all();
         return response()->json(json_encode($places));
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Factory|\Illuminate\Http\JsonResponse|View
+     */
+    public function index()
+    {
+        $places = Place::all();
+        return view('admin.place.index', ['places' => $places]);
     }
 
     /**

@@ -13,6 +13,9 @@
                         <div class="row justify-content-center">
                             <a class="btn btn-menu" href="{{route('place.create')}}">Додати локацію</a>
                         </div>
+                        <div class="row justify-content-center">
+                            <a class="btn btn-menu" href="{{route('place.index')}}">Перегляд локацій</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -34,7 +34,8 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::get('place/{place}', 'PlaceController@show')->name('place.show');
-Route::get('api/place/index', 'PlaceController@index')->name('place.index');
+Route::get('api/place/index', 'PlaceController@getPlaces')->name('place.getPlaces');
+Route::get('place/index', 'PlaceController@index')->name('place.index');
 
 Route::get('tour/{tour}', 'TourController@show')->name('tour.show');
 Route::get('api/tour/index', 'TourController@index')->name('tour.index');
