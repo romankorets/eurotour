@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-offset-9 col-md-9">
-                <form method="post" action="{{ route('place.update', ['id'=> $place->id])}}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('place.update', ['place'=> $place->id])}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field('put') }}
                     <div class="row">

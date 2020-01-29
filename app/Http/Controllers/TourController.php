@@ -15,12 +15,22 @@ class TourController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
+    public function getTours()
+    {
+        $tours = Tour::all();
+        return response()->json(json_encode($tours));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Contracts\View\Factory|View
+     */
     public function index()
     {
         $tours = Tour::all();
-        return response()->json([
-            'tours' => $tours
-        ]);
+        return view('admin.tour.index', ['tours' => $tours]);
     }
 
     /**

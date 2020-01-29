@@ -46,6 +46,16 @@
     border-color: $metal;
 }
 
+.btn-edit {
+    color: #fff;
+    font-size: 30px;
+    margin-top: 10px;
+    margin-bottom: 3px;
+    width: 10em;
+    background-color: $metal;
+    border-color: $metal;
+}
+
 .btn-menu:hover {
     color: #fff;
     font-size: 30px;
@@ -63,5 +73,26 @@
 #map{
     height: 600px;
     width: 100%;
+}
+
+%border-shared{
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.place{
+    @extend %border-shared;
+    border-radius: 0.25rem;
+    margin: 10px;
+}
+
+.photos{
+    @extend %border-shared;
+}
+
+.description{
+    @extend %border-shared;
+}
+
+.rating{
+    @extend %border-shared;
 }
 
