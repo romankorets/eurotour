@@ -8,10 +8,10 @@
                 <div class="row justify-content-center place">
                     <div class="col-md-12">
                         <div class="row justify-content-center">
-                            <h2>{{ $place->name }}</h2>
+                            <h2>{{ $place->name }} (id {{ $place->id }})</h2>
                         </div>
                         <div class="row justify-content-center">
-                            <div class="col-md-4 photos">
+                            <div class="col-md-4 photos-column">
                                 <h3>Фото</h3>
                                 <div id="carouselControls{{$place->id}}" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner">
@@ -37,24 +37,39 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 description">
+                            <div class="col-md-6 description-column">
                                 <h3>Опис</h3>
                                 <span>{{ $place->description }}</span>
                                 <h3>Координати</h3>
                                 <span>lat : {{$place->lat}}</span>
                                 <span>lat : {{$place->lng}}</span>
                             </div>
-                            <div class="col-md-2 rating">
+                            <div class="col-md-2 rating-column">
                                 <h3>Рейтинг</h3>
-                                <span>{{ $place->rating }}</span>
+                                <div class="rating-result">
+                                    @for ($i = 0; $i < $place->rating; $i++)
+                                        <span class="active"></span>
+                                    @endfor
+                                    @if($place->rating < 10)
+                                        @for($i = 10 - $place->rating; $i > 0; $i--)
+                                            <span></span>
+                                        @endfor
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <a class="btn btn-edit" href="{{route('place.edit', ['place' => $place->id])}}">Редагувати</a>
+                            <form method="post" action="{{ route('place.destroy', ['place' => $place->id]) }}">
+                                {{csrf_field()}}
+                                {{method_field('delete')}}
+                                <input type="submit" value="Видалити" class="btn btn-delete">
+                            </form>
                         </div>
                     </div>
                 </div>
             @endforeach
+            {{ $places->links() }}
         @else
             <h1>Локації відсутні</h1>
         @endif

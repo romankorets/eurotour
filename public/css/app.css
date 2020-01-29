@@ -11406,10 +11406,22 @@ a.text-dark:focus {
   color: #fff;
   font-size: 30px;
   margin-top: 10px;
+  margin-right: 5px;
   margin-bottom: 3px;
   width: 10em;
   background-color: #43464B;
   border-color: #43464B;
+}
+
+.btn-delete {
+  color: #fff;
+  font-size: 30px;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  width: 10em;
+  background-color: #e3342f;
+  border-color: #e3342f;
 }
 
 .btn-menu:hover {
@@ -11431,9 +11443,9 @@ a.text-dark:focus {
   width: 100%;
 }
 
-.rating,
-.description,
-.photos,
+.rating-column,
+.description-column,
+.photos-column,
 .place {
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -11441,5 +11453,81 @@ a.text-dark:focus {
 .place {
   border-radius: 0.25rem;
   margin: 10px;
+}
+
+.rating-result {
+  width: 100px;
+  margin: 0 auto;
+}
+
+.rating-result span {
+  padding: 0;
+  font-size: 40px;
+  line-height: 1;
+  color: lightgrey;
+  text-shadow: 1px 1px #bbb;
+}
+
+.rating-result > span:before {
+  content: "\2605";
+}
+
+.rating-result > span.active {
+  color: gold;
+  text-shadow: 1px 1px #c60;
+}
+
+.checkbox__label:before {
+  content: " ";
+  display: block;
+  height: 2.5rem;
+  width: 2.5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ffdb00;
+}
+
+.checkbox__label:after {
+  content: " ";
+  display: block;
+  height: 2.5rem;
+  width: 2.5rem;
+  border: 0.35rem solid #ec1d25;
+  -webkit-transition: 200ms;
+  transition: 200ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* background: #fff200; */
+  -webkit-transition: 100ms ease-in-out;
+  transition: 100ms ease-in-out;
+}
+
+.checkbox__input:checked ~ .checkbox__label:after {
+  border-top-style: none;
+  border-right-style: none;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  height: 1.25rem;
+  border-color: green;
+}
+
+.checkbox-transform {
+  position: relative;
+  font-size: 1.3em;
+  color: #666;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.checkbox__label:after:hover,
+.checkbox__label:after:active {
+  border-color: green;
+}
+
+.checkbox__label {
+  margin-left: 2.5rem;
+  line-height: 0.75;
 }
 

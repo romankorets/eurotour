@@ -14,7 +14,10 @@
                             <a class="btn btn-menu" href="{{route('place.create')}}">Додати локацію</a>
                         </div>
                         <div class="row justify-content-center">
-                            <a class="btn btn-menu" href="{{route('place.index')}}">Перегляд локацій</a>
+                            <a class="btn btn-menu" href="{{route('place.index')}}">Список локацій</a>
+                        </div>
+                        <div class="row justify-content-center">
+                            <a class="btn btn-menu" href="{{route('tour.index')}}">Список турів</a>
                         </div>
                     </div>
                 </div>
