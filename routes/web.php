@@ -22,15 +22,15 @@ Route::group(['prefix' => 'admin'], function () {
         if (Auth::user()->hasRole('admin')){
             return view('admin.index');
         } else return redirect()->back();
-    })->name('admin');
+    })->name('admin')->middleware('auth');
 
     Route::resource('place', 'PlaceController', ['except' => [
         'show'
-    ]]);
+    ]])->middleware('auth');
 
     Route::resource('tour', 'TourController', ['except' => [
         'show'
-    ]]);
+    ]])->middleware('auth');
 });
 
 Route::get('place/{place}', 'PlaceController@show')->name('place.show');
