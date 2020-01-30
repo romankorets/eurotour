@@ -4,6 +4,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
+                @include('partial.success')
+                @include('partial.error')
                 <div class="card">
                     <div class="card-header">Головне меню</div>
                     <div class="card-body">
