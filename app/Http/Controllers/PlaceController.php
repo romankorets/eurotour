@@ -119,13 +119,25 @@ class PlaceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Place::findOrFail($id);
-        $post->fill($request->all());
-        if(!$post->save()){
-            return redirect()->back()->withErrors('Update error');
+        $place = Place::findOrFail($id);
+        $photos = array();
+        foreach ($request->file('photos') as $photo)
+        {
+            $photos[] = $photo->store('uploads', 'public');
+        }
+        $place -> fill([
+            'name' => $request->get('name'),
+            'slug' => $request->get('slug'),
+            'description' => $request->get('description'),
+            'rating' => $request->get('rating'),
+            'duration' => $request->get('duration'),
+            'photos' => json_encode($photos)
+        ]);
+        if(!$place->save()){
+            return redirect()->back()->withErrors('Помилка оновлення локації');
         }
         $request->session()->flash('flash_message', 'Локація оновлена');
-        return redirect()->route('/admin');
+        return redirect()->route('admin');
     }
 
     /**
