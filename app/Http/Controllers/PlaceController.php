@@ -139,6 +139,7 @@ class PlaceController extends Controller
         $user = Auth::user();
         $place = Place::findOrFail($id);
         if ($user->can('delete', $place)){
+            $place->detach();
             if(!$place->delete()){
                 return redirect()->back()-withErrors('Помилка видалення');
             }
@@ -147,6 +148,5 @@ class PlaceController extends Controller
         } else {
             return redirect()->back()->withErrors('Не достатньо прав');
         }
-
     }
 }

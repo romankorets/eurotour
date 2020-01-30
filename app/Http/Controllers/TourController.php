@@ -155,6 +155,7 @@ class TourController extends Controller
         $user = Auth::user();
         $tour = Place::findOrFail($id);
         if ($user->can('delete', $tour)){
+            $tour->detach();
             if(!$tour->delete()){
                 return redirect()->back()-withErrors('Помилка видалення');
             }
