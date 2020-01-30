@@ -1945,17 +1945,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       map: null,
       places: [],
-      markers: []
+      markers: [],
+      tours: []
     };
   },
   mounted: function mounted() {
     this.init();
     this.fetchPlaces();
+    this.fetchTours();
   },
   methods: {
     init: function init() {
@@ -1965,6 +2014,7 @@ __webpack_require__.r(__webpack_exports__);
         mapTypeId: 'roadmap'
       });
     },
+    showTour: function showTour() {},
     fetchPlaces: function fetchPlaces() {
       var _this = this;
 
@@ -1976,6 +2026,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log(_this.places[0]['lat']);
 
         _this.addMarkers();
+
+        for (var i = 0; i < _this.places.length; i++) {
+          _this.places[i].photos = JSON.parse(_this.places[i].photos);
+        }
 
         console.log(_this.markers);
       })["catch"](function (error) {
@@ -1999,6 +2053,24 @@ __webpack_require__.r(__webpack_exports__);
           marker: marker
         });
       }
+    },
+    fetchTours: function fetchTours() {
+      var _this2 = this;
+
+      axios.get('api/tour/index').then(function (response) {
+        _this2.tours = JSON.parse(response.data);
+        console.log('Тури : ');
+        console.log(_this2.tours);
+
+        for (var i = 0; i < _this2.tours.length; i++) {
+          _this2.tours[i].photos = JSON.parse(_this2.tours[i].photos);
+        }
+
+        console.log('Тури : ');
+        console.log(_this2.tours);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     }
   }
 });
@@ -37470,9 +37542,170 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "map" } })
+  return _c("div", { staticClass: "row justify-content-center" }, [
+    _c(
+      "div",
+      { staticClass: "col-md-6" },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._l(_vm.tours, function(tour) {
+          return _c("div", { staticClass: "row justify-content-center tour" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("div", { staticClass: "row justify-content-center" }, [
+                _c("h3", [_vm._v(_vm._s(tour.name))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row justify-content-center " }, [
+                _c("div", { staticClass: "col-md-4 bordered" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "carousel slide",
+                      attrs: {
+                        id: "carouselControls" + tour.id,
+                        "data-ride": "carousel"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "carousel-inner" },
+                        [
+                          _vm._l(tour.photos, function(photo, index) {
+                            return _c(
+                              "div",
+                              {
+                                staticClass: "carousel-item",
+                                class: { active: index === 0 }
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "d-block w-100",
+                                  attrs: {
+                                    src: "./storage/" + photo,
+                                    alt: tour.name
+                                  }
+                                })
+                              ]
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "carousel-control-prev",
+                              attrs: {
+                                href: "#carouselControls" + tour.id,
+                                role: "button",
+                                "data-slide": "prev"
+                              }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "carousel-control-prev-icon",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "sr-only" }, [
+                                _vm._v("Previous")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "carousel-control-next",
+                              attrs: {
+                                href: "#carouselControls" + tour.id,
+                                role: "button",
+                                "data-slide": "next"
+                              }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "carousel-control-next-icon",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "sr-only" }, [
+                                _vm._v("Next")
+                              ])
+                            ]
+                          )
+                        ],
+                        2
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-5 justify-content-center bordered" },
+                  [
+                    _c("h4", [_vm._v("Опис")]),
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(tour.description) +
+                        "\n                    "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-3 justify-content-center bordered" },
+                  [
+                    _c("h4", [_vm._v("Тривалість (днів)")]),
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(tour.duration) +
+                        "\n                    "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row justify-content-center" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: { click: _vm.showTour }
+                  },
+                  [_vm._v("Показати на карті")]
+                )
+              ])
+            ])
+          ])
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _vm._m(1)
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("h1", [_vm._v("Тури")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { attrs: { id: "map" } })
+    ])
+  }
+]
 render._withStripped = true
 
 
