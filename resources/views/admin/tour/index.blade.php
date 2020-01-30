@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 description-column">
+                            <div class="col-md-4 description-column">
                                 <h3>Опис</h3>
                                 <span>{{ $tour->description }}</span>
                                 <h3>Тривалість</h3>
@@ -49,8 +49,51 @@
                                         <span>{{ $tour->duration }} днів</span>
                                 @endif
                             </div>
-{{--                            TODO: add third column for places--}}
+                            <div class="col-md-4 places-column">
+                                <h3>Локації, включені в тур</h3>
+                                <div class="row">
+                                    <div class="col-md-2 bordered">
+                                        <h4>id</h4>
+                                    </div>
+                                    <div class="col-md-6 bordered">
+                                        <h4>Назва</h4>
+                                    </div>
+                                    <div class="col-md-4 bordered">
+                                        <h4>Рейтинг</h4>
+                                    </div>
+                                </div>
+                                @foreach($tour->places()->get() as $place)
+                                    <div class="row places-column">
+                                        <div class="col-md-2 bordered">
+                                            <span>{{ $place->id }}</span>
+                                        </div>
+                                        <div class="col-md-6 bordered">
+                                            <span>{{ $place->name }}</span>
+                                        </div>
+                                        <div class="col-md-4 bordered">
+                                            <div class="rating-mini">
+                                                @for ($i = 0; $i < $place->rating; $i++)
+                                                    <span class="active"></span>
+                                                @endfor
+                                                @if($place->rating < 10)
+                                                    @for($i = 10 - $place->rating; $i > 0; $i--)
+                                                        <span></span>
+                                                    @endfor
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <a class="btn btn-edit" href="{{route('tour.edit', ['tour' => $tour->id])}}">Редагувати</a>
+                        <form method="post" action="{{ route('tour.destroy', ['tour' => $tour->id]) }}">
+                            {{csrf_field()}}
+                            {{method_field('delete')}}
+                            <input type="submit" value="Видалити" class="btn btn-delete">
+                        </form>
                     </div>
                 </div>
             @endforeach
