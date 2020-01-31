@@ -31,8 +31,16 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('tour', 'TourController', ['except' => [
         'show'
     ]])->middleware('auth');
+//    Route::resource('comment', 'CommentController', ['except' =>[
+//        'show', 'index'
+//    ]]);
 });
 
+
+Route::post('api/comment', 'CommentController@store');
+Route::get('api/comment/{comment}', 'CommentController@getCommentUser')->name('comment.getCommentUser');
+
+Route::get('api/place/{place}/comments', 'PlaceController@getComments')->name('place.getComments');
 Route::get('place/{place}', 'PlaceController@show')->name('place.show');
 Route::get('api/place/index', 'PlaceController@getPlaces')->name('place.getPlaces');
 

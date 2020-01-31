@@ -1992,19 +1992,109 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['userId'],
   data: function data() {
     return {
       map: null,
       places: [],
       markers: [],
-      tours: []
+      tours: [],
+      isShowPopUp: false,
+      windowHref: '/home',
+      comment: '',
+      commentsToShow: null
     };
+  },
+  created: function created() {
+    this.fetchTours();
   },
   mounted: function mounted() {
     this.init();
     this.fetchPlaces();
-    this.fetchTours();
+    this.setWindowUrl();
+  },
+  computed: {
+    placeToShowInPopUp: function placeToShowInPopUp() {
+      var start = this.windowHref.indexOf('#') + 1;
+      var end = this.windowHref.length;
+      var slug = this.windowHref.substring(start, end);
+
+      for (var i = 0; i < this.places.length; i++) {
+        if (this.places[i]['slug'] == slug) {
+          this.getCommentsOfPlaceById(this.places[i].id);
+          return this.places[i];
+        }
+      }
+    }
+  },
+  watch: {
+    windowHref: function windowHref(newWindowHref) {
+      this.isShowPopUp = this.checkIfHasSlug(newWindowHref);
+    }
   },
   methods: {
     init: function init() {
@@ -2014,60 +2104,110 @@ __webpack_require__.r(__webpack_exports__);
         mapTypeId: 'roadmap'
       });
     },
-    showTour: function showTour() {},
-    fetchPlaces: function fetchPlaces() {
+    getUserByCommentId: function getUserByCommentId(id) {
+      axios.get('/api/comment/' + id).then(function (response) {
+        return JSON.parse(response.data);
+      });
+    },
+    getCommentsOfPlaceById: function getCommentsOfPlaceById(id) {
       var _this = this;
+
+      axios.get('/api/place/' + id + '/comments').then(function (response) {
+        _this.commentsToShow = JSON.parse(response.data);
+      });
+    },
+    sendComment: function sendComment() {
+      axios.post('api/comment', {
+        'user_id': this.userId,
+        'place_id': this.placeToShowInPopUp.id,
+        'body': this.comment
+      });
+      this.comment = '';
+    },
+    checkIfHasSlug: function checkIfHasSlug(windowHref) {
+      for (var i = 0; i < windowHref.length; i++) {
+        if (windowHref[i] === '#' && windowHref[i] !== windowHref[windowHref.length - 1]) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    closePopUp: function closePopUp() {
+      this.windowHref = "/home#";
+      window.location.href = this.windowHref;
+    },
+    setWindowUrl: function setWindowUrl() {
+      this.windowHref = window.location.href;
+    },
+    fetchPlaces: function fetchPlaces() {
+      var _this2 = this;
 
       axios.get('api/place/index').then(function (response) {
         console.log(response.data);
-        _this.places = JSON.parse(response.data);
-        console.log(_this.places);
-        console.log(_this.places.length);
-        console.log(_this.places[0]['lat']);
+        _this2.places = JSON.parse(response.data);
+        console.log(_this2.places);
+        console.log(_this2.places.length);
+        console.log(_this2.places[0]['lat']);
 
-        _this.addMarkers();
+        _this2.addMarkers();
 
-        for (var i = 0; i < _this.places.length; i++) {
-          _this.places[i].photos = JSON.parse(_this.places[i].photos);
+        for (var i = 0; i < _this2.places.length; i++) {
+          _this2.places[i].photos = JSON.parse(_this2.places[i].photos);
         }
-
-        console.log(_this.markers);
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     addMarkers: function addMarkers() {
-      console.log('adding markers');
+      var _this3 = this;
 
-      for (var i = 0; i < this.places.length; i++) {
+      var _loop = function _loop(i) {
         var coords = {
-          lat: Number(this.places[i]['lat']),
-          lng: Number(this.places[i]['lng'])
+          lat: Number(_this3.places[i]['lat']),
+          lng: Number(_this3.places[i]['lng'])
         };
         var marker = new google.maps.Marker({
           position: coords,
-          map: this.map
+          map: _this3.map
         });
-        this.markers.push({
-          id: this.places[i].id,
+
+        _this3.markers.push({
+          id: _this3.places[i].id,
           marker: marker
         });
+
+        context = _this3;
+        marker.addListener('click', function () {
+          context.isShowPopUp = true;
+          context.windowHref = "/home#" + context.places[i]['slug'];
+          window.location.href = context.windowHref;
+        });
+        console.log('Маркери');
+        console.log(_this3.markers);
+        console.log(_this3.placeSlugToShowInPopUp);
+      };
+
+      for (var i = 0; i < this.places.length; i++) {
+        var context;
+
+        _loop(i);
       }
     },
     fetchTours: function fetchTours() {
-      var _this2 = this;
+      var _this4 = this;
 
       axios.get('api/tour/index').then(function (response) {
-        _this2.tours = JSON.parse(response.data);
+        _this4.tours = JSON.parse(response.data);
         console.log('Тури : ');
-        console.log(_this2.tours);
+        console.log(_this4.tours);
 
-        for (var i = 0; i < _this2.tours.length; i++) {
-          _this2.tours[i].photos = JSON.parse(_this2.tours[i].photos);
+        for (var i = 0; i < _this4.tours.length; i++) {
+          _this4.tours[i].photos = JSON.parse(_this4.tours[i].photos);
         }
 
         console.log('Тури : ');
-        console.log(_this2.tours);
+        console.log(_this4.tours);
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -37542,7 +37682,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row justify-content-center" }, [
+  return _c("div", { staticClass: "row justify-content-center b-container" }, [
     _c(
       "div",
       { staticClass: "col-md-6" },
@@ -37668,16 +37808,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-center" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-primary",
-                    on: { click: _vm.showTour }
-                  },
-                  [_vm._v("Показати на карті")]
-                )
-              ])
+              _vm._m(1, true)
             ])
           ])
         })
@@ -37685,7 +37816,222 @@ var render = function() {
       2
     ),
     _vm._v(" "),
-    _vm._m(1)
+    _vm._m(2),
+    _vm._v(" "),
+    _vm.isShowPopUp
+      ? _c("div", { staticClass: "b-popup" }, [
+          _c(
+            "div",
+            { staticClass: "row justify-content-around b-popup-content" },
+            [
+              _c("div", { staticClass: "col-md-8 right-bordered" }, [
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c("h1", [_vm._v(_vm._s(_vm.placeToShowInPopUp.name))])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "carousel slide",
+                      attrs: {
+                        id: "carouselControls" + _vm.placeToShowInPopUp.id,
+                        "data-ride": "false"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "carousel-inner" },
+                        [
+                          _vm._l(_vm.placeToShowInPopUp.photos, function(
+                            photo,
+                            index
+                          ) {
+                            return _c(
+                              "div",
+                              {
+                                staticClass: "carousel-item",
+                                class: { active: index === 0 }
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "d-block w-100",
+                                  attrs: {
+                                    src: "./storage/" + photo,
+                                    alt: _vm.placeToShowInPopUp.name
+                                  }
+                                })
+                              ]
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "carousel-control-prev",
+                              attrs: {
+                                href:
+                                  "#carouselControls" +
+                                  _vm.placeToShowInPopUp.id,
+                                role: "button",
+                                "data-slide": "prev"
+                              }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "carousel-control-prev-icon",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "sr-only" }, [
+                                _vm._v("Previous")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "carousel-control-next",
+                              attrs: {
+                                href:
+                                  "#carouselControls" +
+                                  _vm.placeToShowInPopUp.id,
+                                role: "button",
+                                "data-slide": "next"
+                              }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "carousel-control-next-icon",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "sr-only" }, [
+                                _vm._v("Next")
+                              ])
+                            ]
+                          )
+                        ],
+                        2
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c("h1", [_vm._v("Опис")]),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.placeToShowInPopUp.description) +
+                      "\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c(
+                    "div",
+                    { staticClass: "rating-mini" },
+                    [
+                      _vm._l(_vm.placeToShowInPopUp.rating, function(
+                        rating,
+                        index
+                      ) {
+                        return _c("span", { staticClass: "active" })
+                      }),
+                      _vm._v(" "),
+                      _vm._l(10 - _vm.placeToShowInPopUp.rating, function(
+                        rating,
+                        index
+                      ) {
+                        return _vm.placeToShowInPopUp.rating < 10
+                          ? _c("span")
+                          : _vm._e()
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "row justify-content-end",
+                    attrs: { id: "comment-input" }
+                  },
+                  [
+                    _c("label", { attrs: { for: "comment" } }, [
+                      _vm._v("Залиште коментар")
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.comment,
+                          expression: "comment"
+                        }
+                      ],
+                      attrs: {
+                        id: "comment",
+                        type: "text",
+                        placeholder: "Введіть комментар"
+                      },
+                      domProps: { value: _vm.comment },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.comment = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { id: "submitComment" },
+                        on: { click: _vm.sendComment }
+                      },
+                      [_vm._v("Відправити")]
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-3" },
+                [
+                  _c("div", { staticClass: "row justify-content-end" }, [
+                    _c("span", {
+                      staticClass: "close",
+                      on: { click: _vm.closePopUp }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.commentsToShow, function(comment) {
+                    return _c(
+                      "div",
+                      { staticClass: "row justify-content-center comment" },
+                      [
+                        _c("span", [_vm._v("{{}}")]),
+                        _vm._v(" "),
+                        _c("div", [_vm._v(_vm._s(comment.body))])
+                      ]
+                    )
+                  })
+                ],
+                2
+              )
+            ]
+          )
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -37695,6 +38041,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row justify-content-center" }, [
       _c("h1", [_vm._v("Тури")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("a", { staticClass: "btn btn-primary" }, [_vm._v("Показати на карті")])
     ])
   },
   function() {

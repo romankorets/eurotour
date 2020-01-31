@@ -161,4 +161,13 @@ class PlaceController extends Controller
             return redirect()->back()->withErrors('Не достатньо прав');
         }
     }
+
+    public function getComments($id)
+    {
+        $place = Place::findOrFail($id);
+        $comments = $place->comments()->where('enabled', true)->get();
+        return response()->json([
+            json_encode($comments)
+        ]);
+    }
 }

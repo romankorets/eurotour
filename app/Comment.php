@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     protected $fillable = [
-        'body',
+        'user_id', 'place_id', 'body', 'enabled'
     ];
 
+    protected $table = 'comments';
+
     public function user(){
-        return $this->hasOne(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function place(){
-        return$this->hasOne(Place::class, 'place_id');
+        return$this->belongsTo(Place::class, 'place_id');
     }
 }

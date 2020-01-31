@@ -13,7 +13,7 @@
                         <div class="row justify-content-center">
                             <div class="col-md-4 photos-column">
                                 <h3>Фото</h3>
-                                <div id="carouselControls{{$tour->id}}" class="carousel slide" data-ride="carousel">
+                                <div id="carouselControls{{$tour->id}}" class="carousel slide" data-ride="false">
                                     <div class="carousel-inner">
                                         @foreach(json_decode($tour->photos) as $photo)
                                             @if($loop->first)

@@ -242,4 +242,32 @@ class TourController extends Controller
         }
 
     }
+
+    public function getTourPlaces($id)
+    {
+        $tour = Tour::findOfFail($id);
+        $places = $tour->places()->wherePivot('isStartPlace', false)->wherePivot('isFinishPlace', false)->get();
+        return response()->json([
+            'places' => $places
+        ]);
+    }
+
+
+    public function getTourStartPlace($id)
+    {
+        $tour = Tour::findOfFail($id);
+        $startPlace = $tour->places()->wherePivot('isStartPlace', true)->first();
+        return response()->json([
+            'startPlace' => $startPlace
+        ]);
+    }
+
+    public function getTourFinishPlace($id)
+    {
+        $tour = Tour::findOfFail($id);
+        $finishPlace = $tour->places()->wherePivot('isFinishPlace', true)->first();
+        return response()->json([
+            'finishPlace' => $finishPlace
+        ]);
+    }
 }
