@@ -12,6 +12,10 @@ class Place extends Model
 
     protected $table = 'places';
 
+    public function likes(){
+        return $this->hasMany(Like::class, 'place_id');
+    }
+
     public function comments(){
         return $this->hasMany(Comment::class, 'place_id');
     }

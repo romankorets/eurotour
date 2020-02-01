@@ -17,7 +17,10 @@ class PlaceController extends Controller
      */
     public function getPlaces()
     {
-        $places = Place::all();
+        $places = Place::with(['comments' => function ($query) {
+            $query->where('enabled', true);
+        },
+            'comments.user', 'likes.user'])->get();
         return response()->json(json_encode($places));
     }
     /**

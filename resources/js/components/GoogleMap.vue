@@ -48,9 +48,12 @@
         <div class="col-md-6">
             <div id="map"></div>
         </div>
-        <div class="b-popup" v-if="isShowPopUp">
-            <div class="row justify-content-around b-popup-content">
-                <div class="col-md-8 right-bordered">
+        <div class="b-popup" v-if="isShowPlacePopUp">
+            <div class="row justify-content-center b-popup-content">
+                <div class="col-md-10">
+                    <div class="row justify-content-end">
+                        <span title="Закрити вікно" class="close" v-on:click="closePopUp"/>
+                    </div>
                     <div class="row justify-content-center">
                         <h1>{{ placeToShowInPopUp.name }}</h1>
                     </div>
@@ -82,6 +85,14 @@
                         <h1>Опис</h1>
                         {{ placeToShowInPopUp.description }}
                     </div>
+                    <div class="row justify-content-around like">
+                        <i class="fa fa-thumbs-up" v-on:click="toggleLike('like')" :class="{'fa-pressed': isLike}"/>
+                        <i class="fa fa-thumbs-down" v-on:click="toggleLike('dislike')" :class="{'fa-pressed': isDislike}"/>
+                    </div>
+                    <div class="row justify-content-around count">
+                        <span>{{this.numberOfLikes}}</span>
+                        <span>{{this.numberOfDislikes}}</span>
+                    </div>
                     <div class="row justify-content-center">
                         <div class="rating-mini">
                             <span v-for="(rating,index) in placeToShowInPopUp.rating" class="active"/>
@@ -90,18 +101,30 @@
                         </div>
                     </div>
                     <div id="comment-input" class="row justify-content-end">
-                        <label for="comment">Залиште коментар</label>
-                        <textarea id="comment" type="text" v-model="comment" placeholder="Введіть комментар"/>
+                        <textarea type="text" v-model="comment" placeholder="Введіть комментар"/>
+                    </div>
+                    <div class="row justify-content-end">
                         <button id="submitComment" v-on:click="sendComment" class="btn btn-primary">Відправити</button>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="row justify-content-end">
-                        <span class="close" v-on:click="closePopUp"/>
+                    <div class="row justify-content-center">
+                        <h3>Комментарі</h3>
                     </div>
-                    <div v-for="comment in commentsToShow" class="row justify-content-center comment">
-                        <span>{{}}</span>
-                        <div>{{comment.body}}</div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div v-for="comment in placeToShowInPopUp.comments"
+                                 class="row justify-content-start comment">
+                                <div class="col-md-12">
+                                    <div v-if="checkIfCurrentUserAdmin()" class="row justify-content-end">
+                                        <span title="Вимкнути комментар" class="close" v-on:click="disableComment(comment.id)"/>
+                                    </div>
+                                    <div class="row name">{{comment.user['name']}}</div>
+                                    <div class="row date">{{comment.created_at}}</div>
+                                    <div class="row body">
+                                        <p>{{comment.body}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -109,9 +132,8 @@
     </div>
 </template>
 
-<!--  TODO: add rendering of routes on map  -->
-<!-- TODO: add rendering name of user of comment -->
-<!-- TODO: add like system -->
+<!-- TODO: add rendering of routes on map  -->
+<!-- TODO: add changing url for tour -->
 <script>
     export default {
         props: [
@@ -123,10 +145,12 @@
                 places: [],
                 markers: [],
                 tours: [],
-                isShowPopUp: false,
+                isShowPlacePopUp: false,
                 windowHref: '/home',
                 comment: '',
-                commentsToShow: null
+                currentUserRoles: null,
+                isLike: false,
+                isDislike: false,
             }
         },
         created() {
@@ -136,24 +160,54 @@
             this.init();
             this.fetchPlaces();
             this.setWindowUrl();
+            this.setCurrentUserRole();
         },
         computed: {
             placeToShowInPopUp: function () {
                 let start = this.windowHref.indexOf('#') + 1;
                 let end = this.windowHref.length;
+
                 let slug = this.windowHref.substring(start, end);
                 for (let i = 0; i < this.places.length; i++) {
                     if (this.places[i]['slug'] == slug) {
-                        this.getCommentsOfPlaceById(this.places[i].id);
+                        for (let j = 0; j < this.places[i]['likes'].length; j++){
+                            if(this.places[i]['likes'][j]['user']['id'] == this.userId){
+                                if(this.places[i]['likes'][j]['value'] == 1){
+                                    this.isLike = true;
+                                    this.isDislike = false;
+                                } else {
+                                    this.isLike = false;
+                                    this.isDislike = true;
+                                }
+                            }
+                        }
                         return this.places[i];
                     }
                 }
             },
+            numberOfLikes: function () {
+                let counter = 0;
+                for(let i = 0; i < this.placeToShowInPopUp['likes'].length; i++){
+                    if(this.placeToShowInPopUp['likes'][i]['value'] == 1){
+                        counter++;
+                    }
+                }
+                return counter;
+            },
+            numberOfDislikes: function () {
+                let counter = 0;
+                for(let i = 0; i < this.placeToShowInPopUp['likes'].length; i++){
+                    if(this.placeToShowInPopUp['likes'][i]['value'] == 0){
+                        counter++;
+                    }
+                }
+                return counter;
+            }
         },
         watch: {
             windowHref: function (newWindowHref) {
-                this.isShowPopUp = this.checkIfHasSlug(newWindowHref);
-            }
+                this.isShowPlacePopUp = this.checkIfHasSlug(newWindowHref);
+            },
         },
         methods: {
             init() {
@@ -164,29 +218,100 @@
                 })
             },
 
-
-            getUserByCommentId(id){
-                axios.get('/api/comment/' + id).then(response =>{
-                    return JSON.parse(response.data);
-                });
+            async sendLike(value){
+                if(value === 'like'){
+                    value = 1;
+                } else value = 0;
+                await axios.post('api/like', {
+                    'user_id': this.userId,
+                    'place_id': this.placeToShowInPopUp.id,
+                    'value': value
+                })
             },
 
-            getCommentsOfPlaceById(id){
-                axios.get('/api/place/' + id + '/comments').then(response =>{
-                     this.commentsToShow = JSON.parse(response.data);
-                });
+            async deleteLike(){
+                await axios.delete('api/like/'+ this.userId + '/'+ this.placeToShowInPopUp.id +'/delete');
             },
 
-            sendComment(){
-                axios.post('api/comment', {
+            async updateLike(value){
+                if(value === 'like'){
+                    value = 1;
+                } else value = 0;
+                await axios.put('api/like/'+ this.userId + '/'+ this.placeToShowInPopUp.id +'/update', {
+                    'value': value
+                })
+            },
+
+            toggleLike(value){
+                if(!this.isLike && !this.isDislike){  // create like if it doesn't exist
+                    this.sendLike(value);
+                    if (value === 'like'){
+                        this.isLike = true;
+                        this.isDislike = false;
+                    } else {
+                        this.isLike = false;
+                        this.isDislike = true;
+                    }
+                } else {
+                    if(value === 'like'){
+                        if(this.isLike){
+                            this.deleteLike();
+                            this.isLike = false;
+                        } else{
+                            this.updateLike('like');
+                            this.isLike = true;
+                            this.isDislike = false;
+                        }
+                    } else {
+                        if(this.isDislike){
+                            this.deleteLike();
+                            this.isDislike = false;
+                        } else{
+                            this.updateLike('dislike');
+                            this.isLike = false;
+                            this.isDislike = true;
+                        }
+                    }
+                }
+            },
+
+            async setCurrentUserRole(){
+                await axios.get('api/user/'+ this.userId +'/roles').then(response =>{
+                    this.currentUserRoles = JSON.parse(response.data);
+                    console.log('Ролі користувача');
+                    console.log(this.currentUserRoles);
+                })
+            },
+
+             async disableComment(id){
+                 await axios.put('api/comment/'+ id, {
+                    'enabled' : false
+                }).then(response =>{
+                    console.log(response)
+                });
+                 this.fetchPlaces();
+            },
+
+            checkIfCurrentUserAdmin(){
+                for(let i = 0; i < this.currentUserRoles.length; i++){
+                    if (this.currentUserRoles[i]['slug'] == 'admin'){
+                        return true;
+                    }
+                }
+                return false;
+            },
+
+            async sendComment() {
+                await axios.post('api/comment', {
                     'user_id': this.userId,
                     'place_id': this.placeToShowInPopUp.id,
                     'body': this.comment
                 });
                 this.comment = '';
+                this.fetchPlaces();
             },
 
-            checkIfHasSlug(windowHref){
+            checkIfHasSlug(windowHref) {
                 for (let i = 0; i < windowHref.length; i++) {
                     if (windowHref[i] === '#' && windowHref[i] !== windowHref[windowHref.length - 1]) {
                         return true;
@@ -194,24 +319,24 @@
                 }
                 return false;
             },
-            closePopUp(){
+
+            closePopUp() {
                 this.windowHref = "/home#";
                 window.location.href = this.windowHref;
             },
             setWindowUrl() {
                 this.windowHref = window.location.href;
             },
-            fetchPlaces() {
-                axios.get('api/place/index').then(response => {
+            async fetchPlaces() {
+                await axios.get('api/place/index').then(response => {
                         console.log(response.data);
                         this.places = JSON.parse(response.data);
-                        console.log(this.places);
-                        console.log(this.places.length);
-                        console.log(this.places[0]['lat']);
                         this.addMarkers();
                         for (let i = 0; i < this.places.length; i++) {
                             this.places[i].photos = JSON.parse(this.places[i].photos);
                         }
+                        console.log('Місця: ');
+                        console.log(this.places);
                     }
                 ).catch(error => console.log(error));
             },
@@ -235,7 +360,7 @@
                     });
                     console.log('Маркери');
                     console.log(this.markers);
-                    console.log(this.placeSlugToShowInPopUp);
+                    console.log(this.placeToShowInPopUp);
                 }
             },
 

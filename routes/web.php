@@ -31,17 +31,17 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('tour', 'TourController', ['except' => [
         'show'
     ]])->middleware('auth');
-//    Route::resource('comment', 'CommentController', ['except' =>[
-//        'show', 'index'
-//    ]]);
 });
 
+Route::get('api/user/{user}/roles', 'UserController@getUserRoles');
+
+Route::post('api/like', 'LikeController@store')->name('like.store');
+Route::put('api/like/{user}/{place}/update', 'LikeController@update')->name('like.update');
+Route::delete('api/like/{user}/{place}/delete', 'LikeController@destroy')->name('like.destroy');
 
 Route::post('api/comment', 'CommentController@store');
-Route::get('api/comment/{comment}', 'CommentController@getCommentUser')->name('comment.getCommentUser');
+Route::put('api/comment/{comment}', 'CommentController@update');
 
-Route::get('api/place/{place}/comments', 'PlaceController@getComments')->name('place.getComments');
-Route::get('place/{place}', 'PlaceController@show')->name('place.show');
 Route::get('api/place/index', 'PlaceController@getPlaces')->name('place.getPlaces');
 
 Route::get('tour/{tour}', 'TourController@show')->name('tour.show');

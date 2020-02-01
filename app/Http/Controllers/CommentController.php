@@ -18,8 +18,10 @@ class CommentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $comment = Comment::findOrFair($id);
-        $comment->fill($request->all());
+        $comment = Comment::findOrFail($id);
+        $comment->fill([
+            'enabled' => $request->get('enabled')
+        ]);
         $comment->save();
     }
 
@@ -27,12 +29,5 @@ class CommentController extends Controller
     {
         $comment = Comment::findOrFail($id);
         $comment->delete();
-    }
-
-    public function getCommentUser($id)
-    {
-        $comment = Comment::findOrFail($id);
-        $user = $comment->user;
-        return response()->json(json_encode($user));
     }
 }

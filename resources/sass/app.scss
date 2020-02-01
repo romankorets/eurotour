@@ -232,14 +232,31 @@
 }
 
 #comment-input > textarea{
-    width: 800px;
+    width: 1000px;
     @extend %border-shared;
     margin-bottom: 10px;
 }
 
 .comment{
-    @extend %border-shared;
-    padding: 5px;
+    padding:6px;
+    background-color:#fcfcfc;
+    border:1px solid white;
+    color:#888;
+    margin-bottom:15px;
+}
+
+.comment .name{
+    font-size:20px;
+    padding-bottom:10px;
+    color:#ccc;
+}
+
+.comment .date{
+    font-size:10px;
+    padding:6px 0;
+    right:15px;
+    top:10px;
+    color:#bbb;
 }
 
 .close {
@@ -266,4 +283,19 @@
 }
 .close:after {
     transform: rotate(-45deg);
+}
+
+.fa {
+    font-size: 50px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fa-pressed {
+    color: darkblue;
+}
+
+.like {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
