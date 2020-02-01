@@ -2171,7 +2171,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   watch: {
     windowHref: function windowHref(newWindowHref) {
-      this.isShowPlacePopUp = this.checkIfHasSlug(newWindowHref);
+      this.isShowPlacePopUp = this.checkIfHasPlaceSlug(newWindowHref);
     }
   },
   methods: {
@@ -2410,16 +2410,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return sendComment;
     }(),
-    checkIfHasSlug: function checkIfHasSlug(windowHref) {
-      for (var i = 0; i < windowHref.length; i++) {
-        if (windowHref[i] === '#' && windowHref[i] !== windowHref[windowHref.length - 1]) {
+    checkIfHasPlaceSlug: function checkIfHasPlaceSlug(windowHref) {
+      // for (let i = 0; i < windowHref.length; i++) {
+      //     if (windowHref[i] === '#' && windowHref[i] !== windowHref[windowHref.length - 1]) {
+      //         return true;
+      //     }
+      // }
+      // return false;
+      for (var i = 0; i < this.places.length; i++) {
+        if (windowHref.indexOf('#' + this.places[i]['slug']) + 1) {
           return true;
         }
       }
 
       return false;
     },
-    closePopUp: function closePopUp() {
+    closePlacePopUp: function closePlacePopUp() {
       this.windowHref = "/home#";
       window.location.href = this.windowHref;
     },
@@ -38874,7 +38880,7 @@ var render = function() {
                   _c("span", {
                     staticClass: "close",
                     attrs: { title: "Закрити вікно" },
-                    on: { click: _vm.closePopUp }
+                    on: { click: _vm.closePlacePopUp }
                   })
                 ]),
                 _vm._v(" "),

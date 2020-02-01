@@ -52,7 +52,7 @@
             <div class="row justify-content-center b-popup-content">
                 <div class="col-md-10">
                     <div class="row justify-content-end">
-                        <span title="Закрити вікно" class="close" v-on:click="closePopUp"/>
+                        <span title="Закрити вікно" class="close" v-on:click="closePlacePopUp"/>
                     </div>
                     <div class="row justify-content-center">
                         <h1>{{ placeToShowInPopUp.name }}</h1>
@@ -206,7 +206,7 @@
         },
         watch: {
             windowHref: function (newWindowHref) {
-                this.isShowPlacePopUp = this.checkIfHasSlug(newWindowHref);
+                this.isShowPlacePopUp = this.checkIfHasPlaceSlug(newWindowHref);
             },
         },
         methods: {
@@ -311,16 +311,22 @@
                 this.fetchPlaces();
             },
 
-            checkIfHasSlug(windowHref) {
-                for (let i = 0; i < windowHref.length; i++) {
-                    if (windowHref[i] === '#' && windowHref[i] !== windowHref[windowHref.length - 1]) {
+            checkIfHasPlaceSlug(windowHref) {
+                // for (let i = 0; i < windowHref.length; i++) {
+                //     if (windowHref[i] === '#' && windowHref[i] !== windowHref[windowHref.length - 1]) {
+                //         return true;
+                //     }
+                // }
+                // return false;
+                for (let i = 0; i < this.places.length; i++) {
+                    if(windowHref.indexOf('#' + this.places[i]['slug']) + 1){
                         return true;
                     }
                 }
                 return false;
             },
 
-            closePopUp() {
+            closePlacePopUp() {
                 this.windowHref = "/home#";
                 window.location.href = this.windowHref;
             },
