@@ -2097,39 +2097,154 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['userId'],
   data: function data() {
     return {
       map: null,
+      tourMap: null,
       places: [],
       markers: [],
       tours: [],
       isShowPlacePopUp: false,
+      isShowTourPopUp: false,
       windowHref: '/home',
+      windowHash: window.location.hash,
       comment: '',
       currentUserRoles: null,
       isLike: false,
       isDislike: false
     };
   },
-  created: function created() {
-    this.fetchTours();
-  },
-  mounted: function mounted() {
-    this.init();
-    this.fetchPlaces();
-    this.setWindowUrl();
-    this.setCurrentUserRole();
-  },
-  computed: {
-    placeToShowInPopUp: function placeToShowInPopUp() {
-      var start = this.windowHref.indexOf('#') + 1;
-      var end = this.windowHref.length;
-      var slug = this.windowHref.substring(start, end);
+  created: function () {
+    var _created = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return this.fetchTours();
 
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function created() {
+      return _created.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+  mounted: function () {
+    var _mounted = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return this.setCurrentUserRole();
+
+            case 2:
+              this.init();
+              _context2.next = 5;
+              return this.fetchPlaces();
+
+            case 5:
+              this.setWindowUrl(); // window.onhashchange = function() {
+              //     this.windowHref = window.location.href;
+              //     console.log('GoogleMap адреса');
+              //     console.log(this.windowHref);
+              //     console.log('Google hash');
+              //    // console.log(this.checkIfHasPlaceSlug(this.windowHref));
+              //
+              //     console.log('Вікно показуться?');
+              //     console.log(this.isShowPlacePopUp);
+              //
+              // }
+
+            case 6:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function mounted() {
+      return _mounted.apply(this, arguments);
+    }
+
+    return mounted;
+  }(),
+  computed: {
+    tourToShowInPopUp: function tourToShowInPopUp() {
+      for (var i = 0; i < this.tours.length; i++) {
+        if (this.windowHref.includes(this.tours[i]['slug'])) {
+          console.log('Тур для виводу');
+          console.log(this.tours[i]);
+          return this.tours[i];
+        }
+      }
+    },
+    placeToShowInPopUp: function placeToShowInPopUp() {
       for (var i = 0; i < this.places.length; i++) {
-        if (this.places[i]['slug'] == slug) {
+        if (this.windowHref.includes(this.places[i]['slug'])) {
           for (var j = 0; j < this.places[i]['likes'].length; j++) {
             if (this.places[i]['likes'][j]['user']['id'] == this.userId) {
               if (this.places[i]['likes'][j]['value'] == 1) {
@@ -2171,7 +2286,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   watch: {
     windowHref: function windowHref(newWindowHref) {
+      console.log('Чи є Tour slug');
+      console.log(this.checkIfHasTourSlug(newWindowHref));
+      this.isShowTourPopUp = this.checkIfHasTourSlug(newWindowHref);
+      console.log('Чи є place slug');
+      console.log(this.checkIfHasPlaceSlug(newWindowHref));
       this.isShowPlacePopUp = this.checkIfHasPlaceSlug(newWindowHref);
+    },
+    windowHash: function windowHash(newHash) {
+      this.windowHref = window.location.href;
+      console.log('GoogleMap адреса');
+      console.log(this.windowHref);
     }
   },
   methods: {
@@ -2182,66 +2307,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         mapTypeId: 'roadmap'
       });
     },
+    showTour: function showTour(id) {
+      this.isShowTourPopUp = true;
+
+      for (var i = 0; this.tours.length; i++) {
+        if (this.tours[i].id == id) {
+          this.isShowTourPopUp = true;
+
+          if (this.windowHref[this.windowHref.length - 1] === '#') {
+            this.windowHref = this.windowHref + this.tours[i]['slug'];
+          } else {
+            this.windowHref = this.windowHref + '#' + this.tours[i]['slug'];
+          }
+
+          window.location.href = this.windowHref;
+        }
+      }
+    },
     sendLike: function () {
       var _sendLike = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(value) {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (value === 'like') {
-                  value = 1;
-                } else value = 0;
-
-                _context.next = 3;
-                return axios.post('api/like', {
-                  'user_id': this.userId,
-                  'place_id': this.placeToShowInPopUp.id,
-                  'value': value
-                });
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function sendLike(_x) {
-        return _sendLike.apply(this, arguments);
-      }
-
-      return sendLike;
-    }(),
-    deleteLike: function () {
-      var _deleteLike = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return axios["delete"]('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/delete');
-
-              case 2:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function deleteLike() {
-        return _deleteLike.apply(this, arguments);
-      }
-
-      return deleteLike;
-    }(),
-    updateLike: function () {
-      var _updateLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(value) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
@@ -2253,7 +2337,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 } else value = 0;
 
                 _context3.next = 3;
-                return axios.put('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/update', {
+                return axios.post('api/like', {
+                  'user_id': this.userId,
+                  'place_id': this.placeToShowInPopUp.id,
                   'value': value
                 });
 
@@ -2263,6 +2349,62 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee3, this);
+      }));
+
+      function sendLike(_x) {
+        return _sendLike.apply(this, arguments);
+      }
+
+      return sendLike;
+    }(),
+    deleteLike: function () {
+      var _deleteLike = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios["delete"]('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/delete');
+
+              case 2:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function deleteLike() {
+        return _deleteLike.apply(this, arguments);
+      }
+
+      return deleteLike;
+    }(),
+    updateLike: function () {
+      var _updateLike = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(value) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (value === 'like') {
+                  value = 1;
+                } else value = 0;
+
+                _context5.next = 3;
+                return axios.put('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/update', {
+                  'value': value
+                });
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
       }));
 
       function updateLike(_x2) {
@@ -2308,14 +2450,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setCurrentUserRole: function () {
       var _setCurrentUserRole = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
         var _this = this;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                _context4.next = 2;
+                _context6.next = 2;
                 return axios.get('api/user/' + this.userId + '/roles').then(function (response) {
                   _this.currentUserRoles = JSON.parse(response.data);
                   console.log('Ролі користувача');
@@ -2324,10 +2466,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
               case "end":
-                return _context4.stop();
+                return _context6.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee6, this);
       }));
 
       function setCurrentUserRole() {
@@ -2339,12 +2481,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     disableComment: function () {
       var _disableComment = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(id) {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(id) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
-                _context5.next = 2;
+                _context7.next = 2;
                 return axios.put('api/comment/' + id, {
                   'enabled': false
                 }).then(function (response) {
@@ -2356,10 +2498,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
               case "end":
-                return _context5.stop();
+                return _context7.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee7, this);
       }));
 
       function disableComment(_x3) {
@@ -2380,12 +2522,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     sendComment: function () {
       var _sendComment = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _context6.next = 2;
+                _context8.next = 2;
                 return axios.post('api/comment', {
                   'user_id': this.userId,
                   'place_id': this.placeToShowInPopUp.id,
@@ -2398,10 +2540,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 4:
               case "end":
-                return _context6.stop();
+                return _context8.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee8, this);
       }));
 
       function sendComment() {
@@ -2410,23 +2552,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return sendComment;
     }(),
-    checkIfHasPlaceSlug: function checkIfHasPlaceSlug(windowHref) {
-      // for (let i = 0; i < windowHref.length; i++) {
-      //     if (windowHref[i] === '#' && windowHref[i] !== windowHref[windowHref.length - 1]) {
-      //         return true;
-      //     }
-      // }
-      // return false;
-      for (var i = 0; i < this.places.length; i++) {
-        if (windowHref.indexOf('#' + this.places[i]['slug']) + 1) {
+    checkIfHasTourSlug: function checkIfHasTourSlug(windowHref) {
+      for (var i = 0; i < this.tours.length; i++) {
+        if (windowHref.includes(this.tours[i]['slug'])) {
           return true;
         }
       }
 
       return false;
     },
+    checkIfHasPlaceSlug: function checkIfHasPlaceSlug(windowHref) {
+      for (var i = 0; i < this.places.length; i++) {
+        if (windowHref.includes(this.places[i]['slug'])) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    closeTourPopUp: function closeTourPopUp() {
+      this.windowHref = '/home#'; //this.windowHref = this.windowHref.replace(this.tourToShowInPopUp['slug'], '');
+      //window.history.back();
+
+      window.location.href = this.windowHref;
+    },
     closePlacePopUp: function closePlacePopUp() {
-      this.windowHref = "/home#";
+      this.windowHref = this.windowHref.replace(this.placeToShowInPopUp['slug'], ''); // window.history.back();
+
       window.location.href = this.windowHref;
     },
     setWindowUrl: function setWindowUrl() {
@@ -2435,36 +2587,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     fetchPlaces: function () {
       var _fetchPlaces = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
         var _this2 = this;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
-                _context7.next = 2;
+                _context9.next = 2;
                 return axios.get('api/place/index').then(function (response) {
-                  console.log(response.data);
+                  // console.log(response.data);
                   _this2.places = JSON.parse(response.data);
 
                   _this2.addMarkers();
 
                   for (var i = 0; i < _this2.places.length; i++) {
                     _this2.places[i].photos = JSON.parse(_this2.places[i].photos);
-                  }
+                  } // console.log('Місця: ');
+                  // console.log(this.places);
 
-                  console.log('Місця: ');
-                  console.log(_this2.places);
                 })["catch"](function (error) {
                   return console.log(error);
                 });
 
               case 2:
               case "end":
-                return _context7.stop();
+                return _context9.stop();
             }
           }
-        }, _callee7);
+        }, _callee9);
       }));
 
       function fetchPlaces() {
@@ -2493,13 +2644,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         context = _this3;
         marker.addListener('click', function () {
-          context.isShowPopUp = true;
-          context.windowHref = "/home#" + context.places[i]['slug'];
-          window.location.href = context.windowHref;
+          context.isShowPlacePopUp = true;
+
+          if (context.windowHref[context.windowHref.length - 1] === '#') {
+            context.windowHref = context.windowHref + context.places[i]['slug'];
+          } else {
+            context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
+          }
+
+          window.location.href = context.windowHref; // context.windowHref = "/home#" + context.places[i]['slug'];
+          // //context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
+          // window.location.href = context.windowHref;
         });
-        console.log('Маркери');
-        console.log(_this3.markers);
-        console.log(_this3.placeToShowInPopUp);
       };
 
       for (var i = 0; i < this.places.length; i++) {
@@ -2508,24 +2664,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _loop(i);
       }
     },
-    fetchTours: function fetchTours() {
-      var _this4 = this;
+    fetchTours: function () {
+      var _fetchTours = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
+        var _this4 = this;
 
-      axios.get('api/tour/index').then(function (response) {
-        _this4.tours = JSON.parse(response.data);
-        console.log('Тури : ');
-        console.log(_this4.tours);
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+                _context10.next = 2;
+                return axios.get('api/tour/index').then(function (response) {
+                  _this4.tours = JSON.parse(response.data);
+                  console.log('Тури : ');
+                  console.log(_this4.tours);
 
-        for (var i = 0; i < _this4.tours.length; i++) {
-          _this4.tours[i].photos = JSON.parse(_this4.tours[i].photos);
-        }
+                  for (var i = 0; i < _this4.tours.length; i++) {
+                    _this4.tours[i].photos = JSON.parse(_this4.tours[i].photos);
+                  }
 
-        console.log('Тури : ');
-        console.log(_this4.tours);
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    }
+                  console.log('Тури : ');
+                  console.log(_this4.tours);
+                })["catch"](function (error) {
+                  return console.log(error);
+                });
+
+              case 2:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10);
+      }));
+
+      function fetchTours() {
+        return _fetchTours.apply(this, arguments);
+      }
+
+      return fetchTours;
+    }()
   }
 });
 
@@ -2574,6 +2752,163 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {
       return console.log(error);
     });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TourMap.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TourMap.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['tour', 'markers', 'windowHref'],
+  data: function data() {
+    return {
+      tourToShow: this.tour,
+      tourMap: null,
+      localWindowHref: window.location.hash,
+      directionRequest: {
+        origin: null,
+        destination: null,
+        travelMode: 'DRIVING',
+        waypoints: [],
+        optimizeWaypoints: true,
+        avoidFerries: true,
+        avoidHighways: true,
+        avoidTolls: true
+      }
+    };
+  },
+  mounted: function mounted() {
+    console.log('Component mounted.');
+    this.initTourMap();
+    console.log('Тур в компоненті');
+    console.log(this.tourToShow);
+    console.log('Url сторінки');
+    console.log(this.localWindowHref);
+    this.initDirection();
+    this.addMarkers();
+  },
+  // watch:{
+  //     // localWindowHref: function (href) {
+  //     //     console.log('адрес змінився на');
+  //     //     console.log(href);
+  //     // }
+  // },
+  methods: {
+    initDirection: function initDirection() {
+      var directionsService = new google.maps.DirectionsService();
+      var directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers: true
+      });
+      directionsRenderer.setMap(this.tourMap);
+
+      for (var i = 0; i < this.tourToShow['places'].length; i++) {
+        if (this.tourToShow['places'][i]['pivot']['isStartPlace'] == 1) {
+          var coords = {
+            lat: Number(this.tourToShow['places'][i]['lat']),
+            lng: Number(this.tourToShow['places'][i]['lng'])
+          };
+          this.directionRequest.origin = coords;
+        }
+
+        if (this.tourToShow['places'][i]['pivot']['isFinishPlace'] == 1) {
+          var _coords = {
+            lat: Number(this.tourToShow['places'][i]['lat']),
+            lng: Number(this.tourToShow['places'][i]['lng'])
+          };
+          this.directionRequest.destination = _coords;
+        }
+
+        if (this.tourToShow['places'][i]['pivot']['isFinishPlace'] == 0 && this.tourToShow['places'][i]['pivot']['isStartPlace'] == 0) {
+          var _coords2 = {
+            lat: Number(this.tourToShow['places'][i]['lat']),
+            lng: Number(this.tourToShow['places'][i]['lng'])
+          };
+          this.directionRequest.waypoints.push({
+            location: _coords2,
+            stopover: true
+          });
+        }
+      }
+
+      directionsService.route(this.directionRequest, function (result, status) {
+        if (status == 'OK') {
+          directionsRenderer.setDirections(result);
+        }
+      });
+    },
+    initTourMap: function initTourMap() {
+      this.tourMap = new google.maps.Map(document.getElementById('tour-map'), {
+        zoom: 4,
+        center: new google.maps.LatLng(49.698753, 19.404233),
+        mapTypeId: 'roadmap'
+      });
+      console.log('Tour map ініційовано');
+    },
+    addMarkers: function addMarkers() {
+      var _this = this;
+
+      var _loop = function _loop(i) {
+        var coords = {
+          lat: Number(_this.tourToShow['places'][i]['lat']),
+          lng: Number(_this.tourToShow['places'][i]['lng'])
+        };
+        var marker = void 0;
+
+        if (_this.tourToShow['places'][i]['pivot']['isStartPlace'] == 1) {
+          marker = new google.maps.Marker({
+            position: coords,
+            map: _this.tourMap,
+            label: 'S'
+          });
+        } else if (_this.tourToShow['places'][i]['pivot']['isFinishPlace'] == 1) {
+          marker = new google.maps.Marker({
+            position: coords,
+            map: _this.tourMap,
+            label: 'F'
+          });
+        } else {
+          marker = new google.maps.Marker({
+            position: coords,
+            map: _this.tourMap
+          });
+        }
+
+        console.log('Маркер додано');
+        context = _this;
+        marker.addListener('click', function () {
+          if (context.localWindowHref[context.localWindowHref.length - 1] === '#') {
+            context.localWindowHref = context.localWindowHref + context.tourToShow['places'][i]['slug'];
+          } else {
+            context.localWindowHref = context.localWindowHref + '#' + context.tourToShow['places'][i]['slug'];
+          }
+
+          window.location.href = context.localWindowHref;
+        });
+      };
+
+      for (var i = 0; i < this.tourToShow['places'].length; i++) {
+        var context;
+
+        _loop(i);
+      }
+    }
   }
 });
 
@@ -38859,7 +39194,20 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(1, true)
+              _c("div", { staticClass: "row justify-content-center" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: {
+                      click: function($event) {
+                        return _vm.showTour(tour.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Показати на карті")]
+                )
+              ])
             ])
           ])
         })
@@ -38867,10 +39215,10 @@ var render = function() {
       2
     ),
     _vm._v(" "),
-    _vm._m(2),
+    _vm._m(1),
     _vm._v(" "),
     _vm.isShowPlacePopUp
-      ? _c("div", { staticClass: "b-popup" }, [
+      ? _c("div", { staticClass: "b-popup", attrs: { id: "place-popup" } }, [
           _c(
             "div",
             { staticClass: "row justify-content-center b-popup-content" },
@@ -39083,7 +39431,7 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _vm._m(3),
+                _vm._m(2),
                 _vm._v(" "),
                 _c("div", { staticClass: "row justify-content-center" }, [
                   _c(
@@ -39135,6 +39483,148 @@ var render = function() {
             ]
           )
         ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.isShowTourPopUp
+      ? _c("div", { staticClass: "b-popup", attrs: { id: "tour-popup" } }, [
+          _c(
+            "div",
+            { staticClass: "row justify-content-center b-popup-content" },
+            [
+              _c("div", { staticClass: "col-md-10" }, [
+                _c("div", { staticClass: "row justify-content-end" }, [
+                  _c("span", {
+                    staticClass: "close",
+                    attrs: { title: "Закрити вікно" },
+                    on: { click: _vm.closeTourPopUp }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c("h1", [_vm._v(_vm._s(_vm.tourToShowInPopUp.name))])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "carousel slide",
+                      attrs: {
+                        id: "carouselControls" + _vm.tourToShowInPopUp.id,
+                        "data-ride": "false"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "carousel-inner" },
+                        [
+                          _vm._l(_vm.tourToShowInPopUp.photos, function(
+                            photo,
+                            index
+                          ) {
+                            return _c(
+                              "div",
+                              {
+                                staticClass: "carousel-item",
+                                class: { active: index === 0 }
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "d-block w-100",
+                                  attrs: {
+                                    src: "./storage/" + photo,
+                                    alt: _vm.tourToShowInPopUp.name
+                                  }
+                                })
+                              ]
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "carousel-control-prev",
+                              attrs: {
+                                href:
+                                  "#carouselControls" +
+                                  _vm.tourToShowInPopUp.id,
+                                role: "button",
+                                "data-slide": "prev"
+                              }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "carousel-control-prev-icon",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "sr-only" }, [
+                                _vm._v("Previous")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "carousel-control-next",
+                              attrs: {
+                                href:
+                                  "#carouselControls" +
+                                  _vm.tourToShowInPopUp.id,
+                                role: "button",
+                                "data-slide": "next"
+                              }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "carousel-control-next-icon",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "sr-only" }, [
+                                _vm._v("Next")
+                              ])
+                            ]
+                          )
+                        ],
+                        2
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.tourToShowInPopUp.description) +
+                      "\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(4),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "row justify-content-center" },
+                  [
+                    _c("tour-map", {
+                      attrs: {
+                        windowHref: this.windowHref,
+                        markers: this.markers,
+                        tour: _vm.tourToShowInPopUp
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
+            ]
+          )
+        ])
       : _vm._e()
   ])
 }
@@ -39151,14 +39641,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("a", { staticClass: "btn btn-primary" }, [_vm._v("Показати на карті")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-6" }, [
       _c("div", { attrs: { id: "map" } })
     ])
@@ -39169,6 +39651,22 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row justify-content-center" }, [
       _c("h3", [_vm._v("Комментарі")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("h1", [_vm._v("Опис")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("h1", [_vm._v("Тур на карті")])
     ])
   }
 ]
@@ -39221,6 +39719,41 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TourMap.vue?vue&type=template&id=54c9c96e&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TourMap.vue?vue&type=template&id=54c9c96e& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { attrs: { id: "tour-map" } }),
+      _vm._v(" "),
+      _c("div")
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -51417,6 +51950,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('google-map', __webpack_require__(/*! ./components/GoogleMap.vue */ "./resources/js/components/GoogleMap.vue")["default"]);
+Vue.component('tour-map', __webpack_require__(/*! ./components/TourMap.vue */ "./resources/js/components/TourMap.vue")["default"]);
 Vue.component('places', __webpack_require__(/*! ./components/PlacesComponent.vue */ "./resources/js/components/PlacesComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -51677,6 +52211,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlacesComponent_vue_vue_type_template_id_3a4fb414___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlacesComponent_vue_vue_type_template_id_3a4fb414___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/TourMap.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/TourMap.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TourMap_vue_vue_type_template_id_54c9c96e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TourMap.vue?vue&type=template&id=54c9c96e& */ "./resources/js/components/TourMap.vue?vue&type=template&id=54c9c96e&");
+/* harmony import */ var _TourMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TourMap.vue?vue&type=script&lang=js& */ "./resources/js/components/TourMap.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TourMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TourMap_vue_vue_type_template_id_54c9c96e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TourMap_vue_vue_type_template_id_54c9c96e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TourMap.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TourMap.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/TourMap.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TourMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TourMap.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TourMap.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TourMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TourMap.vue?vue&type=template&id=54c9c96e&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/TourMap.vue?vue&type=template&id=54c9c96e& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TourMap_vue_vue_type_template_id_54c9c96e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TourMap.vue?vue&type=template&id=54c9c96e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TourMap.vue?vue&type=template&id=54c9c96e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TourMap_vue_vue_type_template_id_54c9c96e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TourMap_vue_vue_type_template_id_54c9c96e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="row justify-content-center">
-                        <a class="btn btn-primary">Показати на карті</a>
+                        <button @click="showTour(tour.id)" class="btn btn-primary">Показати на карті</button>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
         <div class="col-md-6">
             <div id="map"></div>
         </div>
-        <div class="b-popup" v-if="isShowPlacePopUp">
+        <div id="place-popup" class="b-popup" v-if="isShowPlacePopUp">
             <div class="row justify-content-center b-popup-content">
                 <div class="col-md-10">
                     <div class="row justify-content-end">
@@ -129,11 +129,58 @@
                 </div>
             </div>
         </div>
+        <div id="tour-popup" class="b-popup" v-if="isShowTourPopUp">
+            <div class="row justify-content-center b-popup-content">
+                <div class="col-md-10">
+                    <div class="row justify-content-end">
+                        <span title="Закрити вікно" class="close" v-on:click="closeTourPopUp"/>
+                    </div>
+                    <div class="row justify-content-center">
+                        <h1>{{ tourToShowInPopUp.name }}</h1>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div :id="'carouselControls' + tourToShowInPopUp.id" class="carousel slide"
+                             data-ride="false">
+                            <div class="carousel-inner">
+                                <div class="carousel-item" :class="{active : index===0}"
+                                     v-for="(photo, index) in tourToShowInPopUp.photos">
+                                    <img class="d-block w-100" :src="'./storage/' + photo"
+                                         :alt="tourToShowInPopUp.name">
+                                </div>
+                                <a class="carousel-control-prev" :href="'#carouselControls' + tourToShowInPopUp.id"
+                                   role="button"
+                                   data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"/>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" :href="'#carouselControls' + tourToShowInPopUp.id"
+                                   role="button"
+                                   data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"/>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <h1>Опис</h1>
+                    </div>
+                    <div class="row justify-content-center">
+                        {{ tourToShowInPopUp.description }}
+                    </div>
+                    <div class="row justify-content-center">
+                        <h1>Тур на карті</h1>
+                    </div>
+                    <div class="row justify-content-center">
+                        <tour-map :windowHref="this.windowHref" :markers="this.markers" :tour="tourToShowInPopUp"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
-<!-- TODO: add rendering of routes on map  -->
-<!-- TODO: add changing url for tour -->
+<!-- TODO: add showing of place when in tour -->
 <script>
     export default {
         props: [
@@ -142,34 +189,54 @@
         data: function () {
             return {
                 map: null,
+                tourMap: null,
                 places: [],
                 markers: [],
                 tours: [],
                 isShowPlacePopUp: false,
+                isShowTourPopUp: false,
                 windowHref: '/home',
+                windowHash: window.location.hash,
                 comment: '',
                 currentUserRoles: null,
                 isLike: false,
                 isDislike: false,
             }
         },
-        created() {
-            this.fetchTours();
+        created: async function(){
+            await this.fetchTours();
         },
-        mounted() {
+        mounted: async function(){
+            await this.setCurrentUserRole();
             this.init();
-            this.fetchPlaces();
+            await this.fetchPlaces();
             this.setWindowUrl();
-            this.setCurrentUserRole();
+            // window.onhashchange = function() {
+            //     this.windowHref = window.location.href;
+            //     console.log('GoogleMap адреса');
+            //     console.log(this.windowHref);
+            //     console.log('Google hash');
+            //    // console.log(this.checkIfHasPlaceSlug(this.windowHref));
+            //
+            //     console.log('Вікно показуться?');
+            //     console.log(this.isShowPlacePopUp);
+            //
+            // }
         },
         computed: {
-            placeToShowInPopUp: function () {
-                let start = this.windowHref.indexOf('#') + 1;
-                let end = this.windowHref.length;
+            tourToShowInPopUp: function(){
+                for (let i = 0; i < this.tours.length; i++){
+                    if(this.windowHref.includes(this.tours[i]['slug'])){
+                        console.log('Тур для виводу');
+                        console.log(this.tours[i]);
+                        return this.tours[i];
+                    }
+                }
+            },
 
-                let slug = this.windowHref.substring(start, end);
-                for (let i = 0; i < this.places.length; i++) {
-                    if (this.places[i]['slug'] == slug) {
+            placeToShowInPopUp: function () {
+                for (let i = 0; i < this.places.length; i++){
+                    if(this.windowHref.includes(this.places[i]['slug'])){
                         for (let j = 0; j < this.places[i]['likes'].length; j++){
                             if(this.places[i]['likes'][j]['user']['id'] == this.userId){
                                 if(this.places[i]['likes'][j]['value'] == 1){
@@ -185,6 +252,7 @@
                     }
                 }
             },
+
             numberOfLikes: function () {
                 let counter = 0;
                 for(let i = 0; i < this.placeToShowInPopUp['likes'].length; i++){
@@ -206,8 +274,18 @@
         },
         watch: {
             windowHref: function (newWindowHref) {
+                console.log('Чи є Tour slug');
+                console.log(this.checkIfHasTourSlug(newWindowHref));
+                this.isShowTourPopUp = this.checkIfHasTourSlug(newWindowHref);
+                console.log('Чи є place slug');
+                console.log(this.checkIfHasPlaceSlug(newWindowHref));
                 this.isShowPlacePopUp = this.checkIfHasPlaceSlug(newWindowHref);
             },
+            windowHash: function (newHash) {
+                this.windowHref = window.location.href;
+                console.log('GoogleMap адреса');
+                console.log(this.windowHref);
+            }
         },
         methods: {
             init() {
@@ -216,6 +294,20 @@
                     center: new google.maps.LatLng(49.698753, 19.404233),
                     mapTypeId: 'roadmap'
                 })
+            },
+            showTour: function(id){
+                this.isShowTourPopUp = true;
+                for (let i = 0; this.tours.length; i++){
+                    if(this.tours[i].id == id){
+                        this.isShowTourPopUp = true;
+                        if(this.windowHref[this.windowHref.length - 1] === '#'){
+                            this.windowHref = this.windowHref + this.tours[i]['slug'];
+                        } else {
+                            this.windowHref = this.windowHref + '#' + this.tours[i]['slug'];
+                        }
+                        window.location.href = this.windowHref;
+                    }
+                }
             },
 
             async sendLike(value){
@@ -311,23 +403,34 @@
                 this.fetchPlaces();
             },
 
-            checkIfHasPlaceSlug(windowHref) {
-                // for (let i = 0; i < windowHref.length; i++) {
-                //     if (windowHref[i] === '#' && windowHref[i] !== windowHref[windowHref.length - 1]) {
-                //         return true;
-                //     }
-                // }
-                // return false;
-                for (let i = 0; i < this.places.length; i++) {
-                    if(windowHref.indexOf('#' + this.places[i]['slug']) + 1){
+            checkIfHasTourSlug(windowHref){
+                for (let i = 0; i < this.tours.length; i++) {
+                    if(windowHref.includes(this.tours[i]['slug'])){
                         return true;
                     }
                 }
                 return false;
             },
 
+             checkIfHasPlaceSlug(windowHref) {
+                for (let i = 0; i < this.places.length; i++) {
+                    if(windowHref.includes(this.places[i]['slug'])){
+                        return true;
+                    }
+                }
+                return false;
+            },
+
+            closeTourPopUp() {
+                this.windowHref = '/home#';
+                //this.windowHref = this.windowHref.replace(this.tourToShowInPopUp['slug'], '');
+                //window.history.back();
+                window.location.href = this.windowHref;
+            },
+
             closePlacePopUp() {
-                this.windowHref = "/home#";
+                 this.windowHref = this.windowHref.replace(this.placeToShowInPopUp['slug'], '');
+                // window.history.back();
                 window.location.href = this.windowHref;
             },
             setWindowUrl() {
@@ -335,14 +438,14 @@
             },
             async fetchPlaces() {
                 await axios.get('api/place/index').then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         this.places = JSON.parse(response.data);
                         this.addMarkers();
                         for (let i = 0; i < this.places.length; i++) {
                             this.places[i].photos = JSON.parse(this.places[i].photos);
                         }
-                        console.log('Місця: ');
-                        console.log(this.places);
+                        // console.log('Місця: ');
+                        // console.log(this.places);
                     }
                 ).catch(error => console.log(error));
             },
@@ -360,18 +463,23 @@
                     });
                     var context = this;
                     marker.addListener('click', function () {
-                        context.isShowPopUp = true;
-                        context.windowHref = "/home#" + context.places[i]['slug'];
+                        context.isShowPlacePopUp = true;
+                        if(context.windowHref[context.windowHref.length - 1] === '#'){
+                            context.windowHref = context.windowHref + context.places[i]['slug'];
+                        } else {
+                            context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
+                        }
                         window.location.href = context.windowHref;
+
+                        // context.windowHref = "/home#" + context.places[i]['slug'];
+                        // //context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
+                        // window.location.href = context.windowHref;
                     });
-                    console.log('Маркери');
-                    console.log(this.markers);
-                    console.log(this.placeToShowInPopUp);
                 }
             },
 
-            fetchTours() {
-                axios.get('api/tour/index').then(response => {
+            async fetchTours() {
+                await axios.get('api/tour/index').then(response => {
                         this.tours = JSON.parse(response.data);
                         console.log('Тури : ');
                         console.log(this.tours);

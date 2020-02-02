@@ -26,6 +26,7 @@ window.Vue = require('vue');
 // });
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('google-map', require('./components/GoogleMap.vue').default);
+Vue.component('tour-map', require('./components/TourMap.vue').default);
 Vue.component('places', require('./components/PlacesComponent.vue').default);
 
 /**

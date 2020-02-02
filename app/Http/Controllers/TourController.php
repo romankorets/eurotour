@@ -20,7 +20,7 @@ class TourController extends Controller
 
     public function getTours()
     {
-        $tours = Tour::all();
+        $tours = Tour::with('places')->get();
         return response()->json(json_encode($tours));
     }
 

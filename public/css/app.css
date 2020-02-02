@@ -11438,9 +11438,22 @@ a.text-dark:focus {
   height: 100px;
 }
 
+#tour-popup {
+  z-index: 5;
+}
+
+#place-popup {
+  z-index: 10;
+}
+
 #map {
   height: 600px;
   width: 100%;
+}
+
+#tour-map {
+  height: 400px;
+  width: 800px;
 }
 
 #comment-input > textarea,
