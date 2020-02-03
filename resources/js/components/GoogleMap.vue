@@ -1,6 +1,9 @@
 <template>
     <div class="row justify-content-center b-container">
-        <div class="col-md-6">
+        <div class="col-md-12">
+            <div class="row justify-content-center">
+                <div id="map"></div>
+            </div>
             <div class="row justify-content-center">
                 <h1>Тури</h1>
             </div>
@@ -39,14 +42,11 @@
                             {{ tour.duration }}
                         </div>
                     </div>
-                    <div class="row justify-content-center">
+                    <div v-if="!isShowPlacePopUp && !isShowTourPopUp" class="row justify-content-center">
                         <button @click="showTour(tour.id)" class="btn btn-primary">Показати на карті</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div id="map"></div>
         </div>
         <div id="place-popup" class="b-popup" v-if="isShowPlacePopUp">
             <div class="row justify-content-center b-popup-content">
@@ -87,7 +87,8 @@
                     </div>
                     <div class="row justify-content-around like">
                         <i class="fa fa-thumbs-up" v-on:click="toggleLike('like')" :class="{'fa-pressed': isLike}"/>
-                        <i class="fa fa-thumbs-down" v-on:click="toggleLike('dislike')" :class="{'fa-pressed': isDislike}"/>
+                        <i class="fa fa-thumbs-down" v-on:click="toggleLike('dislike')"
+                           :class="{'fa-pressed': isDislike}"/>
                     </div>
                     <div class="row justify-content-around count">
                         <span>{{this.numberOfLikes}}</span>
@@ -115,7 +116,8 @@
                                  class="row justify-content-start comment">
                                 <div class="col-md-12">
                                     <div v-if="checkIfCurrentUserAdmin()" class="row justify-content-end">
-                                        <span title="Вимкнути комментар" class="close" v-on:click="disableComment(comment.id)"/>
+                                        <span title="Вимкнути комментар" class="close"
+                                              v-on:click="disableComment(comment.id)"/>
                                     </div>
                                     <div class="row name">{{comment.user['name']}}</div>
                                     <div class="row date">{{comment.created_at}}</div>
@@ -136,43 +138,48 @@
                         <span title="Закрити вікно" class="close" v-on:click="closeTourPopUp"/>
                     </div>
                     <div class="row justify-content-center">
+                        <h1>Карта</h1>
+                    </div>
+                    <div class="row justify-content-center">
+                        <tour-map :tour="tourToShowInPopUp"/>
+                    </div>
+                    <div class="row justify-content-center">
                         <h1>{{ tourToShowInPopUp.name }}</h1>
                     </div>
-                    <div class="row justify-content-center">
-                        <div :id="'carouselControls' + tourToShowInPopUp.id" class="carousel slide"
-                             data-ride="false">
-                            <div class="carousel-inner">
-                                <div class="carousel-item" :class="{active : index===0}"
-                                     v-for="(photo, index) in tourToShowInPopUp.photos">
-                                    <img class="d-block w-100" :src="'./storage/' + photo"
-                                         :alt="tourToShowInPopUp.name">
+                    <div class="row justify-content-around">
+                        <div class="col-md-4">
+                            <div class="row justify-content-center">
+                                <div :id="'carouselControls' + tourToShowInPopUp.id" class="carousel slide"
+                                     data-ride="false">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item" :class="{active : index===0}"
+                                             v-for="(photo, index) in tourToShowInPopUp.photos">
+                                            <img class="d-block w-100" :src="'./storage/' + photo"
+                                                 :alt="tourToShowInPopUp.name">
+                                        </div>
+                                        <a class="carousel-control-prev"
+                                           :href="'#carouselControls' + tourToShowInPopUp.id"
+                                           role="button"
+                                           data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"/>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next"
+                                           :href="'#carouselControls' + tourToShowInPopUp.id"
+                                           role="button"
+                                           data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"/>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
                                 </div>
-                                <a class="carousel-control-prev" :href="'#carouselControls' + tourToShowInPopUp.id"
-                                   role="button"
-                                   data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"/>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" :href="'#carouselControls' + tourToShowInPopUp.id"
-                                   role="button"
-                                   data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"/>
-                                    <span class="sr-only">Next</span>
-                                </a>
                             </div>
                         </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <h1>Опис</h1>
-                    </div>
-                    <div class="row justify-content-center">
-                        {{ tourToShowInPopUp.description }}
-                    </div>
-                    <div class="row justify-content-center">
-                        <h1>Тур на карті</h1>
-                    </div>
-                    <div class="row justify-content-center">
-                        <tour-map :windowHref="this.windowHref" :markers="this.markers" :tour="tourToShowInPopUp"/>
+                        <div class="col-md-7">
+                            <div class="row justify-content-center">
+                                <article>{{ tourToShowInPopUp.description }}</article>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -189,44 +196,34 @@
         data: function () {
             return {
                 map: null,
-                tourMap: null,
                 places: [],
-                markers: [],
                 tours: [],
                 isShowPlacePopUp: false,
                 isShowTourPopUp: false,
                 windowHref: '/home',
-                windowHash: window.location.hash,
                 comment: '',
                 currentUserRoles: null,
                 isLike: false,
                 isDislike: false,
             }
         },
-        created: async function(){
+        created: async function () {
             await this.fetchTours();
         },
-        mounted: async function(){
+        mounted: async function () {
             await this.setCurrentUserRole();
             this.init();
             await this.fetchPlaces();
             this.setWindowUrl();
-            // window.onhashchange = function() {
-            //     this.windowHref = window.location.href;
-            //     console.log('GoogleMap адреса');
-            //     console.log(this.windowHref);
-            //     console.log('Google hash');
-            //    // console.log(this.checkIfHasPlaceSlug(this.windowHref));
-            //
-            //     console.log('Вікно показуться?');
-            //     console.log(this.isShowPlacePopUp);
-            //
-            // }
+            var context = this;
+            window.onhashchange = function () {
+                context.windowHref = window.location.href;
+            }
         },
         computed: {
-            tourToShowInPopUp: function(){
-                for (let i = 0; i < this.tours.length; i++){
-                    if(this.windowHref.includes(this.tours[i]['slug'])){
+            tourToShowInPopUp: function () {
+                for (let i = 0; i < this.tours.length; i++) {
+                    if (this.windowHref.includes(this.tours[i]['slug'])) {
                         console.log('Тур для виводу');
                         console.log(this.tours[i]);
                         return this.tours[i];
@@ -235,11 +232,11 @@
             },
 
             placeToShowInPopUp: function () {
-                for (let i = 0; i < this.places.length; i++){
-                    if(this.windowHref.includes(this.places[i]['slug'])){
-                        for (let j = 0; j < this.places[i]['likes'].length; j++){
-                            if(this.places[i]['likes'][j]['user']['id'] == this.userId){
-                                if(this.places[i]['likes'][j]['value'] == 1){
+                for (let i = 0; i < this.places.length; i++) {
+                    if (this.windowHref.includes(this.places[i]['slug'])) {
+                        for (let j = 0; j < this.places[i]['likes'].length; j++) {
+                            if (this.places[i]['likes'][j]['user']['id'] == this.userId) {
+                                if (this.places[i]['likes'][j]['value'] == 1) {
                                     this.isLike = true;
                                     this.isDislike = false;
                                 } else {
@@ -255,8 +252,8 @@
 
             numberOfLikes: function () {
                 let counter = 0;
-                for(let i = 0; i < this.placeToShowInPopUp['likes'].length; i++){
-                    if(this.placeToShowInPopUp['likes'][i]['value'] == 1){
+                for (let i = 0; i < this.placeToShowInPopUp['likes'].length; i++) {
+                    if (this.placeToShowInPopUp['likes'][i]['value'] == 1) {
                         counter++;
                     }
                 }
@@ -264,8 +261,8 @@
             },
             numberOfDislikes: function () {
                 let counter = 0;
-                for(let i = 0; i < this.placeToShowInPopUp['likes'].length; i++){
-                    if(this.placeToShowInPopUp['likes'][i]['value'] == 0){
+                for (let i = 0; i < this.placeToShowInPopUp['likes'].length; i++) {
+                    if (this.placeToShowInPopUp['likes'][i]['value'] == 0) {
                         counter++;
                     }
                 }
@@ -274,18 +271,20 @@
         },
         watch: {
             windowHref: function (newWindowHref) {
-                console.log('Чи є Tour slug');
-                console.log(this.checkIfHasTourSlug(newWindowHref));
-                this.isShowTourPopUp = this.checkIfHasTourSlug(newWindowHref);
-                console.log('Чи є place slug');
-                console.log(this.checkIfHasPlaceSlug(newWindowHref));
-                this.isShowPlacePopUp = this.checkIfHasPlaceSlug(newWindowHref);
+                if (this.checkIfHasTourSlug(this.windowHref) && this.checkIfHasPlaceSlug(this.windowHref)) {
+                    this.isShowTourPopUp = false;
+                    this.isShowPlacePopUp = true;
+                } else if (this.checkIfHasPlaceSlug(this.windowHref)) {
+                    this.isShowPlacePopUp = true;
+                    this.isShowTourPopUp = false;
+                } else if (this.checkIfHasTourSlug(this.windowHref)) {
+                    this.isShowPlacePopUp = false;
+                    this.isShowTourPopUp = true;
+                } else {
+                    this.isShowPlacePopUp = false;
+                    this.isShowTourPopUp = false;
+                }
             },
-            windowHash: function (newHash) {
-                this.windowHref = window.location.href;
-                console.log('GoogleMap адреса');
-                console.log(this.windowHref);
-            }
         },
         methods: {
             init() {
@@ -295,12 +294,12 @@
                     mapTypeId: 'roadmap'
                 })
             },
-            showTour: function(id){
+            showTour: function (id) {
                 this.isShowTourPopUp = true;
-                for (let i = 0; this.tours.length; i++){
-                    if(this.tours[i].id == id){
+                for (let i = 0; this.tours.length; i++) {
+                    if (this.tours[i].id == id) {
                         this.isShowTourPopUp = true;
-                        if(this.windowHref[this.windowHref.length - 1] === '#'){
+                        if (this.windowHref[this.windowHref.length - 1] === '#') {
                             this.windowHref = this.windowHref + this.tours[i]['slug'];
                         } else {
                             this.windowHref = this.windowHref + '#' + this.tours[i]['slug'];
@@ -310,8 +309,8 @@
                 }
             },
 
-            async sendLike(value){
-                if(value === 'like'){
+            async sendLike(value) {
+                if (value === 'like') {
                     value = 1;
                 } else value = 0;
                 await axios.post('api/like', {
@@ -321,23 +320,23 @@
                 })
             },
 
-            async deleteLike(){
-                await axios.delete('api/like/'+ this.userId + '/'+ this.placeToShowInPopUp.id +'/delete');
+            async deleteLike() {
+                await axios.delete('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/delete');
             },
 
-            async updateLike(value){
-                if(value === 'like'){
+            async updateLike(value) {
+                if (value === 'like') {
                     value = 1;
                 } else value = 0;
-                await axios.put('api/like/'+ this.userId + '/'+ this.placeToShowInPopUp.id +'/update', {
+                await axios.put('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/update', {
                     'value': value
                 })
             },
 
-            toggleLike(value){
-                if(!this.isLike && !this.isDislike){  // create like if it doesn't exist
+            toggleLike(value) {
+                if (!this.isLike && !this.isDislike) {  // create like if it doesn't exist
                     this.sendLike(value);
-                    if (value === 'like'){
+                    if (value === 'like') {
                         this.isLike = true;
                         this.isDislike = false;
                     } else {
@@ -345,20 +344,20 @@
                         this.isDislike = true;
                     }
                 } else {
-                    if(value === 'like'){
-                        if(this.isLike){
+                    if (value === 'like') {
+                        if (this.isLike) {
                             this.deleteLike();
                             this.isLike = false;
-                        } else{
+                        } else {
                             this.updateLike('like');
                             this.isLike = true;
                             this.isDislike = false;
                         }
                     } else {
-                        if(this.isDislike){
+                        if (this.isDislike) {
                             this.deleteLike();
                             this.isDislike = false;
-                        } else{
+                        } else {
                             this.updateLike('dislike');
                             this.isLike = false;
                             this.isDislike = true;
@@ -367,26 +366,26 @@
                 }
             },
 
-            async setCurrentUserRole(){
-                await axios.get('api/user/'+ this.userId +'/roles').then(response =>{
+            async setCurrentUserRole() {
+                await axios.get('api/user/' + this.userId + '/roles').then(response => {
                     this.currentUserRoles = JSON.parse(response.data);
                     console.log('Ролі користувача');
                     console.log(this.currentUserRoles);
                 })
             },
 
-             async disableComment(id){
-                 await axios.put('api/comment/'+ id, {
-                    'enabled' : false
-                }).then(response =>{
+            async disableComment(id) {
+                await axios.put('api/comment/' + id, {
+                    'enabled': false
+                }).then(response => {
                     console.log(response)
                 });
-                 this.fetchPlaces();
+                this.fetchPlaces();
             },
 
-            checkIfCurrentUserAdmin(){
-                for(let i = 0; i < this.currentUserRoles.length; i++){
-                    if (this.currentUserRoles[i]['slug'] == 'admin'){
+            checkIfCurrentUserAdmin() {
+                for (let i = 0; i < this.currentUserRoles.length; i++) {
+                    if (this.currentUserRoles[i]['slug'] == 'admin') {
                         return true;
                     }
                 }
@@ -403,18 +402,18 @@
                 this.fetchPlaces();
             },
 
-            checkIfHasTourSlug(windowHref){
+            checkIfHasTourSlug(windowHref) {
                 for (let i = 0; i < this.tours.length; i++) {
-                    if(windowHref.includes(this.tours[i]['slug'])){
+                    if (windowHref.includes(this.tours[i]['slug'])) {
                         return true;
                     }
                 }
                 return false;
             },
 
-             checkIfHasPlaceSlug(windowHref) {
+            checkIfHasPlaceSlug(windowHref) {
                 for (let i = 0; i < this.places.length; i++) {
-                    if(windowHref.includes(this.places[i]['slug'])){
+                    if (windowHref.includes(this.places[i]['slug'])) {
                         return true;
                     }
                 }
@@ -423,14 +422,12 @@
 
             closeTourPopUp() {
                 this.windowHref = '/home#';
-                //this.windowHref = this.windowHref.replace(this.tourToShowInPopUp['slug'], '');
-                //window.history.back();
                 window.location.href = this.windowHref;
             },
 
             closePlacePopUp() {
-                 this.windowHref = this.windowHref.replace(this.placeToShowInPopUp['slug'], '');
-                // window.history.back();
+                this.windowHref = this.windowHref.replace(this.placeToShowInPopUp['slug'], '');
+                window.history.back();
                 window.location.href = this.windowHref;
             },
             setWindowUrl() {
@@ -438,14 +435,11 @@
             },
             async fetchPlaces() {
                 await axios.get('api/place/index').then(response => {
-                        // console.log(response.data);
                         this.places = JSON.parse(response.data);
                         this.addMarkers();
                         for (let i = 0; i < this.places.length; i++) {
                             this.places[i].photos = JSON.parse(this.places[i].photos);
                         }
-                        // console.log('Місця: ');
-                        // console.log(this.places);
                     }
                 ).catch(error => console.log(error));
             },
@@ -457,23 +451,15 @@
                         lng: Number(this.places[i]['lng'])
                     };
                     let marker = new google.maps.Marker({position: coords, map: this.map});
-                    this.markers.push({
-                        id: this.places[i].id,
-                        marker: marker
-                    });
                     var context = this;
                     marker.addListener('click', function () {
                         context.isShowPlacePopUp = true;
-                        if(context.windowHref[context.windowHref.length - 1] === '#'){
+                        if (context.windowHref[context.windowHref.length - 1] === '#') {
                             context.windowHref = context.windowHref + context.places[i]['slug'];
                         } else {
                             context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
                         }
                         window.location.href = context.windowHref;
-
-                        // context.windowHref = "/home#" + context.places[i]['slug'];
-                        // //context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
-                        // window.location.href = context.windowHref;
                     });
                 }
             },

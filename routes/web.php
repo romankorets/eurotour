@@ -44,11 +44,7 @@ Route::put('api/comment/{comment}', 'CommentController@update');
 
 Route::get('api/place/index', 'PlaceController@getPlaces')->name('place.getPlaces');
 
-Route::get('tour/{tour}', 'TourController@show')->name('tour.show');
 Route::get('api/tour/index', 'TourController@getTours')->name('tour.getTours');
-Route::get('api/tour/{tour}/places', 'TourController@getTourPlaces')->name('tour.getTourPlaces');
-Route::get('api/tour/{tour}/start-place', 'TourController@getTourStartPlace')->name('tour.getTourStartPlace');
-Route::get('api/tour/{tour}/finish-place', 'TourController@getTourFinishPlace')->name('tour.getTourFinishPlace');
 
 Auth::routes();
 

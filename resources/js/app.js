@@ -18,16 +18,9 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-// import * as VueGoogleMaps from 'vue2-google-maps'
-// import Vuetify from "vuetify";
-// Vue.use(Vuetify);
-// Vue.use(VueGoogleMaps, {
-//     load: { key: 'AIzaSyDqimykbFUtQSli-Gl9M1Jk77qoMQjTU1c' }
-// });
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('google-map', require('./components/GoogleMap.vue').default);
 Vue.component('tour-map', require('./components/TourMap.vue').default);
-Vue.component('places', require('./components/PlacesComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

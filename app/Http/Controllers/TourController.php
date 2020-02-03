@@ -50,30 +50,6 @@ class TourController extends Controller
             return view('admin.tour.create', ['places' => $places]);
         } else return redirect()->back();
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $tour = Tour::findOrFail($id);
-
-        return response()->json([
-            'name' => $tour->name,
-            'slug' => $tour->slug,
-            'description' => $tour->description,
-            'photos' => $tour->photos,
-            'duration' => $tour->duration,
-            'startPlace' => $tour->places()->wherePivot('isStartPlace', true)->first(),
-            'finishPlace' => $tour->places()->wherePivot('isFinishPlace', true)->first(),
-            'places' => $tour->places()->wherePivot('isStartPlace', false)
-                                        ->wherePivot('isFinishPlace', false)
-                                        ->get()
-        ]);
-    }
         /**
          * Store a newly created resource in storage.
          *

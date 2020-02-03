@@ -76,6 +76,9 @@ class PlaceController extends Controller
 
     public function store(Request $request)
     {
+        if($request->file('photos') == null){
+            return redirect()->back()->withErrors('Фото не додано');
+        }
         $photos = array();
         foreach ($request->file('photos') as $photo)
         {
@@ -91,7 +94,7 @@ class PlaceController extends Controller
             'lng' => $request->get('lng'),
         ]);
         if(!$place){
-            return redirect()->back();
+            return redirect()->back()->withErrors('Не всі поля заповнені');
         }
         $request->session()->flash('flash_message', 'Нова локація додана');
         return redirect()->route('admin');

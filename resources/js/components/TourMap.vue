@@ -1,22 +1,19 @@
 <template>
     <div class="row justify-content-center">
         <div id="tour-map"></div>
-        <div>
-
-        </div>
     </div>
 </template>
 
 <script>
     export default {
         props: [
-            'tour', 'markers', 'windowHref'
+            'tour'
         ],
         data() {
             return{
                 tourToShow: this.tour,
                 tourMap: null,
-                localWindowHref: window.location.hash,
+                localWindowHref: window.location.href,
 
                 directionRequest: {
                     origin: null,
@@ -31,22 +28,11 @@
             }
         },
         mounted() {
-            console.log('Component mounted.');
+            console.log('Tour-map mounted.');
             this.initTourMap();
-            console.log('Тур в компоненті');
-            console.log(this.tourToShow);
-
-            console.log('Url сторінки');
-            console.log(this.localWindowHref);
             this.initDirection();
             this.addMarkers();
         },
-        // watch:{
-        //     // localWindowHref: function (href) {
-        //     //     console.log('адрес змінився на');
-        //     //     console.log(href);
-        //     // }
-        // },
         methods: {
             initDirection(){
                 var directionsService = new google.maps.DirectionsService();
@@ -110,7 +96,6 @@
                     } else {
                         marker = new google.maps.Marker({position: coords, map: this.tourMap});
                     }
-                    console.log('Маркер додано');
                     var context = this;
                     marker.addListener('click', function () {
                         if(context.localWindowHref[context.localWindowHref.length - 1] === '#'){
