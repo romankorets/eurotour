@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTourRequest;
 use App\Place;
 use App\Tour;
 use Illuminate\Http\Request;
@@ -57,7 +58,7 @@ class TourController extends Controller
          * @return \Illuminate\Http\RedirectResponse
          */
 
-    public function store(Request $request)
+    public function store(StoreTourRequest $request)
     {
         $photos = array();
         foreach ($request->file('photos') as $photo)
