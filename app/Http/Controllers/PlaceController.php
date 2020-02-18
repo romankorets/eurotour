@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePlaceRequest;
 use App\Place;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -74,11 +75,8 @@ class PlaceController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function store(Request $request)
+    public function store(StorePlaceRequest $request)
     {
-        if($request->file('photos') == null){
-            return redirect()->back()->withErrors('Фото не додано');
-        }
         $photos = array();
         foreach ($request->file('photos') as $photo)
         {
