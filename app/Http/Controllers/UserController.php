@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getUserRoles($id)
+    public function getUserRoles(User $user)
     {
-        $user = User::findOrFail($id);
         $roles = $user->roles()->get();
         return response()->json(json_encode($roles));
     }

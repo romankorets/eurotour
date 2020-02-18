@@ -109,14 +109,13 @@ class TourController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Tour  $tour
      * @return \Illuminate\Http\RedirectResponse|View
      */
-    public function edit($id)
+    public function edit(Tour $tour)
     {
         $user = Auth::user();
         $places = Place::paginate(5);
-        $tour = Tour::findOrFail($id);
         if ($user->can('update', $tour)) {
             return view('admin.tour.edit', [
                 'tour' => $tour,
@@ -129,10 +128,10 @@ class TourController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Tour  $tour
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Tour $tour)
     {
         $photos = array();
         if ($request->has('photos')) {
@@ -140,7 +139,6 @@ class TourController extends Controller
                 $photos[] = $photo->store('uploads', 'public');
             }
         }
-        $tour = Tour::findOrFail($id);
 
         $tour->places()->detach();
         if (count($photos) > 0) {
@@ -200,13 +198,13 @@ class TourController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Tour $tour
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Tour $tour)
     {
         $user = Auth::user();
-        $tour = Tour::findOrFail($id);
         if ($user->can('delete', $tour)){
             $tour->detach();
             if(!$tour->delete()){
@@ -218,33 +216,5 @@ class TourController extends Controller
             return redirect()->back()->withErrors('Не достатньо прав');
         }
 
-    }
-
-    public function getTourPlaces($id)
-    {
-        $tour = Tour::findOfFail($id);
-        $places = $tour->places()->wherePivot('isStartPlace', false)->wherePivot('isFinishPlace', false)->get();
-        return response()->json([
-            'places' => $places
-        ]);
-    }
-
-
-    public function getTourStartPlace($id)
-    {
-        $tour = Tour::findOfFail($id);
-        $startPlace = $tour->places()->wherePivot('isStartPlace', true)->first();
-        return response()->json([
-            'startPlace' => $startPlace
-        ]);
-    }
-
-    public function getTourFinishPlace($id)
-    {
-        $tour = Tour::findOfFail($id);
-        $finishPlace = $tour->places()->wherePivot('isFinishPlace', true)->first();
-        return response()->json([
-            'finishPlace' => $finishPlace
-        ]);
     }
 }

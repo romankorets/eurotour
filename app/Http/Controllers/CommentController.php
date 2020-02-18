@@ -17,18 +17,16 @@ class CommentController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Comment $comment)
     {
-        $comment = Comment::findOrFail($id);
         $comment->fill([
             'enabled' => $request->get('enabled')
         ]);
         $comment->save();
     }
 
-    public function destroy($id)
+    public function destroy(Comment $comment)
     {
-        $comment = Comment::findOrFail($id);
         $comment->delete();
     }
 }

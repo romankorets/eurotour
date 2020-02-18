@@ -51,12 +51,11 @@ class PlaceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Place  $place
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Place $place)
     {
-        $place = Place::findOrFail($id);
         return response()->json([
             'name' => $place->name,
             'slug' => $place->slug,
@@ -101,13 +100,12 @@ class PlaceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Place  $place
      * @return Factory|\Illuminate\Http\RedirectResponse|View
      */
-    public function edit($id)
+    public function edit(Place $place)
     {
         $user = Auth::user();
-        $place = Place::findOrFail($id);
         if ($user->can('update', $place)) {
             return view('admin.place.edit', [
                 'place' => $place]);
@@ -118,12 +116,11 @@ class PlaceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Place  $place
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Place $place)
     {
-        $place = Place::findOrFail($id);
         $photos = array();
         foreach ($request->file('photos') as $photo)
         {
@@ -147,13 +144,13 @@ class PlaceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Place $place
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Place $place)
     {
         $user = Auth::user();
-        $place = Place::findOrFail($id);
         if ($user->can('delete', $place)){
             $place->detach();
             if(!$place->delete()){
@@ -164,14 +161,5 @@ class PlaceController extends Controller
         } else {
             return redirect()->back()->withErrors('Не достатньо прав');
         }
-    }
-
-    public function getComments($id)
-    {
-        $place = Place::findOrFail($id);
-        $comments = $place->comments()->where('enabled', true)->get();
-        return response()->json([
-            json_encode($comments)
-        ]);
     }
 }
