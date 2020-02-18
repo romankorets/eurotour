@@ -2205,11 +2205,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return this.setCurrentUserRole();
 
             case 2:
+              sessionStorage.setItem('userId', this.userId);
+              console.log('Дані сесії');
+              console.log(sessionStorage);
               this.init();
-              _context2.next = 5;
+              _context2.next = 8;
               return this.fetchPlaces();
 
-            case 5:
+            case 8:
               this.setWindowUrl();
               context = this;
 
@@ -2217,7 +2220,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 context.windowHref = window.location.href;
               };
 
-            case 8:
+            case 11:
             case "end":
               return _context2.stop();
           }
@@ -2530,7 +2533,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context8.next = 2;
                 return axios.post('api/comment', {
-                  'user_id': this.userId,
                   'place_id': this.placeToShowInPopUp.id,
                   'body': this.comment
                 });

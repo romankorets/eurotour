@@ -212,6 +212,9 @@
         },
         mounted: async function () {
             await this.setCurrentUserRole();
+            sessionStorage.setItem('userId', this.userId);
+            console.log('Дані сесії');
+            console.log(sessionStorage);
             this.init();
             await this.fetchPlaces();
             this.setWindowUrl();
@@ -394,7 +397,6 @@
 
             async sendComment() {
                 await axios.post('api/comment', {
-                    'user_id': this.userId,
                     'place_id': this.placeToShowInPopUp.id,
                     'body': this.comment
                 });

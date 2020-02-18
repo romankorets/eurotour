@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tour;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        session(['user_id' => Auth::user()->id]);
         return view('home');
     }
 }
