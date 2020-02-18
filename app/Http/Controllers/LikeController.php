@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreLikeRequest;
 use App\Like;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreLikeRequest $request)
     {
         $like = Like::create([
             'value' => $request->get('value'),

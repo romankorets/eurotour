@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Http\Requests\StoreTourRequest;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreTourRequest $request)
     {
         $comment = Comment::create([
             'user_id' => $request->get('user_id'),
