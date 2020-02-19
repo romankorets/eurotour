@@ -212,15 +212,33 @@
         },
         mounted: async function () {
             await this.setCurrentUserRole();
-            sessionStorage.setItem('userId', this.userId);
-            console.log('Дані сесії');
-            console.log(sessionStorage);
             this.init();
             await this.fetchPlaces();
             this.setWindowUrl();
             var context = this;
-            window.onhashchange = function () {
+
+            var _wr = function(type) {
+                var orig = history[type];
+                return function() {
+                    var rv = orig.apply(this, arguments);
+                    var e = new Event(type);
+                    e.arguments = arguments;
+                    window.dispatchEvent(e);
+                    return rv;
+                };
+            };
+            history.pushState = _wr('pushState');
+
+            window.addEventListener('pushState', function(e) {
                 context.windowHref = window.location.href;
+                console.log('Адреса змінилась на ');
+                console.log(context.windowHref);
+            });
+
+            window.onpopstate = function () {
+                context.windowHref = window.location.href;
+                console.log('Адреса змінилась на ');
+                console.log(context.windowHref);
             }
         },
         computed: {
@@ -274,13 +292,13 @@
         },
         watch: {
             windowHref: function (newWindowHref) {
-                if (this.checkIfHasTourSlug(this.windowHref) && this.checkIfHasPlaceSlug(this.windowHref)) {
+                if (this.checkIfHasTourSlug(newWindowHref) && this.checkIfHasPlaceSlug(newWindowHref)) {
                     this.isShowTourPopUp = false;
                     this.isShowPlacePopUp = true;
-                } else if (this.checkIfHasPlaceSlug(this.windowHref)) {
+                } else if (this.checkIfHasPlaceSlug(newWindowHref)) {
                     this.isShowPlacePopUp = true;
                     this.isShowTourPopUp = false;
-                } else if (this.checkIfHasTourSlug(this.windowHref)) {
+                } else if (this.checkIfHasTourSlug(newWindowHref)) {
                     this.isShowPlacePopUp = false;
                     this.isShowTourPopUp = true;
                 } else {
@@ -307,7 +325,7 @@
                         } else {
                             this.windowHref = this.windowHref + '#' + this.tours[i]['slug'];
                         }
-                        window.location.href = this.windowHref;
+                        history.pushState(null, null, window.location.href + '?tour=' + this.tours[i]['slug']);
                     }
                 }
             },
@@ -397,7 +415,6 @@
 
             async sendComment() {
                 await axios.post('api/comment', {
-                    'place_id': this.placeToShowInPopUp.id,
                     'body': this.comment
                 });
                 this.comment = '';
@@ -423,14 +440,13 @@
             },
 
             closeTourPopUp() {
-                this.windowHref = '/home#';
-                window.location.href = this.windowHref;
+                this.windowHref = this.windowHref.replace('#' + this.tourToShowInPopUp['slug'], '');
+                window.history.back();
             },
 
             closePlacePopUp() {
-                this.windowHref = this.windowHref.replace(this.placeToShowInPopUp['slug'], '');
+                this.windowHref = this.windowHref.replace('#' + this.placeToShowInPopUp['slug'], '');
                 window.history.back();
-                window.location.href = this.windowHref;
             },
             setWindowUrl() {
                 this.windowHref = window.location.href;
@@ -461,7 +477,9 @@
                         } else {
                             context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
                         }
-                        window.location.href = context.windowHref;
+                        history.pushState(null, null, window.location.href + '?place=' + context.places[i]['slug']);
+                        console.log('Адреса вікна');
+                        console.log(window.location.href);
                     });
                 }
             },

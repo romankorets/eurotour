@@ -103,8 +103,7 @@
                         } else {
                             context.localWindowHref = context.localWindowHref + '#' + context.tourToShow['places'][i]['slug'];
                         }
-                        window.location.href = context.localWindowHref;
-
+                        history.pushState(null, null, window.location.href + '&place=' + context.tourToShow['places'][i]['slug']);
                     });
                 }
             }

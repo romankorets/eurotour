@@ -2196,7 +2196,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _mounted = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-      var context;
+      var context, _wr;
+
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -2205,19 +2206,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return this.setCurrentUserRole();
 
             case 2:
-              sessionStorage.setItem('userId', this.userId);
-              console.log('Дані сесії');
-              console.log(sessionStorage);
               this.init();
-              _context2.next = 8;
+              _context2.next = 5;
               return this.fetchPlaces();
 
-            case 8:
+            case 5:
               this.setWindowUrl();
               context = this;
 
-              window.onhashchange = function () {
+              _wr = function _wr(type) {
+                var orig = history[type];
+                return function () {
+                  var rv = orig.apply(this, arguments);
+                  var e = new Event(type);
+                  e.arguments = arguments;
+                  window.dispatchEvent(e);
+                  return rv;
+                };
+              };
+
+              history.pushState = _wr('pushState');
+              window.addEventListener('pushState', function (e) {
                 context.windowHref = window.location.href;
+                console.log('Адреса змінилась на ');
+                console.log(context.windowHref);
+              });
+
+              window.onpopstate = function () {
+                context.windowHref = window.location.href;
+                console.log('Адреса змінилась на ');
+                console.log(context.windowHref);
               };
 
             case 11:
@@ -2288,13 +2306,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   watch: {
     windowHref: function windowHref(newWindowHref) {
-      if (this.checkIfHasTourSlug(this.windowHref) && this.checkIfHasPlaceSlug(this.windowHref)) {
+      if (this.checkIfHasTourSlug(newWindowHref) && this.checkIfHasPlaceSlug(newWindowHref)) {
         this.isShowTourPopUp = false;
         this.isShowPlacePopUp = true;
-      } else if (this.checkIfHasPlaceSlug(this.windowHref)) {
+      } else if (this.checkIfHasPlaceSlug(newWindowHref)) {
         this.isShowPlacePopUp = true;
         this.isShowTourPopUp = false;
-      } else if (this.checkIfHasTourSlug(this.windowHref)) {
+      } else if (this.checkIfHasTourSlug(newWindowHref)) {
         this.isShowPlacePopUp = false;
         this.isShowTourPopUp = true;
       } else {
@@ -2324,7 +2342,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             this.windowHref = this.windowHref + '#' + this.tours[i]['slug'];
           }
 
-          window.location.href = this.windowHref;
+          history.pushState(null, null, window.location.href + '?tour=' + this.tours[i]['slug']);
         }
       }
     },
@@ -2533,7 +2551,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context8.next = 2;
                 return axios.post('api/comment', {
-                  'place_id': this.placeToShowInPopUp.id,
                   'body': this.comment
                 });
 
@@ -2574,13 +2591,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return false;
     },
     closeTourPopUp: function closeTourPopUp() {
-      this.windowHref = '/home#';
-      window.location.href = this.windowHref;
+      this.windowHref = this.windowHref.replace('#' + this.tourToShowInPopUp['slug'], '');
+      window.history.back();
     },
     closePlacePopUp: function closePlacePopUp() {
-      this.windowHref = this.windowHref.replace(this.placeToShowInPopUp['slug'], '');
+      this.windowHref = this.windowHref.replace('#' + this.placeToShowInPopUp['slug'], '');
       window.history.back();
-      window.location.href = this.windowHref;
     },
     setWindowUrl: function setWindowUrl() {
       this.windowHref = window.location.href;
@@ -2644,7 +2660,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
           }
 
-          window.location.href = context.windowHref;
+          history.pushState(null, null, window.location.href + '?place=' + context.places[i]['slug']);
+          console.log('Адреса вікна');
+          console.log(window.location.href);
         });
       };
 
@@ -2827,7 +2845,7 @@ __webpack_require__.r(__webpack_exports__);
             context.localWindowHref = context.localWindowHref + '#' + context.tourToShow['places'][i]['slug'];
           }
 
-          window.location.href = context.localWindowHref;
+          history.pushState(null, null, window.location.href + '&place=' + context.tourToShow['places'][i]['slug']);
         });
       };
 
