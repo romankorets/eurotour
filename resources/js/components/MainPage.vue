@@ -335,21 +335,19 @@
                     value = 1;
                 } else value = 0;
                 await axios.post('api/like', {
-                    'user_id': this.userId,
-                    'place_id': this.placeToShowInPopUp.id,
                     'value': value
                 })
             },
 
             async deleteLike() {
-                await axios.delete('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/delete');
+                await axios.delete('api/like/delete');
             },
 
             async updateLike(value) {
                 if (value === 'like') {
                     value = 1;
                 } else value = 0;
-                await axios.put('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/update', {
+                await axios.put('api/like/update', {
                     'value': value
                 })
             },

@@ -154,7 +154,7 @@ class PlaceController extends Controller
         if ($user->can('delete', $place)){
             $place->detach();
             if(!$place->delete()){
-                return redirect()->back()-withErrors('Помилка видалення');
+                return redirect()->back()->withErrors('Помилка видалення');
             }
             session()->flash('flash_message', 'Локація видалена');
             return redirect()->back();

@@ -36,8 +36,8 @@ Route::group(['prefix' => 'admin'], function () {
 Route::get('api/user/{user}/roles', 'UserController@getUserRoles');
 
 Route::post('api/like', 'LikeController@store')->name('like.store');
-Route::put('api/like/{user}/{place}/update', 'LikeController@update')->name('like.update');
-Route::delete('api/like/{user}/{place}/delete', 'LikeController@destroy')->name('like.destroy');
+Route::put('api/like/update', 'LikeController@update')->name('like.update');
+Route::delete('api/like/delete', 'LikeController@destroy')->name('like.destroy');
 
 Route::post('api/comment', 'CommentController@store');
 Route::put('api/comment/{comment}', 'CommentController@update');

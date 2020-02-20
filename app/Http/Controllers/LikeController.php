@@ -12,15 +12,30 @@ class LikeController extends Controller
 {
     public function store(StoreLikeRequest $request)
     {
+        $parsedUrl = parse_url(url()->previous());
+        $parsedUrl['query'];
+        parse_str($parsedUrl['query'], $querySlug);
+
+        $place = Place::where('slug', $querySlug)->first();
+
+        $user = User::findOrFail(session('user_id'));
+
         $like = Like::create([
             'value' => $request->get('value'),
-            'user_id' => $request->get('user_id'),
-            'place_id' => $request->get('place_id')
+            'user_id' => $user->id,
+            'place_id' => $place->id
         ]);
     }
 
-    public function update(Request $request, User $user, Place $place)
+    public function update(Request $request)
     {
+        $parsedUrl = parse_url(url()->previous());
+        $parsedUrl['query'];
+        parse_str($parsedUrl['query'], $querySlug);
+
+        $place = Place::where('slug', $querySlug)->first();
+
+        $user = User::findOrFail(session('user_id'));
         $like = $user->likes()->where('place_id', $place->id)->first();
         $like->fill([
             'value' => $request->get('value')
@@ -28,8 +43,15 @@ class LikeController extends Controller
         $like->save();
     }
 
-    public function destroy(User $user, Place $place)
+    public function destroy()
     {
+        $parsedUrl = parse_url(url()->previous());
+        $parsedUrl['query'];
+        parse_str($parsedUrl['query'], $querySlug);
+
+        $place = Place::where('slug', $querySlug)->first();
+
+        $user = User::findOrFail(session('user_id'));
         $like = $user->likes()->where('place_id', $place->id)->first();
         $like->delete();
     }

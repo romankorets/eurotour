@@ -2360,8 +2360,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _context3.next = 3;
                 return axios.post('api/like', {
-                  'user_id': this.userId,
-                  'place_id': this.placeToShowInPopUp.id,
                   'value': value
                 });
 
@@ -2370,7 +2368,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context3.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee3);
       }));
 
       function sendLike(_x) {
@@ -2388,14 +2386,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return axios["delete"]('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/delete');
+                return axios["delete"]('api/like/delete');
 
               case 2:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee4);
       }));
 
       function deleteLike() {
@@ -2417,7 +2415,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 } else value = 0;
 
                 _context5.next = 3;
-                return axios.put('api/like/' + this.userId + '/' + this.placeToShowInPopUp.id + '/update', {
+                return axios.put('api/like/update', {
                   'value': value
                 });
 
@@ -2426,7 +2424,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context5.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee5);
       }));
 
       function updateLike(_x2) {
