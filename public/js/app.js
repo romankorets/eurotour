@@ -1955,6 +1955,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _PaginationTour__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PaginationTour */ "./resources/js/components/PaginationTour.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2151,7 +2152,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    PaginationTour: _PaginationTour__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   props: ['userId'],
   data: function data() {
     return {
@@ -2164,7 +2173,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       comment: '',
       currentUserRoles: null,
       isLike: false,
-      isDislike: false
+      isDislike: false,
+      paginationTours: {
+        current_page: 1,
+        first_page_url: null,
+        from: null,
+        last_page: null,
+        last_page_url: null,
+        next_page_url: null,
+        path: null,
+        per_page: null,
+        prev_page_url: null,
+        to: null,
+        total: null
+      }
     };
   },
   created: function () {
@@ -2511,6 +2533,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _disableComment = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(id) {
+        var i, j;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
@@ -2523,9 +2546,48 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 2:
-                this.fetchPlaces();
+                i = 0;
 
               case 3:
+                if (!(i < this.places.length)) {
+                  _context7.next = 18;
+                  break;
+                }
+
+                if (!(this.placeToShowInPopUp.id == this.places[i].id)) {
+                  _context7.next = 15;
+                  break;
+                }
+
+                j = 0;
+
+              case 6:
+                if (!(j < this.places[i].comments.length)) {
+                  _context7.next = 15;
+                  break;
+                }
+
+                if (!(this.places[i].comments[j].id == id)) {
+                  _context7.next = 12;
+                  break;
+                }
+
+                this.places[i].comments.splice(j, 1);
+                console.log('Коментарі');
+                console.log(this.places[i].comments);
+                return _context7.abrupt("break", 15);
+
+              case 12:
+                j++;
+                _context7.next = 6;
+                break;
+
+              case 15:
+                i++;
+                _context7.next = 3;
+                break;
+
+              case 18:
               case "end":
                 return _context7.stop();
             }
@@ -2552,20 +2614,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _sendComment = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
+        var uri, params;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                _context8.next = 2;
-                return axios.post('api/comment', {
+                uri = window.location.search.substring(1);
+                params = new URLSearchParams(uri);
+                _context8.next = 4;
+                return axios.post('api/place/' + params.get('place') + '/comment', {
                   'body': this.comment
                 });
 
-              case 2:
-                this.comment = '';
-                this.fetchPlaces();
-
               case 4:
+                this.comment = '';
+
+              case 5:
               case "end":
                 return _context8.stop();
             }
@@ -2614,29 +2678,58 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
         var _this2 = this;
 
+        var countOfPlaces, per_page, numberOfPages, i;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
-                _context9.next = 2;
-                return axios.get('api/place/index').then(function (response) {
-                  _this2.places = JSON.parse(response.data);
+                countOfPlaces = 0;
+                _context9.next = 3;
+                return axios.get('api/place/count').then(function (response) {
+                  countOfPlaces = response.data;
+                });
+
+              case 3:
+                per_page = 2;
+                numberOfPages = Math.ceil(countOfPlaces / per_page);
+                i = 1;
+
+              case 6:
+                if (!(i <= numberOfPages)) {
+                  _context9.next = 12;
+                  break;
+                }
+
+                _context9.next = 9;
+                return axios.get('api/place/index?page=' + i).then(function (response) {
+                  for (var k = 0; k < response.data.data.length; k++) {
+                    _this2.places.push(response.data.data[k]);
+                  }
 
                   _this2.addMarkers();
 
-                  for (var i = 0; i < _this2.places.length; i++) {
-                    _this2.places[i].photos = JSON.parse(_this2.places[i].photos);
+                  for (var j = _this2.places.length - 1; j >= _this2.places.length - per_page; j--) {
+                    _this2.places[j].photos = JSON.parse(_this2.places[j].photos);
                   }
                 })["catch"](function (error) {
                   return console.log(error);
                 });
 
-              case 2:
+              case 9:
+                i++;
+                _context9.next = 6;
+                break;
+
+              case 12:
+                console.log('місця');
+                console.log(this.places);
+
+              case 14:
               case "end":
                 return _context9.stop();
             }
           }
-        }, _callee9);
+        }, _callee9, this);
       }));
 
       function fetchPlaces() {
@@ -2690,17 +2783,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context10.prev = _context10.next) {
               case 0:
                 _context10.next = 2;
-                return axios.get('api/tour/index').then(function (response) {
-                  _this4.tours = JSON.parse(response.data);
+                return axios.get('api/tour/index?page=' + this.paginationTours.current_page).then(function (response) {
+                  console.log('Дані для пагінації');
+                  console.log(response.data);
+                  _this4.paginationTours.first_page_url = response.data.first_page_url;
+                  _this4.paginationTours.from = response.data.from;
+                  _this4.paginationTours.last_page = response.data.last_page;
+                  _this4.paginationTours.last_page_url = response.data.last_page_url;
+                  _this4.paginationTours.path = response.data.path;
+                  _this4.paginationTours.per_page = response.data.per_page;
+                  _this4.paginationTours.prev_page_url = response.data.prev_page_url;
+                  _this4.paginationTours.to = response.data.to;
+                  _this4.paginationTours.total = response.data.total;
+                  _this4.tours = response.data.data;
+                  console.log('Локальні дані пагінації');
+                  console.log(_this4.paginationTours);
                   console.log('Тури : ');
                   console.log(_this4.tours);
 
                   for (var i = 0; i < _this4.tours.length; i++) {
                     _this4.tours[i].photos = JSON.parse(_this4.tours[i].photos);
                   }
-
-                  console.log('Тури : ');
-                  console.log(_this4.tours);
                 })["catch"](function (error) {
                   return console.log(error);
                 });
@@ -2710,7 +2813,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context10.stop();
             }
           }
-        }, _callee10);
+        }, _callee10, this);
       }));
 
       function fetchTours() {
@@ -2719,6 +2822,80 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return fetchTours;
     }()
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PaginationTour.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PaginationTour.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    pagination: {
+      type: Object,
+      required: true
+    },
+    offset: {
+      type: Number,
+      "default": 4
+    }
+  },
+  computed: {
+    pagesNumber: function pagesNumber() {
+      if (!this.pagination.to) {
+        return [];
+      }
+
+      var from = this.pagination.current_page - this.offset;
+
+      if (from < 1) {
+        from = 1;
+      }
+
+      var to = from + this.offset * 2;
+
+      if (to >= this.pagination.last_page) {
+        to = this.pagination.last_page;
+      }
+
+      var pagesArray = [];
+
+      for (var page = from; page <= to; page++) {
+        pagesArray.push(page);
+      }
+
+      return pagesArray;
+    }
+  },
+  methods: {
+    changePage: function changePage(page) {
+      this.pagination.current_page = page;
+      this.$emit('paginate');
+    }
   }
 });
 
@@ -39167,7 +39344,23 @@ var render = function() {
                 : _vm._e()
             ])
           ])
-        })
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "row col-md-12 justify-content-center" },
+          [
+            _c("pagination-tour", {
+              attrs: { pagination: _vm.paginationTours },
+              on: {
+                paginate: function($event) {
+                  return _vm.fetchTours()
+                }
+              }
+            })
+          ],
+          1
+        )
       ],
       2
     ),
@@ -39611,6 +39804,93 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PaginationTour.vue?vue&type=template&id=786d6986&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PaginationTour.vue?vue&type=template&id=786d6986& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "ul",
+    { staticClass: "pagination" },
+    [
+      _vm.pagination.current_page > 1
+        ? _c("li", [
+            _c(
+              "a",
+              {
+                attrs: { href: "javascript:void(0)", "aria-label": "Previous" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.changePage(_vm.pagination.current_page - 1)
+                  }
+                }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("«")])]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._l(_vm.pagesNumber, function(page) {
+        return _c(
+          "li",
+          { class: { active: page == _vm.pagination.current_page } },
+          [
+            _c(
+              "a",
+              {
+                attrs: { href: "javascript:void(0)" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.changePage(page)
+                  }
+                }
+              },
+              [_vm._v(_vm._s(page))]
+            )
+          ]
+        )
+      }),
+      _vm._v(" "),
+      _vm.pagination.current_page < _vm.pagination.last_page
+        ? _c("li", [
+            _c(
+              "a",
+              {
+                attrs: { href: "javascript:void(0)", "aria-label": "Next" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.changePage(_vm.pagination.current_page + 1)
+                  }
+                }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("»")])]
+            )
+          ])
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51835,6 +52115,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('main-page', __webpack_require__(/*! ./components/MainPage.vue */ "./resources/js/components/MainPage.vue")["default"]);
 Vue.component('tour-map', __webpack_require__(/*! ./components/TourMap.vue */ "./resources/js/components/TourMap.vue")["default"]);
+Vue.component('pagination-vue', __webpack_require__(/*! ./components/PaginationTour.vue */ "./resources/js/components/PaginationTour.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -52025,6 +52306,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MainPage_vue_vue_type_template_id_2bd38d5a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MainPage_vue_vue_type_template_id_2bd38d5a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PaginationTour.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/PaginationTour.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PaginationTour_vue_vue_type_template_id_786d6986___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PaginationTour.vue?vue&type=template&id=786d6986& */ "./resources/js/components/PaginationTour.vue?vue&type=template&id=786d6986&");
+/* harmony import */ var _PaginationTour_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PaginationTour.vue?vue&type=script&lang=js& */ "./resources/js/components/PaginationTour.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PaginationTour_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PaginationTour_vue_vue_type_template_id_786d6986___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PaginationTour_vue_vue_type_template_id_786d6986___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PaginationTour.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PaginationTour.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/PaginationTour.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaginationTour_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PaginationTour.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PaginationTour.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaginationTour_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PaginationTour.vue?vue&type=template&id=786d6986&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/PaginationTour.vue?vue&type=template&id=786d6986& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaginationTour_vue_vue_type_template_id_786d6986___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./PaginationTour.vue?vue&type=template&id=786d6986& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PaginationTour.vue?vue&type=template&id=786d6986&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaginationTour_vue_vue_type_template_id_786d6986___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaginationTour_vue_vue_type_template_id_786d6986___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

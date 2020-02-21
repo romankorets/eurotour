@@ -43,6 +43,7 @@ Route::post('api/place/{place}/comment', 'CommentController@store');
 Route::put('api/comment/{comment}', 'CommentController@update');
 
 Route::get('api/place/index', 'PlaceController@getPlaces')->name('place.getPlaces');
+Route::get('api/place/count', 'PlaceController@getCount')->name('place.getCount');
 
 Route::get('api/tour/index', 'TourController@getTours')->name('tour.getTours');
 

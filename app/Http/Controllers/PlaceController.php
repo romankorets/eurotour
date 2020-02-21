@@ -14,15 +14,21 @@ class PlaceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return false|string
      */
     public function getPlaces()
     {
         $places = Place::with(['comments' => function ($query) {
             $query->where('enabled', true);
         },
-            'comments.user', 'likes.user'])->get();
-        return response()->json(json_encode($places));
+            'comments.user', 'likes.user'])->paginate(2);
+        return json_encode($places);
+    }
+
+
+    public function getCount()
+    {
+        return Place::count();
     }
     /**
      * Display a listing of the resource.

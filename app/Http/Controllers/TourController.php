@@ -16,13 +16,12 @@ class TourController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return false|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Http\JsonResponse|string
      */
 
     public function getTours()
     {
-        $tours = Tour::with('places')->get();
-        return response()->json(json_encode($tours));
+        return json_encode(Tour::with('places')->paginate(2));
     }
 
     /**

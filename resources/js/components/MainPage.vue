@@ -47,6 +47,9 @@
                     </div>
                 </div>
             </div>
+            <div class="row col-md-12 justify-content-center">
+                <pagination-tour :pagination="paginationTours" @paginate = 'fetchTours()'/>
+            </div>
         </div>
         <div id="place-popup" class="b-popup" v-if="isShowPlacePopUp">
             <div class="row justify-content-center b-popup-content">
@@ -187,9 +190,12 @@
     </div>
 </template>
 
-<!-- TODO: add showing of place when in tour -->
+<!-- TODO: add updating of comments when comment is sent -->
+<!-- TODO: add updating of likes count -->
 <script>
+    import PaginationTour from "./PaginationTour";
     export default {
+        components: {PaginationTour},
         props: [
             'userId'
         ],
@@ -205,6 +211,19 @@
                 currentUserRoles: null,
                 isLike: false,
                 isDislike: false,
+                paginationTours: {
+                    current_page : 1,
+                    first_page_url: null,
+                    from: null,
+                    last_page: null,
+                    last_page_url: null,
+                    next_page_url: null,
+                    path: null,
+                    per_page: null,
+                    prev_page_url: null,
+                    to: null,
+                    total: null
+                },
             }
         },
         created: async function () {
@@ -405,7 +424,20 @@
                 }).then(response => {
                     console.log(response)
                 });
-                this.fetchPlaces();
+                for (let i = 0; i < this.places.length; i++){
+                    if (this.placeToShowInPopUp.id == this.places[i].id){
+                        for (let j = 0; j < this.places[i].comments.length; j++){
+                            if(this.places[i].comments[j].id == id){
+                                this.places[i].comments.splice(j, 1);
+                                console.log('Коментарі');
+                                console.log(this.places[i].comments);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //this.fetchPlaces();
             },
 
             checkIfCurrentUserAdmin() {
@@ -418,11 +450,12 @@
             },
 
             async sendComment() {
-                await axios.post('api/comment', {
+                let uri = window.location.search.substring(1);
+                let params = new URLSearchParams(uri);
+                await axios.post('api/place/'+ params.get('place') +'/comment', {
                     'body': this.comment
                 });
                 this.comment = '';
-                this.fetchPlaces();
             },
 
             checkIfHasTourSlug(windowHref) {
@@ -456,14 +489,26 @@
                 this.windowHref = window.location.href;
             },
             async fetchPlaces() {
-                await axios.get('api/place/index').then(response => {
-                        this.places = JSON.parse(response.data);
-                        this.addMarkers();
-                        for (let i = 0; i < this.places.length; i++) {
-                            this.places[i].photos = JSON.parse(this.places[i].photos);
+                var countOfPlaces = 0;
+                await axios.get('api/place/count').then(response => {
+                    countOfPlaces = response.data;
+                });
+                let per_page = 2;
+                let numberOfPages = Math.ceil(countOfPlaces / per_page);
+                for (let i = 1; i <= numberOfPages; i++){
+                       await axios.get('api/place/index?page='+ i).then(response => {
+                            for (let k = 0; k < response.data.data.length; k++){
+                                this.places.push(response.data.data[k]);
+                            }
+                            this.addMarkers();
+                            for (let j = this.places.length - 1; j >= this.places.length - per_page; j--) {
+                                this.places[j].photos = JSON.parse(this.places[j].photos);
+                            }
                         }
-                    }
-                ).catch(error => console.log(error));
+                    ).catch(error => console.log(error));
+                }
+                console.log('місця');
+                console.log(this.places);
             },
 
             addMarkers() {
@@ -489,15 +534,26 @@
             },
 
             async fetchTours() {
-                await axios.get('api/tour/index').then(response => {
-                        this.tours = JSON.parse(response.data);
+                await axios.get('api/tour/index?page=' + this.paginationTours.current_page).then(response => {
+                        console.log('Дані для пагінації');
+                        console.log(response.data);
+                        this.paginationTours.first_page_url = response.data.first_page_url;
+                        this.paginationTours.from = response.data.from;
+                        this.paginationTours.last_page = response.data.last_page;
+                        this.paginationTours.last_page_url = response.data.last_page_url;
+                        this.paginationTours.path = response.data.path;
+                        this.paginationTours.per_page = response.data.per_page;
+                        this.paginationTours.prev_page_url = response.data.prev_page_url;
+                        this.paginationTours.to = response.data.to;
+                        this.paginationTours.total = response.data.total;
+                        this.tours = response.data.data;
+                        console.log('Локальні дані пагінації');
+                        console.log(this.paginationTours);
                         console.log('Тури : ');
                         console.log(this.tours);
                         for (let i = 0; i < this.tours.length; i++) {
                             this.tours[i].photos = JSON.parse(this.tours[i].photos);
                         }
-                        console.log('Тури : ');
-                        console.log(this.tours);
                     }
                 ).catch(error => console.log(error));
             },
