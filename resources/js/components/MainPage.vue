@@ -334,20 +334,26 @@
                 if (value === 'like') {
                     value = 1;
                 } else value = 0;
-                await axios.post('api/like', {
+                let uri = window.location.search.substring(1);
+                let params = new URLSearchParams(uri);
+                await axios.post('api/place/'+ params.get('place') + '/like', {
                     'value': value
                 })
             },
 
             async deleteLike() {
-                await axios.delete('api/like/delete');
+                let uri = window.location.search.substring(1);
+                let params = new URLSearchParams(uri);
+                await axios.delete('api/place/'+ params.get('place') +'/like/delete');
             },
 
             async updateLike(value) {
                 if (value === 'like') {
                     value = 1;
                 } else value = 0;
-                await axios.put('api/like/update', {
+                let uri = window.location.search.substring(1);
+                let params = new URLSearchParams(uri);
+                await axios.put('api/place/'+ params.get('place') +'/like/update', {
                     'value': value
                 })
             },
@@ -386,7 +392,7 @@
             },
 
             async setCurrentUserRole() {
-                await axios.get('api/user/' + this.userId + '/roles').then(response => {
+                await axios.get('api/user/roles').then(response => {
                     this.currentUserRoles = JSON.parse(response.data);
                     console.log('Ролі користувача');
                     console.log(this.currentUserRoles);

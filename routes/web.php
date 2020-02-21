@@ -33,13 +33,13 @@ Route::group(['prefix' => 'admin'], function () {
     ]])->middleware('auth');
 });
 
-Route::get('api/user/{user}/roles', 'UserController@getUserRoles');
+Route::get('api/user/roles', 'UserController@getUserRoles');
 
-Route::post('api/like', 'LikeController@store')->name('like.store');
-Route::put('api/like/update', 'LikeController@update')->name('like.update');
-Route::delete('api/like/delete', 'LikeController@destroy')->name('like.destroy');
+Route::post('api/place/{place}/like', 'LikeController@store')->name('like.store');
+Route::put('api/place/{place}/like/update', 'LikeController@update')->name('like.update');
+Route::delete('api/place/{place}/like/delete', 'LikeController@destroy')->name('like.destroy');
 
-Route::post('api/comment', 'CommentController@store');
+Route::post('api/place/{place}/comment', 'CommentController@store');
 Route::put('api/comment/{comment}', 'CommentController@update');
 
 Route::get('api/place/index', 'PlaceController@getPlaces')->name('place.getPlaces');

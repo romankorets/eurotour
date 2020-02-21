@@ -2350,6 +2350,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _sendLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(value) {
+        var uri, params;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -2358,12 +2359,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   value = 1;
                 } else value = 0;
 
-                _context3.next = 3;
-                return axios.post('api/like', {
+                uri = window.location.search.substring(1);
+                params = new URLSearchParams(uri);
+                _context3.next = 5;
+                return axios.post('api/place/' + params.get('place') + '/like', {
                   'value': value
                 });
 
-              case 3:
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -2381,14 +2384,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _deleteLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var uri, params;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _context4.next = 2;
-                return axios["delete"]('api/like/delete');
+                uri = window.location.search.substring(1);
+                params = new URLSearchParams(uri);
+                _context4.next = 4;
+                return axios["delete"]('api/place/' + params.get('place') + '/like/delete');
 
-              case 2:
+              case 4:
               case "end":
                 return _context4.stop();
             }
@@ -2406,6 +2412,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _updateLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(value) {
+        var uri, params;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
@@ -2414,12 +2421,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   value = 1;
                 } else value = 0;
 
-                _context5.next = 3;
-                return axios.put('api/like/update', {
+                uri = window.location.search.substring(1);
+                params = new URLSearchParams(uri);
+                _context5.next = 5;
+                return axios.put('api/place/' + params.get('place') + '/like/update', {
                   'value': value
                 });
 
-              case 3:
+              case 5:
               case "end":
                 return _context5.stop();
             }
@@ -2478,7 +2487,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context6.prev = _context6.next) {
               case 0:
                 _context6.next = 2;
-                return axios.get('api/user/' + this.userId + '/roles').then(function (response) {
+                return axios.get('api/user/roles').then(function (response) {
                   _this.currentUserRoles = JSON.parse(response.data);
                   console.log('Ролі користувача');
                   console.log(_this.currentUserRoles);
@@ -2489,7 +2498,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context6.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee6);
       }));
 
       function setCurrentUserRole() {

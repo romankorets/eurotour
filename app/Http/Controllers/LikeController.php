@@ -7,35 +7,22 @@ use App\Like;
 use App\Place;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
-    public function store(StoreLikeRequest $request)
+    public function store(StoreLikeRequest $request, Place $place)
     {
-        $parsedUrl = parse_url(url()->previous());
-        $parsedUrl['query'];
-        parse_str($parsedUrl['query'], $querySlug);
-
-        $place = Place::where('slug', $querySlug)->first();
-
-        $user = User::findOrFail(session('user_id'));
-
         $like = Like::create([
             'value' => $request->get('value'),
-            'user_id' => $user->id,
+            'user_id' => Auth::user()->id,
             'place_id' => $place->id
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Place $place)
     {
-        $parsedUrl = parse_url(url()->previous());
-        $parsedUrl['query'];
-        parse_str($parsedUrl['query'], $querySlug);
-
-        $place = Place::where('slug', $querySlug)->first();
-
-        $user = User::findOrFail(session('user_id'));
+        $user = Auth::user();
         $like = $user->likes()->where('place_id', $place->id)->first();
         $like->fill([
             'value' => $request->get('value')
@@ -43,15 +30,9 @@ class LikeController extends Controller
         $like->save();
     }
 
-    public function destroy()
+    public function destroy(Place $place)
     {
-        $parsedUrl = parse_url(url()->previous());
-        $parsedUrl['query'];
-        parse_str($parsedUrl['query'], $querySlug);
-
-        $place = Place::where('slug', $querySlug)->first();
-
-        $user = User::findOrFail(session('user_id'));
+        $user = Auth::user();
         $like = $user->likes()->where('place_id', $place->id)->first();
         $like->delete();
     }

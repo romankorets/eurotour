@@ -38,7 +38,13 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot();
         Route::model('user', User::class);
-        Route::model('place', Place::class);
+        Route::bind('place', function ($value) {
+            if (is_int($value)){
+                return Place::findOrFail($value);
+            } else {
+                return Place::where('slug', $value)->first() ?? abort(404);
+            }
+        });
         Route::model('tour', Tour::class);
         Route::model('comment', Comment::class);
     }

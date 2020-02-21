@@ -6,18 +6,14 @@ use App\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Place;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, Place $place)
     {
-        $parsedUrl = parse_url(url()->previous());
-        $parsedUrl['query'];
-        parse_str($parsedUrl['query'], $querySlug);
-        $place = Place::where('slug', $querySlug)->first();
         $comment = Comment::create([
-            'user_id' => session('user_id'),
+            'user_id' => Auth::user()->id,
             'place_id' => $place->id,
             'body' => $request->get('body'),
         ]);
