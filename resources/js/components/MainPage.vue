@@ -355,15 +355,34 @@
                 } else value = 0;
                 let uri = window.location.search.substring(1);
                 let params = new URLSearchParams(uri);
+                let like = null;
                 await axios.post('api/place/'+ params.get('place') + '/like', {
                     'value': value
-                })
+                }).then(response => {
+                    like = response.data;
+                });
+                for (let i = 0; i < this.places.length; i++){
+                    if (this.placeToShowInPopUp.id == this.places[i].id){
+                        this.places[i].likes.push(like);
+                        break;
+                    }
+                }
             },
 
             async deleteLike() {
                 let uri = window.location.search.substring(1);
                 let params = new URLSearchParams(uri);
                 await axios.delete('api/place/'+ params.get('place') +'/like/delete');
+                for (let i = 0; i < this.places.length; i++){
+                    if (this.placeToShowInPopUp.id == this.places[i].id){
+                        for (let j = 0; j < this.places[i].likes.length; j++){
+                            if(this.places[i].likes[j].user_id == this.userId){
+                                this.places[i].likes.splice(j, 1);
+                            }
+                        }
+                        break;
+                    }
+                }
             },
 
             async updateLike(value) {
@@ -374,7 +393,17 @@
                 let params = new URLSearchParams(uri);
                 await axios.put('api/place/'+ params.get('place') +'/like/update', {
                     'value': value
-                })
+                });
+                for (let i = 0; i < this.places.length; i++){
+                    if (this.placeToShowInPopUp.id == this.places[i].id){
+                        for (let j = 0; j < this.places[i].likes.length; j++){
+                            if(this.places[i].likes[j].user_id == this.userId){
+                                this.places[i].likes[j].value = value;
+                            }
+                        }
+                        break;
+                    }
+                }
             },
 
             toggleLike(value) {
@@ -436,8 +465,6 @@
                         }
                     }
                 }
-
-                //this.fetchPlaces();
             },
 
             checkIfCurrentUserAdmin() {
@@ -452,9 +479,18 @@
             async sendComment() {
                 let uri = window.location.search.substring(1);
                 let params = new URLSearchParams(uri);
+                let comment = null;
                 await axios.post('api/place/'+ params.get('place') +'/comment', {
                     'body': this.comment
+                }).then(response => {
+                    comment = response.data;
                 });
+                for (let i = 0; i < this.places.length; i++){
+                    if (this.placeToShowInPopUp.id == this.places[i].id){
+                        this.places[i].comments.push(comment);
+                        break;
+                    }
+                }
                 this.comment = '';
             },
 

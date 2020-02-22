@@ -2372,7 +2372,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _sendLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(value) {
-        var uri, params;
+        var uri, params, like, i;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -2383,17 +2383,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 uri = window.location.search.substring(1);
                 params = new URLSearchParams(uri);
-                _context3.next = 5;
+                like = null;
+                _context3.next = 6;
                 return axios.post('api/place/' + params.get('place') + '/like', {
                   'value': value
+                }).then(function (response) {
+                  like = response.data;
                 });
 
-              case 5:
+              case 6:
+                i = 0;
+
+              case 7:
+                if (!(i < this.places.length)) {
+                  _context3.next = 14;
+                  break;
+                }
+
+                if (!(this.placeToShowInPopUp.id == this.places[i].id)) {
+                  _context3.next = 11;
+                  break;
+                }
+
+                this.places[i].likes.push(like);
+                return _context3.abrupt("break", 14);
+
+              case 11:
+                i++;
+                _context3.next = 7;
+                break;
+
+              case 14:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3);
+        }, _callee3, this);
       }));
 
       function sendLike(_x) {
@@ -2406,7 +2431,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _deleteLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-        var uri, params;
+        var uri, params, i, j;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -2417,11 +2442,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return axios["delete"]('api/place/' + params.get('place') + '/like/delete');
 
               case 4:
+                i = 0;
+
+              case 5:
+                if (!(i < this.places.length)) {
+                  _context4.next = 12;
+                  break;
+                }
+
+                if (!(this.placeToShowInPopUp.id == this.places[i].id)) {
+                  _context4.next = 9;
+                  break;
+                }
+
+                for (j = 0; j < this.places[i].likes.length; j++) {
+                  if (this.places[i].likes[j].user_id == this.userId) {
+                    this.places[i].likes.splice(j, 1);
+                  }
+                }
+
+                return _context4.abrupt("break", 12);
+
+              case 9:
+                i++;
+                _context4.next = 5;
+                break;
+
+              case 12:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4);
+        }, _callee4, this);
       }));
 
       function deleteLike() {
@@ -2434,7 +2486,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _updateLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(value) {
-        var uri, params;
+        var uri, params, i, j;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
@@ -2451,11 +2503,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 5:
+                i = 0;
+
+              case 6:
+                if (!(i < this.places.length)) {
+                  _context5.next = 13;
+                  break;
+                }
+
+                if (!(this.placeToShowInPopUp.id == this.places[i].id)) {
+                  _context5.next = 10;
+                  break;
+                }
+
+                for (j = 0; j < this.places[i].likes.length; j++) {
+                  if (this.places[i].likes[j].user_id == this.userId) {
+                    this.places[i].likes[j].value = value;
+                  }
+                }
+
+                return _context5.abrupt("break", 13);
+
+              case 10:
+                i++;
+                _context5.next = 6;
+                break;
+
+              case 13:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5);
+        }, _callee5, this);
       }));
 
       function updateLike(_x2) {
@@ -2614,22 +2693,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _sendComment = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
-        var uri, params;
+        var uri, params, comment, i;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
                 uri = window.location.search.substring(1);
                 params = new URLSearchParams(uri);
-                _context8.next = 4;
+                comment = null;
+                _context8.next = 5;
                 return axios.post('api/place/' + params.get('place') + '/comment', {
                   'body': this.comment
+                }).then(function (response) {
+                  comment = response.data;
                 });
 
-              case 4:
+              case 5:
+                i = 0;
+
+              case 6:
+                if (!(i < this.places.length)) {
+                  _context8.next = 13;
+                  break;
+                }
+
+                if (!(this.placeToShowInPopUp.id == this.places[i].id)) {
+                  _context8.next = 10;
+                  break;
+                }
+
+                this.places[i].comments.push(comment);
+                return _context8.abrupt("break", 13);
+
+              case 10:
+                i++;
+                _context8.next = 6;
+                break;
+
+              case 13:
                 this.comment = '';
 
-              case 5:
+              case 14:
               case "end":
                 return _context8.stop();
             }

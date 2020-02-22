@@ -17,6 +17,8 @@ class CommentController extends Controller
             'place_id' => $place->id,
             'body' => $request->get('body'),
         ]);
+        $comment->load('user');
+        return $comment;
     }
 
     public function update(Request $request, Comment $comment)

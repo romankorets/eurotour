@@ -18,6 +18,8 @@ class LikeController extends Controller
             'user_id' => Auth::user()->id,
             'place_id' => $place->id
         ]);
+        $like->load('user');
+        return $like;
     }
 
     public function update(Request $request, Place $place)
