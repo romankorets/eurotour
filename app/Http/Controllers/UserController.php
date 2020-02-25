@@ -10,4 +10,9 @@ class UserController extends Controller
     {
         return Auth::user()->roles()->get();
     }
+
+    public function getUserId()
+    {
+        return Auth::user()->id;
+    }
 }

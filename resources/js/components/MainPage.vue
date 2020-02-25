@@ -196,17 +196,14 @@
     import PaginationTour from "./PaginationTour";
     export default {
         components: {PaginationTour},
-        props: [
-            'userId'
-        ],
         data: function () {
             return {
                 map: null,
+                userId: null,
                 places: [],
                 tours: [],
                 isShowPlacePopUp: false,
                 isShowTourPopUp: false,
-                windowHref: '/home',
                 comment: '',
                 currentUserRoles: null,
                 isLike: false,
@@ -230,40 +227,17 @@
             await this.fetchTours();
         },
         mounted: async function () {
+            await this.setUserId();
             await this.setCurrentUserRole();
             this.init();
             await this.fetchPlaces();
-            this.setWindowUrl();
-            var context = this;
-
-            var _wr = function(type) {
-                var orig = history[type];
-                return function() {
-                    var rv = orig.apply(this, arguments);
-                    var e = new Event(type);
-                    e.arguments = arguments;
-                    window.dispatchEvent(e);
-                    return rv;
-                };
-            };
-            history.pushState = _wr('pushState');
-
-            window.addEventListener('pushState', function(e) {
-                context.windowHref = window.location.href;
-                console.log('Адреса змінилась на ');
-                console.log(context.windowHref);
-            });
-
-            window.onpopstate = function () {
-                context.windowHref = window.location.href;
-                console.log('Адреса змінилась на ');
-                console.log(context.windowHref);
-            }
+            this.showModal();
         },
+
         computed: {
             tourToShowInPopUp: function () {
                 for (let i = 0; i < this.tours.length; i++) {
-                    if (this.windowHref.includes(this.tours[i]['slug'])) {
+                    if (this.$route.query.tour === this.tours[i]['slug']) {
                         console.log('Тур для виводу');
                         console.log(this.tours[i]);
                         return this.tours[i];
@@ -273,18 +247,7 @@
 
             placeToShowInPopUp: function () {
                 for (let i = 0; i < this.places.length; i++) {
-                    if (this.windowHref.includes(this.places[i]['slug'])) {
-                        for (let j = 0; j < this.places[i]['likes'].length; j++) {
-                            if (this.places[i]['likes'][j]['user']['id'] == this.userId) {
-                                if (this.places[i]['likes'][j]['value'] == 1) {
-                                    this.isLike = true;
-                                    this.isDislike = false;
-                                } else {
-                                    this.isLike = false;
-                                    this.isDislike = true;
-                                }
-                            }
-                        }
+                    if (this.$route.query.place === this.places[i]['slug']) {
                         return this.places[i];
                     }
                 }
@@ -310,22 +273,19 @@
             }
         },
         watch: {
-            windowHref: function (newWindowHref) {
-                if (this.checkIfHasTourSlug(newWindowHref) && this.checkIfHasPlaceSlug(newWindowHref)) {
-                    this.isShowTourPopUp = false;
-                    this.isShowPlacePopUp = true;
-                } else if (this.checkIfHasPlaceSlug(newWindowHref)) {
-                    this.isShowPlacePopUp = true;
-                    this.isShowTourPopUp = false;
-                } else if (this.checkIfHasTourSlug(newWindowHref)) {
-                    this.isShowPlacePopUp = false;
-                    this.isShowTourPopUp = true;
-                } else {
-                    this.isShowPlacePopUp = false;
-                    this.isShowTourPopUp = false;
+
+            isShowPlacePopUp(value){
+                if (value){
+                    this.setUserLike();
                 }
             },
+
+            $route (to, from){
+                this.showModal();
+            },
+
         },
+
         methods: {
             init() {
                 this.map = new google.maps.Map(document.getElementById('map'), {
@@ -338,13 +298,46 @@
                 this.isShowTourPopUp = true;
                 for (let i = 0; this.tours.length; i++) {
                     if (this.tours[i].id == id) {
-                        this.isShowTourPopUp = true;
-                        if (this.windowHref[this.windowHref.length - 1] === '#') {
-                            this.windowHref = this.windowHref + this.tours[i]['slug'];
+                        this.$router.push({ path: 'home', query:{ tour: this.tours[i]['slug']}});
+                    }
+                }
+            },
+
+            showModal(){
+                if (this.checkIfHasTourSlug() && this.checkIfHasPlaceSlug()) {
+                    this.isShowTourPopUp = false;
+                    this.isShowPlacePopUp = true;
+                } else if (this.checkIfHasPlaceSlug()) {
+                    this.isShowPlacePopUp = true;
+                    this.isShowTourPopUp = false;
+                } else if (this.checkIfHasTourSlug()) {
+                    this.isShowPlacePopUp = false;
+                    this.isShowTourPopUp = true;
+                } else {
+                    this.isShowPlacePopUp = false;
+                    this.isShowTourPopUp = false;
+                }
+            },
+
+            setUserId(){
+                axios.get('api/user').then(response => {
+                    this.userId = response.data;
+                    console.log('UserId');
+                    console.log(this.userId);
+                })
+            },
+
+            setUserLike(){
+                for (let j = 0; j < this.placeToShowInPopUp['likes'].length; j++) {
+                    if (this.placeToShowInPopUp['likes'][j]['user']['id'] === this.userId) {
+
+                        if (this.placeToShowInPopUp['likes'][j]['value'] === 1) {
+                            this.isLike = true;
+                            this.isDislike = false;
                         } else {
-                            this.windowHref = this.windowHref + '#' + this.tours[i]['slug'];
+                            this.isLike = false;
+                            this.isDislike = true;
                         }
-                        history.pushState(null, null, window.location.href + '?tour=' + this.tours[i]['slug']);
                     }
                 }
             },
@@ -353,10 +346,8 @@
                 if (value === 'like') {
                     value = 1;
                 } else value = 0;
-                let uri = window.location.search.substring(1);
-                let params = new URLSearchParams(uri);
                 let like = null;
-                await axios.post('api/place/'+ params.get('place') + '/like', {
+                await axios.post('api/place/'+ this.$route.query.place + '/like', {
                     'value': value
                 }).then(response => {
                     like = response.data;
@@ -370,13 +361,11 @@
             },
 
             async deleteLike() {
-                let uri = window.location.search.substring(1);
-                let params = new URLSearchParams(uri);
-                await axios.delete('api/place/'+ params.get('place') +'/like/delete');
+                await axios.delete('api/place/'+ this.$route.query.place +'/like/delete');
                 for (let i = 0; i < this.places.length; i++){
-                    if (this.placeToShowInPopUp.id == this.places[i].id){
+                    if (this.placeToShowInPopUp.id === this.places[i].id){
                         for (let j = 0; j < this.places[i].likes.length; j++){
-                            if(this.places[i].likes[j].user_id == this.userId){
+                            if(this.places[i].likes[j].user_id === this.userId){
                                 this.places[i].likes.splice(j, 1);
                             }
                         }
@@ -389,12 +378,10 @@
                 if (value === 'like') {
                     value = 1;
                 } else value = 0;
-                let uri = window.location.search.substring(1);
-                let params = new URLSearchParams(uri);
-                await axios.post('api/place/'+ params.get('place') +'/like', {
+                await axios.post('api/place/'+ this.$route.query.place +'/like', {
                     'value': value
                 });
-                for (let i = 0; i < this.places.length; i++){
+                for (let i = 0; i < this.places.length; i++) {
                     if (this.placeToShowInPopUp.id == this.places[i].id){
                         for (let j = 0; j < this.places[i].likes.length; j++){
                             if(this.places[i].likes[j].user_id == this.userId){
@@ -477,16 +464,14 @@
             },
 
             async sendComment() {
-                let uri = window.location.search.substring(1);
-                let params = new URLSearchParams(uri);
                 let comment = null;
-                await axios.post('api/place/'+ params.get('place') +'/comment', {
+                await axios.post('api/place/'+ this.$route.query.place +'/comment', {
                     'body': this.comment
                 }).then(response => {
                     comment = response.data;
                 });
                 for (let i = 0; i < this.places.length; i++){
-                    if (this.placeToShowInPopUp.id == this.places[i].id){
+                    if (this.placeToShowInPopUp.id === this.places[i].id){
                         this.places[i].comments.push(comment);
                         break;
                     }
@@ -494,18 +479,18 @@
                 this.comment = '';
             },
 
-            checkIfHasTourSlug(windowHref) {
+            checkIfHasTourSlug() {
                 for (let i = 0; i < this.tours.length; i++) {
-                    if (windowHref.includes(this.tours[i]['slug'])) {
+                    if (this.$route.query.tour === this.tours[i]['slug']) {
                         return true;
                     }
                 }
                 return false;
             },
 
-            checkIfHasPlaceSlug(windowHref) {
+            checkIfHasPlaceSlug() {
                 for (let i = 0; i < this.places.length; i++) {
-                    if (windowHref.includes(this.places[i]['slug'])) {
+                    if (this.$route.query.place === this.places[i]['slug']) {
                         return true;
                     }
                 }
@@ -513,17 +498,13 @@
             },
 
             closeTourPopUp() {
-                this.windowHref = this.windowHref.replace('#' + this.tourToShowInPopUp['slug'], '');
-                window.history.back();
+                this.$router.go(-1);
             },
 
             closePlacePopUp() {
-                this.windowHref = this.windowHref.replace('#' + this.placeToShowInPopUp['slug'], '');
-                window.history.back();
+                this.$router.go(-1);
             },
-            setWindowUrl() {
-                this.windowHref = window.location.href;
-            },
+
             async fetchPlaces() {
                 var countOfPlaces = 0;
                 await axios.get('api/place/count').then(response => {
@@ -553,15 +534,7 @@
                     let marker = new google.maps.Marker({position: coords, map: this.map});
                     var context = this;
                     marker.addListener('click', function () {
-                        context.isShowPlacePopUp = true;
-                        if (context.windowHref[context.windowHref.length - 1] === '#') {
-                            context.windowHref = context.windowHref + context.places[i]['slug'];
-                        } else {
-                            context.windowHref = context.windowHref + '#' + context.places[i]['slug'];
-                        }
-                        history.pushState(null, null, window.location.href + '?place=' + context.places[i]['slug']);
-                        console.log('Адреса вікна');
-                        console.log(window.location.href);
+                        context.$router.push({name: 'home', query: { place : context.places[i]['slug'] }});
                     });
                 }
             },

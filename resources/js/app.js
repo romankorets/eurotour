@@ -4,9 +4,14 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import MainPage from "./components/MainPage";
+
 require('./bootstrap');
 
 window.Vue = require('vue');
+
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,6 +34,18 @@ Vue.component('pagination-vue', require('./components/PaginationTour.vue').defau
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {
+            path: '/home',
+            name: 'home',
+            component: MainPage,
+        },
+    ],
+});
+
 const app = new Vue({
+    router: router,
     el: '#app',
 });

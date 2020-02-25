@@ -98,12 +98,7 @@
                     }
                     var context = this;
                     marker.addListener('click', function () {
-                        if(context.localWindowHref[context.localWindowHref.length - 1] === '#'){
-                            context.localWindowHref = context.localWindowHref + context.tourToShow['places'][i]['slug'];
-                        } else {
-                            context.localWindowHref = context.localWindowHref + '#' + context.tourToShow['places'][i]['slug'];
-                        }
-                        history.pushState(null, null, window.location.href + '&place=' + context.tourToShow['places'][i]['slug']);
+                        context.$router.push({ path: 'home', query:{ tour: context.tourToShow['slug'], place: context.tourToShow['places'][i]['slug']}});
                     });
                 }
             }

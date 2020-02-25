@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "google-maps": "^4.2.3",
+        "vue-router": "^3.1.5",
         "vue2-google-maps": "^0.10.7",
         "vuetify": "^2.2.6"
     }

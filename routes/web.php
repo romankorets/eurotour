@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 });
 
 Route::get('api/user/roles', 'UserController@getUserRoles');
+Route::get('api/user', 'UserController@getUserId');
 
 Route::post('api/place/{place}/like', 'LikeController@store')->name('like.store');
 Route::delete('api/place/{place}/like/delete', 'LikeController@destroy')->name('like.destroy');
