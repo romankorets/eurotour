@@ -391,7 +391,7 @@
                 } else value = 0;
                 let uri = window.location.search.substring(1);
                 let params = new URLSearchParams(uri);
-                await axios.put('api/place/'+ params.get('place') +'/like/update', {
+                await axios.post('api/place/'+ params.get('place') +'/like', {
                     'value': value
                 });
                 for (let i = 0; i < this.places.length; i++){
@@ -441,7 +441,7 @@
 
             async setCurrentUserRole() {
                 await axios.get('api/user/roles').then(response => {
-                    this.currentUserRoles = JSON.parse(response.data);
+                    this.currentUserRoles = response.data;
                     console.log('Ролі користувача');
                     console.log(this.currentUserRoles);
                 })
@@ -531,15 +531,12 @@
                 });
                 let per_page = 2;
                 let numberOfPages = Math.ceil(countOfPlaces / per_page);
-                for (let i = 1; i <= numberOfPages; i++){
+                for (let i = 1; i <= numberOfPages; i++) {
                        await axios.get('api/place/index?page='+ i).then(response => {
                             for (let k = 0; k < response.data.data.length; k++){
                                 this.places.push(response.data.data[k]);
                             }
                             this.addMarkers();
-                            for (let j = this.places.length - 1; j >= this.places.length - per_page; j--) {
-                                this.places[j].photos = JSON.parse(this.places[j].photos);
-                            }
                         }
                     ).catch(error => console.log(error));
                 }
@@ -587,9 +584,6 @@
                         console.log(this.paginationTours);
                         console.log('Тури : ');
                         console.log(this.tours);
-                        for (let i = 0; i < this.tours.length; i++) {
-                            this.tours[i].photos = JSON.parse(this.tours[i].photos);
-                        }
                     }
                 ).catch(error => console.log(error));
             },

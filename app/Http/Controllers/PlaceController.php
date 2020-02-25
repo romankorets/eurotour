@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePlaceRequest;
+use App\Http\Requests\UpdatePlaceRequest;
 use App\Place;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class PlaceController extends Controller
@@ -22,7 +22,7 @@ class PlaceController extends Controller
             $query->where('enabled', true);
         },
             'comments.user', 'likes.user'])->paginate(2);
-        return json_encode($places);
+        return $places;
     }
 
 
@@ -37,7 +37,7 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        $places = Place::paginate(5);
+        $places = Place::paginate(3);
         return view('admin.place.index', ['places' => $places]);
     }
 
@@ -48,29 +48,7 @@ class PlaceController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        if ($user->can('create', Place::class)){
-            return view('admin.place.create');
-        } else return redirect()->back();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  Place  $place
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show(Place $place)
-    {
-        return response()->json([
-            'name' => $place->name,
-            'slug' => $place->slug,
-            'description' => $place->description,
-            'rating' => $place->rating,
-            'photos' => $place->photos,
-            'lat' => $place->lat,
-            'lng' => $place->lng
-        ]);
+        return view('admin.place.create');
     }
 
     /**
@@ -83,22 +61,18 @@ class PlaceController extends Controller
     public function store(StorePlaceRequest $request)
     {
         $photos = array();
-        foreach ($request->file('photos') as $photo)
-        {
+        foreach ($request->file('photos') as $photo) {
             $photos[] = $photo->store('uploads', 'public');
         }
-        $place = Place::create([
+        Place::create([
             'name' => $request->get('name'),
             'slug' => $request->get('slug'),
             'description' => $request->get('description'),
             'rating' => $request->get('rating'),
-            'photos' => json_encode($photos),
+            'photos' => $photos,
             'lat' => $request->get('lat'),
             'lng' => $request->get('lng'),
         ]);
-        if(!$place){
-            return redirect()->back()->withErrors('Не всі поля заповнені');
-        }
         $request->session()->flash('flash_message', 'Нова локація додана');
         return redirect()->route('admin');
     }
@@ -111,11 +85,9 @@ class PlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        $user = Auth::user();
-        if ($user->can('update', $place)) {
-            return view('admin.place.edit', [
-                'place' => $place]);
-        } else return redirect()->back();
+        return view('admin.place.edit', [
+            'place' => $place
+        ]);
     }
 
     /**
@@ -125,24 +97,20 @@ class PlaceController extends Controller
      * @param  Place  $place
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Place $place)
+    public function update(UpdatePlaceRequest $request, Place $place)
     {
         $photos = array();
-        foreach ($request->file('photos') as $photo)
-        {
+        foreach ($request->file('photos') as $photo) {
             $photos[] = $photo->store('uploads', 'public');
         }
-        $place -> fill([
+        $place->fill([
             'name' => $request->get('name'),
             'slug' => $request->get('slug'),
             'description' => $request->get('description'),
             'rating' => $request->get('rating'),
             'duration' => $request->get('duration'),
-            'photos' => json_encode($photos)
+            'photos' => $photos
         ]);
-        if(!$place->save()){
-            return redirect()->back()->withErrors('Помилка оновлення локації');
-        }
         $request->session()->flash('flash_message', 'Локація оновлена');
         return redirect()->route('admin');
     }
@@ -156,16 +124,8 @@ class PlaceController extends Controller
      */
     public function destroy(Place $place)
     {
-        $user = Auth::user();
-        if ($user->can('delete', $place)){
-            $place->detach();
-            if(!$place->delete()){
-                return redirect()->back()->withErrors('Помилка видалення');
-            }
-            session()->flash('flash_message', 'Локація видалена');
-            return redirect()->back();
-        } else {
-            return redirect()->back()->withErrors('Не достатньо прав');
-        }
+        $place->delete();
+        session()->flash('flash_message', 'Локація видалена');
+        return redirect()->route('admin');
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTourRequest extends FormRequest
+class UpdateTourRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +25,13 @@ class StoreTourRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'slug' => 'required|unique:places,slug|string|max:255',
+            'slug' => 'required|string|unique:places,slug|max:255',
             'description' => 'required|string',
-            'photos.*' => 'required|image',
+            'photos.*' => 'nullable|image',
             'duration' => 'required|integer',
             'places.*' => 'required|integer',
             'startPlace' => 'required|integer',
-            'finishPlace' => 'required|integer'
+            'finishPlace' => 'required|integer',
         ];
     }
 }

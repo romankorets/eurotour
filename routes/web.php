@@ -17,26 +17,30 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', function (){
-        if (Auth::user()->hasRole('admin')){
-            return view('admin.index');
-        } else return redirect()->back();
-    })->name('admin')->middleware('auth');
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
-    Route::resource('place', 'PlaceController', ['except' => [
-        'show'
-    ]])->middleware('auth');
+    Route::get('/', function () {
+        return view('admin.index');
+    })->name('admin')->middleware('can:admin');
 
-    Route::resource('tour', 'TourController', ['except' => [
-        'show'
-    ]])->middleware('auth');
+    Route::get('place', 'PlaceController@index')->name('place.index')->middleware('can:admin');
+    Route::post('place', 'PlaceController@store')->name('place.store')->middleware('can:create,App\Place');
+    Route::get('place/create', 'PlaceController@create')->name('place.create')->middleware('can:create,App\Place');
+    Route::get('place/{place}/edit', 'PlaceController@edit')->name('place.edit')->middleware('can:update,place');
+    Route::put('place/{place}', 'PlaceController@update')->name('place.update')->middleware('can:update,place');
+    Route::delete('place/{place}', 'PlaceController@destroy')->name('place.destroy')->middleware('can:delete,place');
+
+    Route::get('tour', 'TourController@index')->name('tour.index')->middleware('can:admin');
+    Route::post('tour', 'TourController@store')->name('tour.store')->middleware('can:create,App\Tour');
+    Route::get('tour/create', 'TourController@create')->name('tour.create')->middleware('can:create,App\Tour');
+    Route::get('tour/{tour}/edit', 'TourController@edit')->name('tour.edit')->middleware('can:update,tour');
+    Route::put('tour/{tour}', 'TourController@update')->name('tour.update')->middleware('can:update,tour');
+    Route::delete('tour/{tour}', 'TourController@destroy')->name('tour.destroy')->middleware('can:delete,tour');
 });
 
 Route::get('api/user/roles', 'UserController@getUserRoles');
 
 Route::post('api/place/{place}/like', 'LikeController@store')->name('like.store');
-Route::put('api/place/{place}/like/update', 'LikeController@update')->name('like.update');
 Route::delete('api/place/{place}/like/delete', 'LikeController@destroy')->name('like.destroy');
 
 Route::post('api/place/{place}/comment', 'CommentController@store');

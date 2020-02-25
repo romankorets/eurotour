@@ -8,8 +8,6 @@ class UserController extends Controller
 {
     public function getUserRoles()
     {
-        $user = Auth::user();
-        $roles = $user->roles()->get();
-        return response()->json(json_encode($roles));
+        return Auth::user()->roles()->get();
     }
 }

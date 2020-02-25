@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     protected $fillable = [
-        'value', 'user_id', 'place_id'
+        'value',
+        'user_id',
+        'place_id',
     ];
 
     public function user()

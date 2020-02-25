@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTourRequest;
+use App\Http\Requests\UpdateTourRequest;
 use App\Place;
 use App\Tour;
 use Illuminate\Http\Request;
@@ -44,11 +45,8 @@ class TourController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
         $places = Place::paginate(10);
-        if ($user->can('create', Tour::class)) {
-            return view('admin.tour.create', ['places' => $places]);
-        } else return redirect()->back();
+        return view('admin.tour.create', ['places' => $places]);
     }
         /**
          * Store a newly created resource in storage.
@@ -60,46 +58,25 @@ class TourController extends Controller
     public function store(StoreTourRequest $request)
     {
         $photos = array();
-        foreach ($request->file('photos') as $photo)
-        {
+        foreach ($request->file('photos') as $photo) {
             $photos[] = $photo->store('uploads', 'public');
         }
         $tour = Tour::create([
             'name' => $request->get('name'),
             'slug' => $request->get('slug'),
             'description' => $request->get('description'),
-            'photos' => json_encode($photos),
+            'photos' => $photos,
             'duration' => $request->get('duration'),
         ]);
         $arrayOfPlacesId = $request->get('places');
         $startPlaceId = $request->get('startPlace');
         $finishPlaceId = $request->get('finishPlace');
-        foreach ($arrayOfPlacesId as $placeId){
+        foreach ($arrayOfPlacesId as $placeId) {
             $place = Place::findOrFail($placeId);
-            if ($placeId == $startPlaceId && $placeId == $finishPlaceId){
-                $tour->places()->attach($place, [
-                    'isStartPlace' => true,
-                    'isFinishPlace' => true
-                ]);
-            } else if($placeId == $startPlaceId) {
-                $tour->places()->attach($place, [
-                    'isStartPlace' => true,
-                    'isFinishPlace' => false
-                ]);
-            } else if($placeId == $finishPlaceId){
-                $tour->places()->attach($place, [
-                    'isStartPlace' => false,
-                    'isFinishPlace' => true
-                ]);
-            } else {
-                $tour->places()->attach($place, [
-                    'isStartPlace' => false,
-                    'isFinishPlace' => false
-                ]);
-            }
-        }
-        if(!$tour){
-            return redirect()->back();
+            $tour->places()->attach($place, [
+                'isStartPlace' => $placeId === $startPlaceId,
+                'isFinishPlace' => $placeId === $finishPlaceId,
+            ]);
         }
         $request->session()->flash('flash_message', 'Новий тур додано');
         return redirect()->route('admin');
@@ -113,14 +90,11 @@ class TourController extends Controller
      */
     public function edit(Tour $tour)
     {
-        $user = Auth::user();
         $places = Place::paginate(5);
-        if ($user->can('update', $tour)) {
-            return view('admin.tour.edit', [
-                'tour' => $tour,
-                'places' => $places
-            ]);
-        } else return redirect()->back();
+        return view('admin.tour.edit', [
+            'tour' => $tour,
+            'places' => $places
+        ]);
     }
 
     /**
@@ -130,26 +104,19 @@ class TourController extends Controller
      * @param  Tour  $tour
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Tour $tour)
+    public function update(UpdateTourRequest $request, Tour $tour)
     {
         $photos = array();
         if ($request->has('photos')) {
             foreach ($request->file('photos') as $photo) {
                 $photos[] = $photo->store('uploads', 'public');
             }
-        }
-
-        $tour->places()->detach();
-        if (count($photos) > 0) {
-            $tourPhotos = $tour->photos;
-            $tourPhotos = json_decode($tourPhotos);
-            Storage::disk('public')->delete($tourPhotos);
             $tour->fill([
                 'name' => $request->get('name'),
                 'slug' => $request->get('slug'),
                 'description' => $request->get('description'),
                 'duration' => $request->get('duration'),
-                'photos' => json_encode($photos)
+                'photos' => $photos,
             ]);
         } else {
             $tour->fill([
@@ -159,36 +126,16 @@ class TourController extends Controller
                 'duration' => $request->get('duration'),
             ]);
         }
-
         $arrayOfPlacesId = $request->get('places');
         $startPlaceId = $request->get('startPlace');
         $finishPlaceId = $request->get('finishPlace');
-        foreach ($arrayOfPlacesId as $placeId){
+        $tour->places()->detach();
+        foreach ($arrayOfPlacesId as $placeId) {
             $place = Place::findOrFail($placeId);
-            if ($placeId == $startPlaceId && $placeId == $finishPlaceId){
-                $tour->places()->attach($place, [
-                    'isStartPlace' => true,
-                    'isFinishPlace' => true
-                ]);
-            } else if($placeId == $startPlaceId) {
-                $tour->places()->attach($place, [
-                    'isStartPlace' => true,
-                    'isFinishPlace' => false
-                ]);
-            } else if($placeId == $finishPlaceId){
-                $tour->places()->attach($place, [
-                    'isStartPlace' => false,
-                    'isFinishPlace' => true
-                ]);
-            } else {
-                $tour->places()->attach($place, [
-                    'isStartPlace' => false,
-                    'isFinishPlace' => false
-                ]);
-            }
-        }
-        if(!$tour->save()){
-            return redirect()->back()->withErrors('Помилка оновлення туру');
+            $tour->places()->attach($place, [
+                'isStartPlace' => $placeId === $startPlaceId,
+                'isFinishPlace' => $placeId === $finishPlaceId,
+            ]);
         }
         $request->session()->flash('flash_message', 'Тур оновлено');
         return redirect()->route('admin');
@@ -203,17 +150,8 @@ class TourController extends Controller
      */
     public function destroy(Tour $tour)
     {
-        $user = Auth::user();
-        if ($user->can('delete', $tour)){
-            $tour->detach();
-            if(!$tour->delete()){
-                return redirect()->back()->withErrors('Помилка видалення');
-            }
-            session()->flash('flash_message', 'Тур видалено');
-            return redirect()->back();
-        } else {
-            return redirect()->back()->withErrors('Не достатньо прав');
-        }
-
+        $tour->delete();
+        session()->flash('flash_message', 'Тур видалено');
+        return redirect()->route('admin');
     }
 }

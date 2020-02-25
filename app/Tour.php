@@ -7,7 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Tour extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'description', 'photos', 'duration'
+        'name',
+        'slug',
+        'description',
+        'photos',
+        'duration',
+    ];
+
+    protected $casts = [
+        'photos' => 'array',
     ];
 
     public function places(){

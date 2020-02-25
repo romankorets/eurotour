@@ -2498,7 +2498,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 uri = window.location.search.substring(1);
                 params = new URLSearchParams(uri);
                 _context5.next = 5;
-                return axios.put('api/place/' + params.get('place') + '/like/update', {
+                return axios.post('api/place/' + params.get('place') + '/like', {
                   'value': value
                 });
 
@@ -2589,7 +2589,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context6.next = 2;
                 return axios.get('api/user/roles').then(function (response) {
-                  _this.currentUserRoles = JSON.parse(response.data);
+                  _this.currentUserRoles = response.data;
                   console.log('Ролі користувача');
                   console.log(_this.currentUserRoles);
                 });
@@ -2811,10 +2811,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
 
                   _this2.addMarkers();
-
-                  for (var j = _this2.places.length - 1; j >= _this2.places.length - per_page; j--) {
-                    _this2.places[j].photos = JSON.parse(_this2.places[j].photos);
-                  }
                 })["catch"](function (error) {
                   return console.log(error);
                 });
@@ -2904,10 +2900,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(_this4.paginationTours);
                   console.log('Тури : ');
                   console.log(_this4.tours);
-
-                  for (var i = 0; i < _this4.tours.length; i++) {
-                    _this4.tours[i].photos = JSON.parse(_this4.tours[i].photos);
-                  }
                 })["catch"](function (error) {
                   return console.log(error);
                 });

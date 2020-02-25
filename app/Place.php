@@ -7,10 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Place extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'description', 'rating', 'photos', 'lat', 'lng'
+        'name',
+        'slug',
+        'description',
+        'rating',
+        'photos',
+        'lat',
+        'lng',
+    ];
+    protected $casts = [
+        'photos' => 'array',
     ];
 
-    protected $table = 'places';
 
     public function likes(){
         return $this->hasMany(Like::class, 'place_id');

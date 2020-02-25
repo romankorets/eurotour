@@ -45,7 +45,7 @@
                                                     <h3>Фото</h3>
                                                     <div id="carouselControls{{$place->id}}" class="carousel slide" data-ride="carousel">
                                                         <div class="carousel-inner">
-                                                            @foreach(json_decode($place->photos) as $photo)
+                                                            @foreach($place->photos as $photo)
                                                                 @if($loop->first)
                                                                     <div class="carousel-item active">
                                                                         <img class="d-block w-100" src="{{asset('/storage/' . $photo)}}" alt="{{$place->name}}">
