@@ -25,6 +25,14 @@ class PlaceController extends Controller
         return $places;
     }
 
+    public function getPlace(Place $place)
+    {
+        $place->load('comments')->where('enabled', true);
+        $place->load('comments.user');
+        $place->load('likes.user');
+        return $place;
+    }
+
 
     public function getCount()
     {

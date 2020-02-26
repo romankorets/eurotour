@@ -25,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $tours = Tour::paginate(3);
+        return view('home', ['tours' => $tours]);
     }
 }

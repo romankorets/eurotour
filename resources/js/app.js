@@ -11,6 +11,8 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
+import PlacesMap from "./components/PlacesMap";
+import PlaceModal from "./components/PlaceModal";
 Vue.use(VueRouter);
 
 /**
@@ -26,6 +28,7 @@ Vue.use(VueRouter);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('main-page', require('./components/MainPage.vue').default);
 Vue.component('tour-map', require('./components/TourMap.vue').default);
+Vue.component('places-map', require('./components/PlacesMap.vue').default);
 Vue.component('pagination-vue', require('./components/PaginationTour.vue').default);
 
 /**
@@ -40,8 +43,27 @@ const router = new VueRouter({
         {
             path: '/home',
             name: 'home',
-            component: MainPage,
+            components: {
+                placesMap : PlacesMap,
+            },
+            //component: MainPage
         },
+        {
+            path: '/home',
+            query: 'place',
+            components: {
+                placeModal : PlaceModal,
+            },
+            // children: [{
+            //     path: '/home',
+            //     query: 'place',
+            //     component: PlaceModal,
+            // },
+            //     {
+            //
+            //     }]
+            //component: MainPage
+        }
     ],
 });
 

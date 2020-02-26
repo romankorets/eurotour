@@ -61,7 +61,7 @@
                         <h1>{{ placeToShowInPopUp.name }}</h1>
                     </div>
                     <div class="row justify-content-center">
-                        <div :id="'carouselControls' + placeToShowInPopUp.id" class="carousel slide"
+                        <div :id="'carouselControls' + placeToShowInPopUp.slug" class="carousel slide"
                              data-ride="false">
                             <div class="carousel-inner">
                                 <div class="carousel-item" :class="{active : index===0}"
@@ -69,13 +69,13 @@
                                     <img class="d-block w-100" :src="'./storage/' + photo"
                                          :alt="placeToShowInPopUp.name">
                                 </div>
-                                <a class="carousel-control-prev" :href="'#carouselControls' + placeToShowInPopUp.id"
+                                <a class="carousel-control-prev" :href="'#carouselControls' + placeToShowInPopUp.slug"
                                    role="button"
                                    data-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"/>
                                     <span class="sr-only">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" :href="'#carouselControls' + placeToShowInPopUp.id"
+                                <a class="carousel-control-next" :href="'#carouselControls' + placeToShowInPopUp.slug"
                                    role="button"
                                    data-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"/>
@@ -190,8 +190,6 @@
     </div>
 </template>
 
-<!-- TODO: add updating of comments when comment is sent -->
-<!-- TODO: add updating of likes count -->
 <script>
     import PaginationTour from "./PaginationTour";
     export default {
