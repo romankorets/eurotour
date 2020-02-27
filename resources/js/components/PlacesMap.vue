@@ -1,5 +1,7 @@
 <template>
-    <div id="map"></div>
+    <div>
+        <div id="map"></div>
+    </div>
 </template>
 
 <script>
@@ -23,21 +25,23 @@
                     mapTypeId: 'roadmap'
                 });
             },
+
             async fetchPlaces() {
-                var countOfPlaces = 0;
-                await axios.get('api/place/count').then(response => {
-                    countOfPlaces = response.data;
-                });
-                let per_page = 2;
-                let numberOfPages = Math.ceil(countOfPlaces / per_page);
-                for (let i = 1; i <= numberOfPages; i++) {
-                      await axios.get('api/place/index?page='+ i).then(response => {
+                let i = 1;
+                let condition = true;
+                while(condition) {
+                    await axios.get('api/places?page='+ i).then(response => {
                             for (let k = 0; k < response.data.data.length; k++){
+                                console.log(response);
                                 this.places.push(response.data.data[k]);
+                            }
+                            if (response.data.last_page === i){
+                                condition = false;
                             }
                             this.addMarkers();
                         }
                     ).catch(error => console.log(error));
+                    i++;
                 }
                 console.log('місця');
                 console.log(this.places);

@@ -4,7 +4,6 @@
     <div class="row justify-content-center b-container">
         <div class="col-md-12">
             <router-view name="placesMap"></router-view>
-            <router-view name="placeModal"></router-view>
             <div class="row justify-content-center">
                 <h1>Тури</h1>
             </div>
@@ -56,14 +55,17 @@
                             </div>
                         </div>
                         <div class="row justify-content-center">
-                            <button class="btn btn-primary">Показати на карті</button>
+                            <router-link class="btn btn-primary" to="/home?tour={{ $tour->slug }}">Показати на карті</router-link>
                         </div>
                     </div>
                 </div>
             @endforeach
+            <tour-modal></tour-modal>
+            <place-modal></place-modal>
             <div class="row justify-content-center">
                 {{ $tours->links() }}
             </div>
         </div>
     </div>
 @endsection
+

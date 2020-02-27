@@ -6,14 +6,11 @@
 
 <script>
     export default {
-        props: [
-            'tour'
-        ],
+        props: ['tour'],
         data() {
             return{
-                tourToShow: this.tour,
                 tourMap: null,
-                localWindowHref: window.location.href,
+                tourToShow: this.tour,
 
                 directionRequest: {
                     origin: null,
@@ -27,34 +24,37 @@
                 }
             }
         },
+        created: async function () {
+            console.log('тур карти');
+            console.log(this.tour);
+        },
         mounted() {
             console.log('Tour-map mounted.');
             this.initTourMap();
             this.initDirection();
             this.addMarkers();
         },
+
         methods: {
             initDirection(){
                 var directionsService = new google.maps.DirectionsService();
                 var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
                 directionsRenderer.setMap(this.tourMap);
                 for (let i = 0; i < this.tourToShow['places'].length; i++){
-                    if (this.tourToShow['places'][i]['pivot']['isStartPlace'] == 1){
-                        let coords = {
+                    if (this.tourToShow['places'][i]['pivot']['isStartPlace'] === 1){
+                        this.directionRequest.origin = {
                             lat: Number(this.tourToShow['places'][i]['lat']),
                             lng: Number(this.tourToShow['places'][i]['lng'])
                         };
-                        this.directionRequest.origin = coords;
                     }
-                    if (this.tourToShow['places'][i]['pivot']['isFinishPlace'] == 1){
-                        let coords = {
+                    if (this.tourToShow['places'][i]['pivot']['isFinishPlace'] === 1){
+                        this.directionRequest.destination = {
                             lat: Number(this.tourToShow['places'][i]['lat']),
                             lng: Number(this.tourToShow['places'][i]['lng'])
                         };
-                        this.directionRequest.destination = coords;
                     }
-                    if(this.tourToShow['places'][i]['pivot']['isFinishPlace'] == 0 &&
-                        this.tourToShow['places'][i]['pivot']['isStartPlace'] == 0){
+                    if(this.tourToShow['places'][i]['pivot']['isFinishPlace'] === 0 &&
+                        this.tourToShow['places'][i]['pivot']['isStartPlace'] === 0){
                         let coords = {
                             lat: Number(this.tourToShow['places'][i]['lat']),
                             lng: Number(this.tourToShow['places'][i]['lng'])
@@ -88,10 +88,10 @@
                         lng: Number(this.tourToShow['places'][i]['lng'])
                     };
                     let marker;
-                    if (this.tourToShow['places'][i]['pivot']['isStartPlace'] == 1){
+                    if (this.tourToShow['places'][i]['pivot']['isStartPlace'] === 1){
                         marker = new google.maps.Marker({position: coords, map: this.tourMap, label: 'S'});
                     }
-                    else if (this.tourToShow['places'][i]['pivot']['isFinishPlace'] == 1){
+                    else if (this.tourToShow['places'][i]['pivot']['isFinishPlace'] === 1){
                         marker = new google.maps.Marker({position: coords, map: this.tourMap, label: 'F'});
                     } else {
                         marker = new google.maps.Marker({position: coords, map: this.tourMap});
@@ -101,9 +101,7 @@
                         context.$router.push({ path: 'home', query:{ tour: context.tourToShow['slug'], place: context.tourToShow['places'][i]['slug']}});
                     });
                 }
-            }
-
-
+            },
         }
     }
 </script>

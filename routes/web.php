@@ -38,22 +38,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::delete('tour/{tour}', 'TourController@destroy')->name('tour.destroy')->middleware('can:delete,tour');
 });
 
-Route::get('api/user/roles', 'UserController@getUserRoles');
-Route::get('api/user', 'UserController@getUserId');
+Route::get('api/user/roles', 'UserController@getUserRoles')->name('user.roles')->middleware('auth');
+Route::get('api/user', 'UserController@getUserId')->name('user.id')->middleware('auth');
 
-Route::post('api/place/{place}/like', 'LikeController@store')->name('like.store');
-Route::delete('api/place/{place}/like/delete', 'LikeController@destroy')->name('like.destroy');
+Route::post('api/place/{place}/like', 'LikeController@store')->name('like.store')->middleware('auth');
+Route::delete('api/place/{place}/like/delete', 'LikeController@destroy')->name('like.destroy')->middleware('auth');
 
-Route::post('api/place/{place}/comment', 'CommentController@store');
-Route::put('api/comment/{comment}', 'CommentController@update');
+Route::post('api/place/{place}/comment', 'CommentController@store')->name('comment.store')->middleware('auth');
+Route::put('api/comment/{comment}', 'CommentController@update')->name('comment')->middleware('auth');
 
-Route::get('api/place/index', 'PlaceController@getPlaces')->name('place.getPlaces');
+Route::get('api/places', 'PlaceController@getPlaces')->name('place.getPlaces')->middleware('auth');
+Route::get('api/place/{place}', 'PlaceController@getPlace')->name('place.getPlace')->middleware('auth');
 
-Route::get('api/place/{place}', 'PlaceController@getPlace')->name('place.getPlace');
-
-Route::get('api/place/count', 'PlaceController@getCount')->name('place.getCount');
-
-Route::get('api/tour/index', 'TourController@getTours')->name('tour.getTours');
+Route::get('api/tour/{tour}', 'TourController@getTour')->name('tour.getTour')->middleware('auth');
 
 Auth::routes();
 

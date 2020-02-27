@@ -14,15 +14,10 @@ use Illuminate\View\View;
 class TourController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return false|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Http\JsonResponse|string
-     */
-
-    public function getTours()
+    public function getTour(Tour $tour)
     {
-        return json_encode(Tour::with('places')->paginate(2));
+        $tour->load('places');
+        return $tour;
     }
 
     /**

@@ -45,7 +45,14 @@ class RouteServiceProvider extends ServiceProvider
                 return Place::where('slug', $value)->first() ?? abort(404);
             }
         });
-        Route::model('tour', Tour::class);
+        Route::bind('tour', function ($value) {
+            if (is_int($value)){
+                return Tour::findOrFail($value);
+            } else {
+                return Tour::where('slug', $value)->first() ?? abort(404);
+            }
+        });
+//        Route::model('tour', Tour::class);
         Route::model('comment', Comment::class);
     }
 
