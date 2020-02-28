@@ -44,8 +44,8 @@ Route::get('api/user', 'UserController@getUserId')->name('user.id')->middleware(
 Route::post('api/place/{place}/like', 'LikeController@store')->name('like.store')->middleware('auth');
 Route::delete('api/place/{place}/like/delete', 'LikeController@destroy')->name('like.destroy')->middleware('auth');
 
-Route::post('api/place/{place}/comment', 'CommentController@store')->name('comment.store')->middleware('auth');
-Route::put('api/comment/{comment}', 'CommentController@update')->name('comment')->middleware('auth');
+Route::post('api/place/{place}/comment', 'CommentController@store')->name('comment.store')->middleware('auth', 'can:create,App\Comment');
+Route::put('api/comment/{comment}', 'CommentController@update')->name('comment')->middleware('auth', 'can:update,App\Comment');
 
 Route::get('api/places', 'PlaceController@getPlaces')->name('place.getPlaces')->middleware('auth');
 Route::get('api/place/{place}', 'PlaceController@getPlace')->name('place.getPlace')->middleware('auth');
