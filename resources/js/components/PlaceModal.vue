@@ -70,8 +70,8 @@
                                         <span title="Вимкнути комментар" class="close"
                                               v-on:click="disableComment(comment.id)"/>
                                 </div>
-                                <div class="row name">{{comment.user['name']}}</div>
-                                <div class="row date">{{comment.created_at}}</div>
+                                <div class="row name">{{comment["user"]['name']}}</div>
+                                <div class="row date">{{comment["created_at"]}}</div>
                                 <div class="row body">
                                     <p>{{comment.body}}</p>
                                 </div>
@@ -156,7 +156,7 @@
                     console.log(response)
                 });
                 for (let j = 0; j < this.placeToShowInPopUp.comments.length; j++){
-                    if(this.placeToShowInPopUp.comments[j].id == id){
+                    if(this.placeToShowInPopUp.comments[j].id === id){
                         this.placeToShowInPopUp.comments.splice(j, 1);
                         console.log('Коментарі');
                         console.log(this.placeToShowInPopUp.comments);
@@ -167,8 +167,8 @@
 
             setUserLike(){
                 for (let j = 0; j < this.placeToShowInPopUp['likes'].length; j++) {
-                    if (this.placeToShowInPopUp['likes'][j]['user']['id'] == this.userId) {
-                        if (this.placeToShowInPopUp['likes'][j]['value'] == 1) {
+                    if (this.placeToShowInPopUp['likes'][j]['user']['id'] === this.userId) {
+                        if (this.placeToShowInPopUp['likes'][j]['value'] === 1) {
                             this.isLike = true;
                             this.isDislike = false;
                             break;
@@ -183,7 +183,7 @@
 
             checkIfCurrentUserAdmin() {
                 for (let i = 0; i < this.currentUserRoles.length; i++) {
-                    if (this.currentUserRoles[i]['slug'] == 'admin') {
+                    if (this.currentUserRoles[i]['slug'] === 'admin') {
                         return true;
                     }
                 }

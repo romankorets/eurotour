@@ -2189,7 +2189,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   break;
                 }
 
-                if (!(this.placeToShowInPopUp.comments[j].id == id)) {
+                if (!(this.placeToShowInPopUp.comments[j].id === id)) {
                   _context4.next = 9;
                   break;
                 }
@@ -2220,8 +2220,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }(),
     setUserLike: function setUserLike() {
       for (var j = 0; j < this.placeToShowInPopUp['likes'].length; j++) {
-        if (this.placeToShowInPopUp['likes'][j]['user']['id'] == this.userId) {
-          if (this.placeToShowInPopUp['likes'][j]['value'] == 1) {
+        if (this.placeToShowInPopUp['likes'][j]['user']['id'] === this.userId) {
+          if (this.placeToShowInPopUp['likes'][j]['value'] === 1) {
             this.isLike = true;
             this.isDislike = false;
             break;
@@ -2235,7 +2235,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     checkIfCurrentUserAdmin: function checkIfCurrentUserAdmin() {
       for (var i = 0; i < this.currentUserRoles.length; i++) {
-        if (this.currentUserRoles[i]['slug'] == 'admin') {
+        if (this.currentUserRoles[i]['slug'] === 'admin') {
           return true;
         }
       }
@@ -39277,11 +39277,11 @@ var render = function() {
                             : _vm._e(),
                           _vm._v(" "),
                           _c("div", { staticClass: "row name" }, [
-                            _vm._v(_vm._s(comment.user["name"]))
+                            _vm._v(_vm._s(comment["user"]["name"]))
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "row date" }, [
-                            _vm._v(_vm._s(comment.created_at))
+                            _vm._v(_vm._s(comment["created_at"]))
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "row body" }, [
