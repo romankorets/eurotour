@@ -106,9 +106,9 @@
             console.log('Place modal');
         },
         watch:{
-            $route(to, from){
+            $route: async function(to, from){
                 if(typeof this.$route.query.place !== "undefined"){
-                    this.fetchPlaceToShow();
+                    await this.fetchPlaceToShow();
                     this.setUserLike();
                 }
             }
@@ -167,13 +167,15 @@
 
             setUserLike(){
                 for (let j = 0; j < this.placeToShowInPopUp['likes'].length; j++) {
-                    if (this.placeToShowInPopUp['likes'][j]['user']['id'] === this.userId) {
-                        if (this.placeToShowInPopUp['likes'][j]['value'] === 1) {
+                    if (this.placeToShowInPopUp['likes'][j]['user']['id'] == this.userId) {
+                        if (this.placeToShowInPopUp['likes'][j]['value'] == 1) {
                             this.isLike = true;
                             this.isDislike = false;
+                            break;
                         } else {
                             this.isLike = false;
                             this.isDislike = true;
+                            break;
                         }
                     }
                 }
@@ -191,8 +193,8 @@
             toggleLike(value) {
                 if (!this.isLike && !this.isDislike) {  // create like if it doesn't exist
                     this.sendLike(value);
-                    this.isLike = value === 'like';
-                    this.isDislike = value === 'dislike';
+                    this.isLike = value == 'like';
+                    this.isDislike = value == 'dislike';
                 } else {
                     if (value === 'like') {
                         if (this.isLike) {

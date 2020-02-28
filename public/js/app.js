@@ -2070,12 +2070,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return mounted;
   }(),
   watch: {
-    $route: function $route(to, from) {
-      if (typeof this.$route.query.place !== "undefined") {
-        this.fetchPlaceToShow();
-        this.setUserLike();
+    $route: function () {
+      var _$route = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(to, from) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(typeof this.$route.query.place !== "undefined")) {
+                  _context2.next = 4;
+                  break;
+                }
+
+                _context2.next = 3;
+                return this.fetchPlaceToShow();
+
+              case 3:
+                this.setUserLike();
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function $route(_x, _x2) {
+        return _$route.apply(this, arguments);
       }
-    }
+
+      return $route;
+    }()
   },
   computed: {
     numberOfLikes: function numberOfLikes() {
@@ -2105,14 +2132,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     fetchPlaceToShow: function () {
       var _fetchPlaceToShow = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
         var _this = this;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                _context2.next = 2;
+                _context3.next = 2;
                 return axios.get('api/place/' + this.$route.query.place).then(function (response) {
                   _this.placeToShowInPopUp = response.data;
                   console.log('Відповіть в модал');
@@ -2121,10 +2148,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
       function fetchPlaceToShow() {
@@ -2140,13 +2167,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     disableComment: function () {
       var _disableComment = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(id) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(id) {
         var j;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                _context3.next = 2;
+                _context4.next = 2;
                 return axios.put('api/comment/' + id, {
                   'enabled': false
                 }).then(function (response) {
@@ -2158,34 +2185,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 if (!(j < this.placeToShowInPopUp.comments.length)) {
-                  _context3.next = 12;
+                  _context4.next = 12;
                   break;
                 }
 
                 if (!(this.placeToShowInPopUp.comments[j].id == id)) {
-                  _context3.next = 9;
+                  _context4.next = 9;
                   break;
                 }
 
                 this.placeToShowInPopUp.comments.splice(j, 1);
                 console.log('Коментарі');
                 console.log(this.placeToShowInPopUp.comments);
-                return _context3.abrupt("break", 12);
+                return _context4.abrupt("break", 12);
 
               case 9:
                 j++;
-                _context3.next = 3;
+                _context4.next = 3;
                 break;
 
               case 12:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
-      function disableComment(_x) {
+      function disableComment(_x3) {
         return _disableComment.apply(this, arguments);
       }
 
@@ -2193,13 +2220,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }(),
     setUserLike: function setUserLike() {
       for (var j = 0; j < this.placeToShowInPopUp['likes'].length; j++) {
-        if (this.placeToShowInPopUp['likes'][j]['user']['id'] === this.userId) {
-          if (this.placeToShowInPopUp['likes'][j]['value'] === 1) {
+        if (this.placeToShowInPopUp['likes'][j]['user']['id'] == this.userId) {
+          if (this.placeToShowInPopUp['likes'][j]['value'] == 1) {
             this.isLike = true;
             this.isDislike = false;
+            break;
           } else {
             this.isLike = false;
             this.isDislike = true;
+            break;
           }
         }
       }
@@ -2217,8 +2246,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (!this.isLike && !this.isDislike) {
         // create like if it doesn't exist
         this.sendLike(value);
-        this.isLike = value === 'like';
-        this.isDislike = value === 'dislike';
+        this.isLike = value == 'like';
+        this.isDislike = value == 'dislike';
       } else {
         if (value === 'like') {
           if (this.isLike) {
@@ -2244,18 +2273,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     sendLike: function () {
       var _sendLike = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(value) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(value) {
         var like;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 if (value === 'like') {
                   value = 1;
                 } else value = 0;
 
                 like = null;
-                _context4.next = 4;
+                _context5.next = 4;
                 return axios.post('api/place/' + this.$route.query.place + '/like', {
                   'value': value
                 }).then(function (response) {
@@ -2267,13 +2296,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 5:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee5, this);
       }));
 
-      function sendLike(_x2) {
+      function sendLike(_x4) {
         return _sendLike.apply(this, arguments);
       }
 
@@ -2282,13 +2311,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteLike: function () {
       var _deleteLike = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
         var j;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                _context5.next = 2;
+                _context6.next = 2;
                 return axios["delete"]('api/place/' + this.$route.query.place + '/like/delete');
 
               case 2:
@@ -2300,10 +2329,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
               case "end":
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee6, this);
       }));
 
       function deleteLike() {
@@ -2315,17 +2344,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     updateLike: function () {
       var _updateLike = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(value) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(value) {
         var j;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 if (value === 'like') {
                   value = 1;
                 } else value = 0;
 
-                _context6.next = 3;
+                _context7.next = 3;
                 return axios.post('api/place/' + this.$route.query.place + '/like', {
                   'value': value
                 });
@@ -2339,13 +2368,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 4:
               case "end":
-                return _context6.stop();
+                return _context7.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee7, this);
       }));
 
-      function updateLike(_x3) {
+      function updateLike(_x5) {
         return _updateLike.apply(this, arguments);
       }
 
@@ -2354,14 +2383,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setUserId: function () {
       var _setUserId = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
         var _this2 = this;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _context7.next = 2;
+                _context8.next = 2;
                 return axios.get('api/user').then(function (response) {
                   _this2.userId = response.data;
                   console.log('UserId');
@@ -2370,10 +2399,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
               case "end":
-                return _context7.stop();
+                return _context8.stop();
             }
           }
-        }, _callee7);
+        }, _callee8);
       }));
 
       function setUserId() {
@@ -2385,14 +2414,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     sendComment: function () {
       var _sendComment = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
         var comment;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
                 comment = null;
-                _context8.next = 3;
+                _context9.next = 3;
                 return axios.post('api/place/' + this.$route.query.place + '/comment', {
                   'body': this.comment
                 }).then(function (response) {
@@ -2405,10 +2434,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 5:
               case "end":
-                return _context8.stop();
+                return _context9.stop();
             }
           }
-        }, _callee8, this);
+        }, _callee9, this);
       }));
 
       function sendComment() {
@@ -2420,14 +2449,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setCurrentUserRole: function () {
       var _setCurrentUserRole = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
         var _this3 = this;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
-                _context9.next = 2;
+                _context10.next = 2;
                 return axios.get('api/user/roles').then(function (response) {
                   _this3.currentUserRoles = response.data;
                   console.log('Ролі користувача');
@@ -2436,10 +2465,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
               case "end":
-                return _context9.stop();
+                return _context10.stop();
             }
           }
-        }, _callee9);
+        }, _callee10);
       }));
 
       function setCurrentUserRole() {
