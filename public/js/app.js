@@ -2246,15 +2246,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (!this.isLike && !this.isDislike) {
         // create like if it doesn't exist
         this.sendLike(value);
-        this.isLike = value == 'like';
-        this.isDislike = value == 'dislike';
+        this.isLike = value === 'like';
+        this.isDislike = value === 'dislike';
       } else {
         if (value === 'like') {
           if (this.isLike) {
             this.deleteLike();
             this.isLike = false;
           } else {
-            this.updateLike('like');
+            this.updateLike(value);
             this.isLike = true;
             this.isDislike = false;
           }
@@ -2263,7 +2263,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             this.deleteLike();
             this.isDislike = false;
           } else {
-            this.updateLike('dislike');
+            this.updateLike(value);
             this.isLike = false;
             this.isDislike = true;
           }
@@ -2274,6 +2274,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _sendLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(value) {
+        var _this2 = this;
+
         var like;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
@@ -2289,12 +2291,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   'value': value
                 }).then(function (response) {
                   like = response.data;
+
+                  _this2.placeToShowInPopUp.likes.push(like);
                 });
 
               case 4:
-                this.placeToShowInPopUp.likes.push(like);
-
-              case 5:
               case "end":
                 return _context5.stop();
             }
@@ -2318,7 +2319,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context6.prev = _context6.next) {
               case 0:
                 _context6.next = 2;
-                return axios["delete"]('api/place/' + this.$route.query.place + '/like/delete');
+                return axios["delete"]('api/place/' + this.$route.query.place + '/like');
 
               case 2:
                 for (j = 0; j < this.placeToShowInPopUp.likes.length; j++) {
@@ -2384,7 +2385,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _setUserId = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
-        var _this2 = this;
+        var _this3 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
           while (1) {
@@ -2392,9 +2393,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context8.next = 2;
                 return axios.get('api/user').then(function (response) {
-                  _this2.userId = response.data;
+                  _this3.userId = response.data;
                   console.log('UserId');
-                  console.log(_this2.userId);
+                  console.log(_this3.userId);
                 });
 
               case 2:
@@ -2450,7 +2451,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _setCurrentUserRole = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
-        var _this3 = this;
+        var _this4 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
           while (1) {
@@ -2458,9 +2459,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context10.next = 2;
                 return axios.get('api/user/roles').then(function (response) {
-                  _this3.currentUserRoles = response.data;
+                  _this4.currentUserRoles = response.data;
                   console.log('Ролі користувача');
-                  console.log(_this3.currentUserRoles);
+                  console.log(_this4.currentUserRoles);
                 });
 
               case 2:
@@ -2772,11 +2773,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         context = _this;
         marker.addListener('click', function () {
           context.$router.push({
-            path: 'home',
-            query: {
-              tour: context.tourToShow['slug'],
+            query: Object.assign({}, context.$route.query, {
               place: context.tourToShow['places'][i]['slug']
-            }
+            })
           });
         });
       };

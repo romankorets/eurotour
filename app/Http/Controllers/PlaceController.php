@@ -23,9 +23,11 @@ class PlaceController extends Controller
 
     public function getPlace(Place $place)
     {
-        $place->load('comments')->where('enabled', true);
-        $place->load('comments.user');
-        $place->load('likes.user');
+        $place->load(['comments' => function ($query) {
+            $query->where('enabled', true);
+        }, 'comments.user',
+            'likes.user',
+        ]);
         return $place;
     }
 

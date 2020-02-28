@@ -98,7 +98,7 @@
                     }
                     var context = this;
                     marker.addListener('click', function () {
-                        context.$router.push({ path: 'home', query:{ tour: context.tourToShow['slug'], place: context.tourToShow['places'][i]['slug']}});
+                        context.$router.push({ query: Object.assign({}, context.$route.query, { place: context.tourToShow['places'][i]['slug'] }) });
                     });
                 }
             },

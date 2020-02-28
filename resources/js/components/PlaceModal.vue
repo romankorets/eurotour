@@ -193,15 +193,15 @@
             toggleLike(value) {
                 if (!this.isLike && !this.isDislike) {  // create like if it doesn't exist
                     this.sendLike(value);
-                    this.isLike = value == 'like';
-                    this.isDislike = value == 'dislike';
+                    this.isLike = value === 'like';
+                    this.isDislike = value === 'dislike';
                 } else {
                     if (value === 'like') {
                         if (this.isLike) {
                             this.deleteLike();
                             this.isLike = false;
                         } else {
-                            this.updateLike('like');
+                            this.updateLike(value);
                             this.isLike = true;
                             this.isDislike = false;
                         }
@@ -210,7 +210,7 @@
                             this.deleteLike();
                             this.isDislike = false;
                         } else {
-                            this.updateLike('dislike');
+                            this.updateLike(value);
                             this.isLike = false;
                             this.isDislike = true;
                         }
@@ -226,12 +226,13 @@
                     'value': value
                 }).then(response => {
                     like = response.data;
+                    this.placeToShowInPopUp.likes.push(like);
                 });
-                this.placeToShowInPopUp.likes.push(like);
+
             },
 
             async deleteLike() {
-                await axios.delete('api/place/' + this.$route.query.place + '/like/delete');
+                await axios.delete('api/place/' + this.$route.query.place + '/like');
                 for (let j = 0; j < this.placeToShowInPopUp.likes.length; j++) {
                     if (this.placeToShowInPopUp.likes[j].user_id === this.userId) {
                         this.placeToShowInPopUp.likes.splice(j, 1);
