@@ -39,14 +39,14 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
         Route::model('user', User::class);
         Route::bind('place', function ($value) {
-            if (is_int($value)){
+            if (is_numeric($value)){
                 return Place::findOrFail($value);
             } else {
                 return Place::where('slug', $value)->first() ?? abort(404);
             }
         });
         Route::bind('tour', function ($value) {
-            if (is_int($value)){
+            if (is_numeric($value)){
                 return Tour::findOrFail($value);
             } else {
                 return Tour::where('slug', $value)->first() ?? abort(404);
