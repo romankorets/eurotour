@@ -79,11 +79,9 @@
                                             @for ($i = 0; $i < $place->rating; $i++)
                                                 <span class="active"></span>
                                             @endfor
-                                            @if($place->rating < 10)
-                                                @for($i = 10 - $place->rating; $i > 0; $i--)
+                                            @for($i = 0; 10 - $place->rating < $i ; $i++)
                                                     <span></span>
-                                                @endfor
-                                            @endif
+                                            @endfor
                                         </div>
                                     </div>
                                 </div>
