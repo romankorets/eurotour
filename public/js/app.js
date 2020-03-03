@@ -1911,6 +1911,604 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CommentsComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CommentsComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'comments-component',
+  props: ['comments'],
+  data: function data() {
+    return {
+      localComments: this.comments,
+      currentUserRoles: null,
+      userId: null,
+      comment: ''
+    };
+  },
+  mounted: function () {
+    var _mounted = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return this.setUserId();
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function mounted() {
+      return _mounted.apply(this, arguments);
+    }
+
+    return mounted;
+  }(),
+  methods: {
+    checkIfCurrentUserAdmin: function () {
+      var _checkIfCurrentUserAdmin = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var i;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.setCurrentUserRoles();
+
+              case 2:
+                i = 0;
+
+              case 3:
+                if (!(i < this.currentUserRoles.length)) {
+                  _context2.next = 9;
+                  break;
+                }
+
+                if (!(this.currentUserRoles[i]['slug'] === 'admin')) {
+                  _context2.next = 6;
+                  break;
+                }
+
+                return _context2.abrupt("return", true);
+
+              case 6:
+                i++;
+                _context2.next = 3;
+                break;
+
+              case 9:
+                return _context2.abrupt("return", false);
+
+              case 10:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function checkIfCurrentUserAdmin() {
+        return _checkIfCurrentUserAdmin.apply(this, arguments);
+      }
+
+      return checkIfCurrentUserAdmin;
+    }(),
+    disableComment: function () {
+      var _disableComment = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(id) {
+        var j;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.put('api/comment/' + id, {
+                  'enabled': false
+                }).then(function (response) {
+                  console.log(response);
+                });
+
+              case 2:
+                j = 0;
+
+              case 3:
+                if (!(j < this.localComments.length)) {
+                  _context3.next = 12;
+                  break;
+                }
+
+                if (!(this.localComments[j].id === id)) {
+                  _context3.next = 9;
+                  break;
+                }
+
+                this.localComments.splice(j, 1);
+                console.log('Коментарі');
+                console.log(this.localComments);
+                return _context3.abrupt("break", 12);
+
+              case 9:
+                j++;
+                _context3.next = 3;
+                break;
+
+              case 12:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function disableComment(_x) {
+        return _disableComment.apply(this, arguments);
+      }
+
+      return disableComment;
+    }(),
+    sendComment: function () {
+      var _sendComment = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var comment;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                comment = null;
+                _context4.next = 3;
+                return axios.post('api/place/' + this.$route.query.place + '/comment', {
+                  'body': this.comment
+                }).then(function (response) {
+                  comment = response.data;
+                });
+
+              case 3:
+                this.localComments.push(comment);
+                this.comment = '';
+
+              case 5:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function sendComment() {
+        return _sendComment.apply(this, arguments);
+      }
+
+      return sendComment;
+    }(),
+    setUserId: function () {
+      var _setUserId = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        var _this = this;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return axios.get('api/user').then(function (response) {
+                  _this.userId = response.data;
+                  console.log('UserId');
+                  console.log(_this.userId);
+                });
+
+              case 2:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }));
+
+      function setUserId() {
+        return _setUserId.apply(this, arguments);
+      }
+
+      return setUserId;
+    }(),
+    setCurrentUserRoles: function () {
+      var _setCurrentUserRoles = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+        var _this2 = this;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return axios.get('api/user/roles').then(function (response) {
+                  _this2.currentUserRoles = response.data;
+                  console.log('Ролі користувача');
+                  console.log(_this2.currentUserRoles);
+                });
+
+              case 2:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }));
+
+      function setCurrentUserRoles() {
+        return _setCurrentUserRoles.apply(this, arguments);
+      }
+
+      return setCurrentUserRoles;
+    }()
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LikesComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LikesComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['likes'],
+  data: function data() {
+    return {
+      localLikes: this.likes,
+      userId: null,
+      isLike: false,
+      isDislike: false
+    };
+  },
+  created: function () {
+    var _created = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    function created() {
+      return _created.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+  mounted: function () {
+    var _mounted = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return this.setUserId();
+
+            case 2:
+              this.setUserLike();
+              console.log('likes component is mounted');
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function mounted() {
+      return _mounted.apply(this, arguments);
+    }
+
+    return mounted;
+  }(),
+  computed: {
+    numberOfLikes: function numberOfLikes() {
+      var counter = 0;
+
+      for (var i = 0; i < this.localLikes.length; i++) {
+        if (this.localLikes[i]['value'] === 1) {
+          counter++;
+        }
+      }
+
+      return counter;
+    },
+    numberOfDislikes: function numberOfDislikes() {
+      var counter = 0;
+
+      for (var i = 0; i < this.localLikes.length; i++) {
+        if (this.localLikes[i]['value'] === 0) {
+          counter++;
+        }
+      }
+
+      return counter;
+    }
+  },
+  methods: {
+    sendLike: function () {
+      var _sendLike = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(value) {
+        var _this = this;
+
+        var like;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (value === 'like') {
+                  value = 1;
+                } else value = 0;
+
+                like = null;
+                _context3.next = 4;
+                return axios.post('api/place/' + this.$route.query.place + '/like', {
+                  'value': value
+                }).then(function (response) {
+                  like = response.data;
+
+                  _this.localLikes.push(like);
+                });
+
+              case 4:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function sendLike(_x) {
+        return _sendLike.apply(this, arguments);
+      }
+
+      return sendLike;
+    }(),
+    deleteLike: function () {
+      var _deleteLike = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var j;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios["delete"]('api/place/' + this.$route.query.place + '/like');
+
+              case 2:
+                for (j = 0; j < this.localLikes.length; j++) {
+                  if (this.localLikes[j].user_id === this.userId) {
+                    this.localLikes.splice(j, 1);
+                  }
+                }
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function deleteLike() {
+        return _deleteLike.apply(this, arguments);
+      }
+
+      return deleteLike;
+    }(),
+    updateLike: function () {
+      var _updateLike = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(value) {
+        var j;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (value === 'like') {
+                  value = 1;
+                } else value = 0;
+
+                _context5.next = 3;
+                return axios.post('api/place/' + this.$route.query.place + '/like', {
+                  'value': value
+                });
+
+              case 3:
+                for (j = 0; j < this.localLikes.length; j++) {
+                  if (this.localLikes[j].user_id === this.userId) {
+                    this.localLikes[j].value = value;
+                  }
+                }
+
+              case 4:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function updateLike(_x2) {
+        return _updateLike.apply(this, arguments);
+      }
+
+      return updateLike;
+    }(),
+    toggleLike: function toggleLike(value) {
+      if (!this.isLike && !this.isDislike) {
+        // create like if it doesn't exist
+        this.sendLike(value);
+        this.isLike = value === 'like';
+        this.isDislike = value === 'dislike';
+      } else {
+        if (value === 'like') {
+          if (this.isLike) {
+            this.deleteLike();
+            this.isLike = false;
+          } else {
+            this.updateLike(value);
+            this.isLike = true;
+            this.isDislike = false;
+          }
+        } else {
+          if (this.isDislike) {
+            this.deleteLike();
+            this.isDislike = false;
+          } else {
+            this.updateLike(value);
+            this.isLike = false;
+            this.isDislike = true;
+          }
+        }
+      }
+    },
+    setUserLike: function setUserLike() {
+      for (var j = 0; j < this.localLikes.length; j++) {
+        if (this.localLikes[j]['user']['id'] === this.userId) {
+          if (this.localLikes[j]['value'] === 1) {
+            this.isLike = true;
+            this.isDislike = false;
+            break;
+          } else {
+            this.isLike = false;
+            this.isDislike = true;
+            break;
+          }
+        }
+      }
+    },
+    setUserId: function () {
+      var _setUserId = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+        var _this2 = this;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return axios.get('api/user').then(function (response) {
+                  _this2.userId = response.data;
+                  console.log('UserId');
+                  console.log(_this2.userId);
+                });
+
+              case 2:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }));
+
+      function setUserId() {
+        return _setUserId.apply(this, arguments);
+      }
+
+      return setUserId;
+    }()
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlaceModal.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PlaceModal.vue?vue&type=script&lang=js& ***!
@@ -1981,47 +2579,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       placeToShowInPopUp: null,
-      isLike: false,
-      isDislike: false,
-      currentUserRoles: null,
-      userId: null,
       comment: ''
     };
   },
@@ -2033,29 +2594,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
-              return this.setUserId();
-
-            case 2:
-              _context.next = 4;
-              return this.setCurrentUserRole();
-
-            case 4:
               if (!(typeof this.$route.query.place !== "undefined")) {
-                _context.next = 8;
+                _context.next = 3;
                 break;
               }
 
-              _context.next = 7;
+              _context.next = 3;
               return this.fetchPlaceToShow();
 
-            case 7:
-              this.setUserLike();
-
-            case 8:
+            case 3:
               console.log('Place modal');
 
-            case 9:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -2079,7 +2629,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 if (!(typeof this.$route.query.place !== "undefined")) {
-                  _context2.next = 4;
+                  _context2.next = 3;
                   break;
                 }
 
@@ -2087,9 +2637,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return this.fetchPlaceToShow();
 
               case 3:
-                this.setUserLike();
-
-              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -2103,30 +2650,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return $route;
     }()
-  },
-  computed: {
-    numberOfLikes: function numberOfLikes() {
-      var counter = 0;
-
-      for (var i = 0; i < this.placeToShowInPopUp['likes'].length; i++) {
-        if (this.placeToShowInPopUp['likes'][i]['value'] === 1) {
-          counter++;
-        }
-      }
-
-      return counter;
-    },
-    numberOfDislikes: function numberOfDislikes() {
-      var counter = 0;
-
-      for (var i = 0; i < this.placeToShowInPopUp['likes'].length; i++) {
-        if (this.placeToShowInPopUp['likes'][i]['value'] === 0) {
-          counter++;
-        }
-      }
-
-      return counter;
-    }
   },
   methods: {
     fetchPlaceToShow: function () {
@@ -2163,321 +2686,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     closePlacePopUp: function closePlacePopUp() {
       this.placeToShowInPopUp = null;
       this.$router.go(-1);
-    },
-    disableComment: function () {
-      var _disableComment = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(id) {
-        var j;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                _context4.next = 2;
-                return axios.put('api/comment/' + id, {
-                  'enabled': false
-                }).then(function (response) {
-                  console.log(response);
-                });
-
-              case 2:
-                j = 0;
-
-              case 3:
-                if (!(j < this.placeToShowInPopUp.comments.length)) {
-                  _context4.next = 12;
-                  break;
-                }
-
-                if (!(this.placeToShowInPopUp.comments[j].id === id)) {
-                  _context4.next = 9;
-                  break;
-                }
-
-                this.placeToShowInPopUp.comments.splice(j, 1);
-                console.log('Коментарі');
-                console.log(this.placeToShowInPopUp.comments);
-                return _context4.abrupt("break", 12);
-
-              case 9:
-                j++;
-                _context4.next = 3;
-                break;
-
-              case 12:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4, this);
-      }));
-
-      function disableComment(_x3) {
-        return _disableComment.apply(this, arguments);
-      }
-
-      return disableComment;
-    }(),
-    setUserLike: function setUserLike() {
-      for (var j = 0; j < this.placeToShowInPopUp['likes'].length; j++) {
-        if (this.placeToShowInPopUp['likes'][j]['user']['id'] === this.userId) {
-          if (this.placeToShowInPopUp['likes'][j]['value'] === 1) {
-            this.isLike = true;
-            this.isDislike = false;
-            break;
-          } else {
-            this.isLike = false;
-            this.isDislike = true;
-            break;
-          }
-        }
-      }
-    },
-    checkIfCurrentUserAdmin: function checkIfCurrentUserAdmin() {
-      for (var i = 0; i < this.currentUserRoles.length; i++) {
-        if (this.currentUserRoles[i]['slug'] === 'admin') {
-          return true;
-        }
-      }
-
-      return false;
-    },
-    toggleLike: function toggleLike(value) {
-      if (!this.isLike && !this.isDislike) {
-        // create like if it doesn't exist
-        this.sendLike(value);
-        this.isLike = value === 'like';
-        this.isDislike = value === 'dislike';
-      } else {
-        if (value === 'like') {
-          if (this.isLike) {
-            this.deleteLike();
-            this.isLike = false;
-          } else {
-            this.updateLike(value);
-            this.isLike = true;
-            this.isDislike = false;
-          }
-        } else {
-          if (this.isDislike) {
-            this.deleteLike();
-            this.isDislike = false;
-          } else {
-            this.updateLike(value);
-            this.isLike = false;
-            this.isDislike = true;
-          }
-        }
-      }
-    },
-    sendLike: function () {
-      var _sendLike = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(value) {
-        var _this2 = this;
-
-        var like;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                if (value === 'like') {
-                  value = 1;
-                } else value = 0;
-
-                like = null;
-                _context5.next = 4;
-                return axios.post('api/place/' + this.$route.query.place + '/like', {
-                  'value': value
-                }).then(function (response) {
-                  like = response.data;
-
-                  _this2.placeToShowInPopUp.likes.push(like);
-                });
-
-              case 4:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this);
-      }));
-
-      function sendLike(_x4) {
-        return _sendLike.apply(this, arguments);
-      }
-
-      return sendLike;
-    }(),
-    deleteLike: function () {
-      var _deleteLike = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
-        var j;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                _context6.next = 2;
-                return axios["delete"]('api/place/' + this.$route.query.place + '/like');
-
-              case 2:
-                for (j = 0; j < this.placeToShowInPopUp.likes.length; j++) {
-                  if (this.placeToShowInPopUp.likes[j].user_id === this.userId) {
-                    this.placeToShowInPopUp.likes.splice(j, 1);
-                  }
-                }
-
-              case 3:
-              case "end":
-                return _context6.stop();
-            }
-          }
-        }, _callee6, this);
-      }));
-
-      function deleteLike() {
-        return _deleteLike.apply(this, arguments);
-      }
-
-      return deleteLike;
-    }(),
-    updateLike: function () {
-      var _updateLike = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(value) {
-        var j;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                if (value === 'like') {
-                  value = 1;
-                } else value = 0;
-
-                _context7.next = 3;
-                return axios.post('api/place/' + this.$route.query.place + '/like', {
-                  'value': value
-                });
-
-              case 3:
-                for (j = 0; j < this.placeToShowInPopUp.likes.length; j++) {
-                  if (this.placeToShowInPopUp.likes[j].user_id === this.userId) {
-                    this.placeToShowInPopUp.likes[j].value = value;
-                  }
-                }
-
-              case 4:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7, this);
-      }));
-
-      function updateLike(_x5) {
-        return _updateLike.apply(this, arguments);
-      }
-
-      return updateLike;
-    }(),
-    setUserId: function () {
-      var _setUserId = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
-        var _this3 = this;
-
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
-          while (1) {
-            switch (_context8.prev = _context8.next) {
-              case 0:
-                _context8.next = 2;
-                return axios.get('api/user').then(function (response) {
-                  _this3.userId = response.data;
-                  console.log('UserId');
-                  console.log(_this3.userId);
-                });
-
-              case 2:
-              case "end":
-                return _context8.stop();
-            }
-          }
-        }, _callee8);
-      }));
-
-      function setUserId() {
-        return _setUserId.apply(this, arguments);
-      }
-
-      return setUserId;
-    }(),
-    sendComment: function () {
-      var _sendComment = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
-        var comment;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
-          while (1) {
-            switch (_context9.prev = _context9.next) {
-              case 0:
-                comment = null;
-                _context9.next = 3;
-                return axios.post('api/place/' + this.$route.query.place + '/comment', {
-                  'body': this.comment
-                }).then(function (response) {
-                  comment = response.data;
-                });
-
-              case 3:
-                this.placeToShowInPopUp.comments.push(comment);
-                this.comment = '';
-
-              case 5:
-              case "end":
-                return _context9.stop();
-            }
-          }
-        }, _callee9, this);
-      }));
-
-      function sendComment() {
-        return _sendComment.apply(this, arguments);
-      }
-
-      return sendComment;
-    }(),
-    setCurrentUserRole: function () {
-      var _setCurrentUserRole = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
-        var _this4 = this;
-
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
-          while (1) {
-            switch (_context10.prev = _context10.next) {
-              case 0:
-                _context10.next = 2;
-                return axios.get('api/user/roles').then(function (response) {
-                  _this4.currentUserRoles = response.data;
-                  console.log('Ролі користувача');
-                  console.log(_this4.currentUserRoles);
-                });
-
-              case 2:
-              case "end":
-                return _context10.stop();
-            }
-          }
-        }, _callee10);
-      }));
-
-      function setCurrentUserRole() {
-        return _setCurrentUserRole.apply(this, arguments);
-      }
-
-      return setCurrentUserRole;
-    }()
+    }
   }
 });
 
@@ -39017,6 +39226,178 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CommentsComponent.vue?vue&type=template&id=0ed47be4&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CommentsComponent.vue?vue&type=template&id=0ed47be4& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "row justify-content-end",
+        attrs: { id: "comment-input" }
+      },
+      [
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.comment,
+              expression: "comment"
+            }
+          ],
+          attrs: { type: "text", placeholder: "Введіть комментар" },
+          domProps: { value: _vm.comment },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.comment = $event.target.value
+            }
+          }
+        })
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-end" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          attrs: { id: "submitComment" },
+          on: { click: _vm.sendComment }
+        },
+        [_vm._v("Відправити")]
+      )
+    ]),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-12" },
+        _vm._l(_vm.localComments, function(comment) {
+          return _c(
+            "div",
+            { staticClass: "row justify-content-start comment" },
+            [
+              _c("div", { staticClass: "col-md-12" }, [
+                _vm.checkIfCurrentUserAdmin()
+                  ? _c("div", { staticClass: "row justify-content-end" }, [
+                      _c("span", {
+                        staticClass: "close",
+                        attrs: { title: "Вимкнути комментар" },
+                        on: {
+                          click: function($event) {
+                            return _vm.disableComment(comment.id)
+                          }
+                        }
+                      })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "row name" }, [
+                  _vm._v(_vm._s(comment["user"]["name"]))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row date" }, [
+                  _vm._v(_vm._s(comment["created_at"]))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row body" }, [
+                  _c("p", [_vm._v(_vm._s(comment.body))])
+                ])
+              ])
+            ]
+          )
+        }),
+        0
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("h3", [_vm._v("Комментарі")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LikesComponent.vue?vue&type=template&id=1d50c168&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LikesComponent.vue?vue&type=template&id=1d50c168& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "row justify-content-around like" }, [
+      _c("i", {
+        staticClass: "fa fa-thumbs-up",
+        class: { "fa-pressed": _vm.isLike },
+        on: {
+          click: function($event) {
+            return _vm.toggleLike("like")
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("i", {
+        staticClass: "fa fa-thumbs-down",
+        class: { "fa-pressed": _vm.isDislike },
+        on: {
+          click: function($event) {
+            return _vm.toggleLike("dislike")
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-around count" }, [
+      _c("span", [_vm._v(_vm._s(this.numberOfLikes))]),
+      _vm._v(" "),
+      _c("span", [_vm._v(_vm._s(this.numberOfDislikes))])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlaceModal.vue?vue&type=template&id=571bf0de&":
 /*!*************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PlaceModal.vue?vue&type=template&id=571bf0de& ***!
@@ -39038,278 +39419,163 @@ var render = function() {
           "div",
           { staticClass: "row justify-content-center b-popup-content" },
           [
-            _c("div", { staticClass: "col-md-10" }, [
-              _c("div", { staticClass: "row justify-content-end" }, [
-                _c("span", {
-                  staticClass: "close",
-                  attrs: { title: "Закрити вікно" },
-                  on: { click: _vm.closePlacePopUp }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-center" }, [
-                _c("h1", [_vm._v(_vm._s(_vm.placeToShowInPopUp.name))])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-center" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "carousel slide",
-                    attrs: {
-                      id: "carouselControls" + _vm.placeToShowInPopUp.slug,
-                      "data-ride": "false"
-                    }
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "carousel-inner" },
-                      [
-                        _vm._l(_vm.placeToShowInPopUp.photos, function(
-                          photo,
-                          index
-                        ) {
-                          return _c(
-                            "div",
+            _c(
+              "div",
+              { staticClass: "col-md-10" },
+              [
+                _c("div", { staticClass: "row justify-content-end" }, [
+                  _c("span", {
+                    staticClass: "close",
+                    attrs: { title: "Закрити вікно" },
+                    on: { click: _vm.closePlacePopUp }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c("h1", [_vm._v(_vm._s(_vm.placeToShowInPopUp.name))])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "carousel slide",
+                      attrs: {
+                        id: "carouselControls" + _vm.placeToShowInPopUp.slug,
+                        "data-ride": "false"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "carousel-inner" },
+                        [
+                          _vm._l(_vm.placeToShowInPopUp.photos, function(
+                            photo,
+                            index
+                          ) {
+                            return _c(
+                              "div",
+                              {
+                                staticClass: "carousel-item",
+                                class: { active: index === 0 }
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "d-block w-100",
+                                  attrs: {
+                                    src: "." + photo,
+                                    alt: _vm.placeToShowInPopUp.name
+                                  }
+                                })
+                              ]
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "a",
                             {
-                              staticClass: "carousel-item",
-                              class: { active: index === 0 }
+                              staticClass: "carousel-control-prev",
+                              attrs: {
+                                href:
+                                  "#carouselControls" +
+                                  _vm.placeToShowInPopUp.slug,
+                                role: "button",
+                                "data-slide": "prev"
+                              }
                             },
                             [
-                              _c("img", {
-                                staticClass: "d-block w-100",
-                                attrs: {
-                                  src: "." + photo,
-                                  alt: _vm.placeToShowInPopUp.name
-                                }
-                              })
+                              _c("span", {
+                                staticClass: "carousel-control-prev-icon",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "sr-only" }, [
+                                _vm._v("Previous")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "carousel-control-next",
+                              attrs: {
+                                href:
+                                  "#carouselControls" +
+                                  _vm.placeToShowInPopUp.slug,
+                                role: "button",
+                                "data-slide": "next"
+                              }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "carousel-control-next-icon",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "sr-only" }, [
+                                _vm._v("Next")
+                              ])
                             ]
                           )
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "carousel-control-prev",
-                            attrs: {
-                              href:
-                                "#carouselControls" +
-                                _vm.placeToShowInPopUp.slug,
-                              role: "button",
-                              "data-slide": "prev"
-                            }
-                          },
-                          [
-                            _c("span", {
-                              staticClass: "carousel-control-prev-icon",
-                              attrs: { "aria-hidden": "true" }
-                            }),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "sr-only" }, [
-                              _vm._v("Previous")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "carousel-control-next",
-                            attrs: {
-                              href:
-                                "#carouselControls" +
-                                _vm.placeToShowInPopUp.slug,
-                              role: "button",
-                              "data-slide": "next"
-                            }
-                          },
-                          [
-                            _c("span", {
-                              staticClass: "carousel-control-next-icon",
-                              attrs: { "aria-hidden": "true" }
-                            }),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "sr-only" }, [
-                              _vm._v("Next")
-                            ])
-                          ]
-                        )
-                      ],
-                      2
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-center" }, [
-                _c("h1", [_vm._v("Опис")]),
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.placeToShowInPopUp.description) +
-                    "\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-around like" }, [
-                _c("i", {
-                  staticClass: "fa fa-thumbs-up",
-                  class: { "fa-pressed": _vm.isLike },
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleLike("like")
-                    }
-                  }
+                        ],
+                        2
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c("h1", [_vm._v("Опис")]),
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.placeToShowInPopUp.description) +
+                      "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("likes-component", {
+                  attrs: { likes: _vm.placeToShowInPopUp.likes }
                 }),
                 _vm._v(" "),
-                _c("i", {
-                  staticClass: "fa fa-thumbs-down",
-                  class: { "fa-pressed": _vm.isDislike },
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleLike("dislike")
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-around count" }, [
-                _c("span", [_vm._v(_vm._s(this.numberOfLikes))]),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(this.numberOfDislikes))])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-center" }, [
-                _c(
-                  "div",
-                  { staticClass: "rating-mini" },
-                  [
-                    _vm._l(_vm.placeToShowInPopUp.rating, function(
-                      rating,
-                      index
-                    ) {
-                      return _c("span", { staticClass: "active" })
-                    }),
-                    _vm._v(" "),
-                    _vm._l(10 - _vm.placeToShowInPopUp.rating, function(
-                      rating,
-                      index
-                    ) {
-                      return _vm.placeToShowInPopUp.rating < 10
-                        ? _c("span")
-                        : _vm._e()
-                    })
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "row justify-content-end",
-                  attrs: { id: "comment-input" }
-                },
-                [
-                  _c("textarea", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.comment,
-                        expression: "comment"
-                      }
+                _c("div", { staticClass: "row justify-content-center" }, [
+                  _c(
+                    "div",
+                    { staticClass: "rating-mini" },
+                    [
+                      _vm._l(_vm.placeToShowInPopUp.rating, function(
+                        rating,
+                        index
+                      ) {
+                        return _c("span", { staticClass: "active" })
+                      }),
+                      _vm._v(" "),
+                      _vm._l(10 - _vm.placeToShowInPopUp.rating, function(
+                        rating,
+                        index
+                      ) {
+                        return _vm.placeToShowInPopUp.rating < 10
+                          ? _c("span")
+                          : _vm._e()
+                      })
                     ],
-                    attrs: { type: "text", placeholder: "Введіть комментар" },
-                    domProps: { value: _vm.comment },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.comment = $event.target.value
-                      }
-                    }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-end" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: { id: "submitComment" },
-                    on: { click: _vm.sendComment }
-                  },
-                  [_vm._v("Відправити")]
-                )
-              ]),
-              _vm._v(" "),
-              _vm._m(0),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-center" }, [
-                _c(
-                  "div",
-                  { staticClass: "col-md-12" },
-                  _vm._l(_vm.placeToShowInPopUp.comments, function(comment) {
-                    return _c(
-                      "div",
-                      { staticClass: "row justify-content-start comment" },
-                      [
-                        _c("div", { staticClass: "col-md-12" }, [
-                          _vm.checkIfCurrentUserAdmin()
-                            ? _c(
-                                "div",
-                                { staticClass: "row justify-content-end" },
-                                [
-                                  _c("span", {
-                                    staticClass: "close",
-                                    attrs: { title: "Вимкнути комментар" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.disableComment(comment.id)
-                                      }
-                                    }
-                                  })
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "row name" }, [
-                            _vm._v(_vm._s(comment["user"]["name"]))
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "row date" }, [
-                            _vm._v(_vm._s(comment["created_at"]))
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "row body" }, [
-                            _c("p", [_vm._v(_vm._s(comment.body))])
-                          ])
-                        ])
-                      ]
-                    )
-                  }),
-                  0
-                )
-              ])
-            ])
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c("comments-component", {
+                  attrs: { comments: _vm.placeToShowInPopUp.comments }
+                })
+              ],
+              1
+            )
           ]
         )
       ])
     : _vm._e()
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("h3", [_vm._v("Комментарі")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -54659,6 +54925,8 @@ Vue.component('tour-map', __webpack_require__(/*! ./components/TourMap.vue */ ".
 Vue.component('tour-modal', __webpack_require__(/*! ./components/TourModal.vue */ "./resources/js/components/TourModal.vue")["default"]);
 Vue.component('places-map', __webpack_require__(/*! ./components/PlacesMap.vue */ "./resources/js/components/PlacesMap.vue")["default"]);
 Vue.component('place-modal', __webpack_require__(/*! ./components/PlaceModal.vue */ "./resources/js/components/PlaceModal.vue")["default"]);
+Vue.component('comments-component', __webpack_require__(/*! ./components/CommentsComponent.vue */ "./resources/js/components/CommentsComponent.vue")["default"]);
+Vue.component('likes-component', __webpack_require__(/*! ./components/LikesComponent.vue */ "./resources/js/components/LikesComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -54724,6 +54992,144 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/CommentsComponent.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/CommentsComponent.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CommentsComponent_vue_vue_type_template_id_0ed47be4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CommentsComponent.vue?vue&type=template&id=0ed47be4& */ "./resources/js/components/CommentsComponent.vue?vue&type=template&id=0ed47be4&");
+/* harmony import */ var _CommentsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CommentsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/CommentsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CommentsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CommentsComponent_vue_vue_type_template_id_0ed47be4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CommentsComponent_vue_vue_type_template_id_0ed47be4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/CommentsComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/CommentsComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/CommentsComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CommentsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CommentsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/CommentsComponent.vue?vue&type=template&id=0ed47be4&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/CommentsComponent.vue?vue&type=template&id=0ed47be4& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsComponent_vue_vue_type_template_id_0ed47be4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./CommentsComponent.vue?vue&type=template&id=0ed47be4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CommentsComponent.vue?vue&type=template&id=0ed47be4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsComponent_vue_vue_type_template_id_0ed47be4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsComponent_vue_vue_type_template_id_0ed47be4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/LikesComponent.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/LikesComponent.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LikesComponent_vue_vue_type_template_id_1d50c168___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LikesComponent.vue?vue&type=template&id=1d50c168& */ "./resources/js/components/LikesComponent.vue?vue&type=template&id=1d50c168&");
+/* harmony import */ var _LikesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LikesComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/LikesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LikesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LikesComponent_vue_vue_type_template_id_1d50c168___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LikesComponent_vue_vue_type_template_id_1d50c168___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/LikesComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/LikesComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/LikesComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LikesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./LikesComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LikesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LikesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/LikesComponent.vue?vue&type=template&id=1d50c168&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/LikesComponent.vue?vue&type=template&id=1d50c168& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LikesComponent_vue_vue_type_template_id_1d50c168___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./LikesComponent.vue?vue&type=template&id=1d50c168& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LikesComponent.vue?vue&type=template&id=1d50c168&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LikesComponent_vue_vue_type_template_id_1d50c168___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LikesComponent_vue_vue_type_template_id_1d50c168___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

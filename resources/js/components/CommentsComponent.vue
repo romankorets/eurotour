@@ -32,25 +32,24 @@
 
 <script>
     export default {
+        name: 'comments-component',
         props: ['comments'],
         data() {
-            return{
+            return {
                 localComments: this.comments,
                 currentUserRoles: null,
                 userId: null,
                 comment: '',
             }
         },
-        created: async function () {
-            
-        },
+        
         mounted: async function () {
             await this.setUserId();
-            await this.setCurrentUserRole();
         },
 
         methods: {
-            checkIfCurrentUserAdmin() {
+            async checkIfCurrentUserAdmin() {
+                await this.setCurrentUserRoles();
                 for (let i = 0; i < this.currentUserRoles.length; i++) {
                     if (this.currentUserRoles[i]['slug'] === 'admin') {
                         return true;
@@ -91,6 +90,14 @@
                     this.userId = response.data;
                     console.log('UserId');
                     console.log(this.userId);
+                })
+            },
+
+            async setCurrentUserRoles() {
+                await axios.get('api/user/roles').then(response => {
+                    this.currentUserRoles = response.data;
+                    console.log('Ролі користувача');
+                    console.log(this.currentUserRoles);
                 })
             },
         }

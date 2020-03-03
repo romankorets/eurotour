@@ -27,6 +27,8 @@ Vue.component('tour-map', require('./components/TourMap.vue').default);
 Vue.component('tour-modal', require('./components/TourModal.vue').default);
 Vue.component('places-map', require('./components/PlacesMap.vue').default);
 Vue.component('place-modal', require('./components/PlaceModal.vue').default);
+Vue.component('comments-component', require('./components/CommentsComponent.vue').default);
+Vue.component('likes-component', require('./components/LikesComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

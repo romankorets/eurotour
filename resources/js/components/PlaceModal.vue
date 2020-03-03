@@ -36,15 +36,7 @@
                     <h1>Опис</h1>
                     {{ placeToShowInPopUp.description }}
                 </div>
-                <div class="row justify-content-around like">
-                    <i class="fa fa-thumbs-up" v-on:click="toggleLike('like')" :class="{'fa-pressed': isLike}"/>
-                    <i class="fa fa-thumbs-down" v-on:click="toggleLike('dislike')"
-                       :class="{'fa-pressed': isDislike}"/>
-                </div>
-                <div class="row justify-content-around count">
-                    <span>{{this.numberOfLikes}}</span>
-                    <span>{{this.numberOfDislikes}}</span>
-                </div>
+                <likes-component :likes="placeToShowInPopUp.likes"></likes-component>
                 <div class="row justify-content-center">
                     <div class="rating-mini">
                         <span v-for="(rating,index) in placeToShowInPopUp.rating" class="active"/>
@@ -52,29 +44,25 @@
                               v-for="(rating,index) in 10 - placeToShowInPopUp.rating"/>
                     </div>
                 </div>
-                <comments :comments=placeToShowInPopUp.comments></comments>
+                <comments-component :comments="placeToShowInPopUp.comments"></comments-component>
             </div>
         </div>
     </div>
 </template>
-<!--    TODO: fix user like on place modal-->
+
+import CommentsComponent from './CommentsComponent.vue'
 <script>
     export default {
         data: function(){
             return {
                 placeToShowInPopUp: null,
-                isLike: false,
-                isDislike: false,
-                currentUserRoles: null,
-                userId: null,
                 comment: '',
             }
         },
         mounted: async function () {
-            await this.setUserId();
             if(typeof this.$route.query.place !== "undefined"){
                 await this.fetchPlaceToShow();
-                this.setUserLike();
+                
             }
             console.log('Place modal');
         },
@@ -82,30 +70,11 @@
             $route: async function(to, from){
                 if(typeof this.$route.query.place !== "undefined"){
                     await this.fetchPlaceToShow();
-                    this.setUserLike();
+                
                 }
             }
         },
-        computed: {
-            numberOfLikes: function () {
-                let counter = 0;
-                for (let i = 0; i < this.placeToShowInPopUp['likes'].length; i++) {
-                    if (this.placeToShowInPopUp['likes'][i]['value'] === 1) {
-                        counter++;
-                    }
-                }
-                return counter;
-            },
-            numberOfDislikes: function () {
-                let counter = 0;
-                for (let i = 0; i < this.placeToShowInPopUp['likes'].length; i++) {
-                    if (this.placeToShowInPopUp['likes'][i]['value'] === 0) {
-                        counter++;
-                    }
-                }
-                return counter;
-            }
-        },
+        
         methods: {
             async fetchPlaceToShow(){
                 await axios.get('api/place/' + this.$route.query.place)
@@ -121,93 +90,6 @@
                 this.placeToShowInPopUp = null;
                 this.$router.go(-1);
             },
-
-            setUserLike(){
-                for (let j = 0; j < this.placeToShowInPopUp['likes'].length; j++) {
-                    if (this.placeToShowInPopUp['likes'][j]['user']['id'] === this.userId) {
-                        if (this.placeToShowInPopUp['likes'][j]['value'] === 1) {
-                            this.isLike = true;
-                            this.isDislike = false;
-                            break;
-                        } else {
-                            this.isLike = false;
-                            this.isDislike = true;
-                            break;
-                        }
-                    }
-                }
-            },
-
-            toggleLike(value) {
-                if (!this.isLike && !this.isDislike) {  // create like if it doesn't exist
-                    this.sendLike(value);
-                    this.isLike = value === 'like';
-                    this.isDislike = value === 'dislike';
-                } else {
-                    if (value === 'like') {
-                        if (this.isLike) {
-                            this.deleteLike();
-                            this.isLike = false;
-                        } else {
-                            this.updateLike(value);
-                            this.isLike = true;
-                            this.isDislike = false;
-                        }
-                    } else {
-                        if (this.isDislike) {
-                            this.deleteLike();
-                            this.isDislike = false;
-                        } else {
-                            this.updateLike(value);
-                            this.isLike = false;
-                            this.isDislike = true;
-                        }
-                    }
-                }
-            },
-            async sendLike(value) {
-                if (value === 'like') {
-                    value = 1;
-                } else value = 0;
-                let like = null;
-                await axios.post('api/place/'+ this.$route.query.place + '/like', {
-                    'value': value
-                }).then(response => {
-                    like = response.data;
-                    this.placeToShowInPopUp.likes.push(like);
-                });
-
-            },
-
-            async deleteLike() {
-                await axios.delete('api/place/' + this.$route.query.place + '/like');
-                for (let j = 0; j < this.placeToShowInPopUp.likes.length; j++) {
-                    if (this.placeToShowInPopUp.likes[j].user_id === this.userId) {
-                        this.placeToShowInPopUp.likes.splice(j, 1);
-                    }
-                }
-            },
-            async updateLike(value) {
-                if (value === 'like') {
-                    value = 1;
-                } else value = 0;
-                await axios.post('api/place/' + this.$route.query.place + '/like', {
-                    'value': value
-                });
-                for (let j = 0; j < this.placeToShowInPopUp.likes.length; j++) {
-                    if (this.placeToShowInPopUp.likes[j].user_id === this.userId) {
-                        this.placeToShowInPopUp.likes[j].value = value;
-                    }
-                }
-            },
-            async setUserId(){
-                await axios.get('api/user').then(response => {
-                    this.userId = response.data;
-                    console.log('UserId');
-                    console.log(this.userId);
-                })
-            },
-
         },
     }
 </script>
