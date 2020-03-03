@@ -36,7 +36,6 @@
                             </div>
                         </div>
                     </div>
-                    @if(count($places))
                         <h1>Список локацій</h1>
                         @foreach($places as $place)
                             <div class="row justify-content-center place">
@@ -93,11 +92,9 @@
                                                 @for ($i = 0; $i < $place->rating; $i++)
                                                     <span class="active"></span>
                                                 @endfor
-                                                @if($place->rating < 10)
-                                                    @for($i = 10 - $place->rating; $i > 0; $i--)
-                                                        <span></span>
-                                                    @endfor
-                                                @endif
+                                                @for($i = 0; 10 - $place->rating < $i ; $i++)
+                                                    <span></span>
+                                                @endfor
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +140,7 @@
                             </div>
                         @endforeach
                         {{ $places->links() }}
-                    @else
+                    @if(count($places) == 0)
                         <h1>Локації відсутні</h1>
                     @endif
                     <div class="row justify-content-center">
