@@ -39080,7 +39080,7 @@ var render = function() {
                               _c("img", {
                                 staticClass: "d-block w-100",
                                 attrs: {
-                                  src: "./storage/" + photo,
+                                  src: "." + photo,
                                   alt: _vm.placeToShowInPopUp.name
                                 }
                               })
@@ -39454,7 +39454,7 @@ var render = function() {
                                   _c("img", {
                                     staticClass: "d-block w-100",
                                     attrs: {
-                                      src: "./storage/" + photo,
+                                      src: "." + photo,
                                       alt: _vm.tourToShow.name
                                     }
                                   })
