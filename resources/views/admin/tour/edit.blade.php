@@ -54,13 +54,13 @@
                                                         @if($loop->first)
                                                             <div class="carousel-item active">
                                                                 <img class="d-block w-100"
-                                                                     src="{{asset('/storage/' . $photo)}}"
+                                                                     src="{{asset($photo)}}"
                                                                      alt="{{$place->name}}">
                                                             </div>
                                                         @else
                                                             <div class="carousel-item">
                                                                 <img class="d-block w-100"
-                                                                     src="{{asset('/storage/' . $photo)}}"
+                                                                     src="{{asset($photo)}}"
                                                                      alt="{{$place->name}}">
                                                             </div>
                                                         @endif
