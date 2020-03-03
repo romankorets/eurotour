@@ -27,7 +27,7 @@ class TourController extends Controller
      */
     public function index()
     {
-        $tours = Tour::all();
+        $tours = Tour::paginate(5);
         return view('admin.tour.index', [
             'tours' => $tours,
         ]);
