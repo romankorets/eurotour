@@ -17,12 +17,12 @@
                                     @foreach($place->photos as $photo)
                                         @if($loop->first)
                                             <div class="carousel-item active">
-                                                <img class="d-block w-100" src="{{asset('/storage/' . $photo)}}"
+                                                <img class="d-block w-100" src="{{asset($photo)}}"
                                                      alt="{{$place->name}}">
                                             </div>
                                         @else
                                             <div class="carousel-item">
-                                                <img class="d-block w-100" src="{{asset('/storage/' . $photo)}}"
+                                                <img class="d-block w-100" src="{{asset($photo)}}"
                                                      alt="{{$place->name}}">
                                             </div>
                                         @endif
@@ -53,16 +53,14 @@
                                 @for ($i = 0; $i < $place->rating; $i++)
                                     <span class="active"></span>
                                 @endfor
-                                @if($place->rating < 10)
-                                    @for($i = 10 - $place->rating; $i > 0; $i--)
-                                        <span></span>
-                                    @endfor
-                                @endif
+                                @for($i = 0; 10 - $place->rating < $i ; $i++)
+                                    <span></span>
+                                @endfor
                             </div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
-                        <a class="btn btn-edit" href="{{route('place.edit', ['place' => $place->id])}}">Редагувати</a>
+                        <a class="btn btn-edit" href="{{ route('place.edit', ['place' => $place->id]) }}">Редагувати</a>
                         <form method="post" action="{{ route('place.destroy', ['place' => $place->id]) }}">
                             {{csrf_field()}}
                             {{method_field('delete')}}

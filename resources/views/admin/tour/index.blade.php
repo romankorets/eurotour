@@ -80,7 +80,7 @@
                                                 <span class="active"></span>
                                             @endfor
                                             @for($i = 0; 10 - $place->rating < $i ; $i++)
-                                                    <span></span>
+                                                <span></span>
                                             @endfor
                                         </div>
                                     </div>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <a class="btn btn-edit" href="{{route('tour.edit', ['tour' => $tour->id])}}">Редагувати</a>
+                    <a class="btn btn-edit" href="{{ route('tour.edit', ['tour' => $tour->id]) }}">Редагувати</a>
                     <form method="post" action="{{ route('tour.destroy', ['tour' => $tour->id]) }}">
                         {{csrf_field()}}
                         {{method_field('delete')}}
