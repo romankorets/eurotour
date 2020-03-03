@@ -63,7 +63,7 @@ class PlaceController extends Controller
     {
         $photos = array();
         foreach ($request->file('photos') as $photo) {
-            $photos[] = $photo->store('uploads', 'public');
+            $photos[] = '/storage/' . $photo->store('uploads', 'public');
         }
         Place::create([
             'name' => $request->get('name'),
@@ -102,7 +102,7 @@ class PlaceController extends Controller
     {
         $photos = array();
         foreach ($request->file('photos') as $photo) {
-            $photos[] = $photo->store('uploads', 'public');
+            $photos[] = '/storage/' . $photo->store('uploads', 'public');
         }
         $place->fill([
             'name' => $request->get('name'),

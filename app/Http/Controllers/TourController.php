@@ -54,7 +54,7 @@ class TourController extends Controller
     {
         $photos = array();
         foreach ($request->file('photos') as $photo) {
-            $photos[] = $photo->store('uploads', 'public');
+            $photos[] = '/storage/' . $photo->store('uploads', 'public');
         }
         $tour = Tour::create([
             'name' => $request->get('name'),
@@ -104,7 +104,7 @@ class TourController extends Controller
         $photos = array();
         if ($request->has('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $photos[] = $photo->store('uploads', 'public');
+                $photos[] = '/storage/' . $photo->store('uploads', 'public');
             }
             $tour->fill([
                 'name' => $request->get('name'),

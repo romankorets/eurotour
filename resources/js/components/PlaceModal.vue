@@ -14,7 +14,7 @@
                         <div class="carousel-inner">
                             <div class="carousel-item" :class="{active : index===0}"
                                  v-for="(photo, index) in placeToShowInPopUp.photos">
-                                <img class="d-block w-100" :src="'./storage/' + photo"
+                                <img class="d-block w-100" :src="'.' + photo"
                                      :alt="placeToShowInPopUp.name">
                             </div>
                             <a class="carousel-control-prev" :href="'#carouselControls' + placeToShowInPopUp.slug"

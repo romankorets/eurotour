@@ -22,7 +22,7 @@
                                 <div class="carousel-inner">
                                     <div class="carousel-item" :class="{active : index===0}"
                                          v-for="(photo, index) in tourToShow.photos">
-                                        <img class="d-block w-100" :src="'./storage/' + photo"
+                                        <img class="d-block w-100" :src="'.' + photo"
                                              :alt="tourToShow.name">
                                     </div>
                                     <a class="carousel-control-prev"

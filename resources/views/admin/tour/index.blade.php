@@ -18,12 +18,12 @@
                                     @foreach($tour->photos as $photo)
                                         @if($loop->first)
                                             <div class="carousel-item active">
-                                                <img class="d-block w-100" src="{{asset('/storage/' . $photo)}}"
+                                                <img class="d-block w-100" src="{{asset($photo)}}"
                                                      alt="{{$tour->name}}">
                                             </div>
                                         @else
                                             <div class="carousel-item">
-                                                <img class="d-block w-100" src="{{asset('/storage/' . $photo)}}"
+                                                <img class="d-block w-100" src="{{asset($photo)}}"
                                                      alt="{{$tour->name}}">
                                             </div>
                                         @endif
