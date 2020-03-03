@@ -99,6 +99,7 @@
                 </div>
             </div>
         @endforeach
+        {{ $tours->links() }}
         @if(count($tours) === 0)
             <div>Тури відсутні</div>
         @endif
