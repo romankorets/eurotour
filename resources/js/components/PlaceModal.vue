@@ -56,13 +56,12 @@ import CommentsComponent from './CommentsComponent.vue'
         data: function(){
             return {
                 placeToShowInPopUp: null,
-                comment: '',
             }
         },
         mounted: async function () {
             if(typeof this.$route.query.place !== "undefined"){
                 await this.fetchPlaceToShow();
-                
+
             }
             console.log('Place modal');
         },
@@ -70,11 +69,11 @@ import CommentsComponent from './CommentsComponent.vue'
             $route: async function(to, from){
                 if(typeof this.$route.query.place !== "undefined"){
                     await this.fetchPlaceToShow();
-                
+
                 }
             }
         },
-        
+
         methods: {
             async fetchPlaceToShow(){
                 await axios.get('api/place/' + this.$route.query.place)
