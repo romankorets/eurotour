@@ -2177,19 +2177,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                _context6.next = 2;
+                if (!(this.currentUserRoles === null)) {
+                  _context6.next = 3;
+                  break;
+                }
+
+                _context6.next = 3;
                 return axios.get('api/user/roles').then(function (response) {
                   _this2.currentUserRoles = response.data;
                   console.log('Ролі користувача');
                   console.log(_this2.currentUserRoles);
                 });
 
-              case 2:
+              case 3:
               case "end":
                 return _context6.stop();
             }
           }
-        }, _callee6);
+        }, _callee6, this);
       }));
 
       function setCurrentUserRoles() {

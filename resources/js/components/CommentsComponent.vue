@@ -42,7 +42,7 @@
                 comment: '',
             }
         },
-        
+
         mounted: async function () {
             await this.setUserId();
         },
@@ -94,11 +94,13 @@
             },
 
             async setCurrentUserRoles() {
-                await axios.get('api/user/roles').then(response => {
-                    this.currentUserRoles = response.data;
-                    console.log('Ролі користувача');
-                    console.log(this.currentUserRoles);
-                })
+                if(this.currentUserRoles === null){
+                    await axios.get('api/user/roles').then(response => {
+                        this.currentUserRoles = response.data;
+                        console.log('Ролі користувача');
+                        console.log(this.currentUserRoles);
+                    })
+                }
             },
         }
     }
