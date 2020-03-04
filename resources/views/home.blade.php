@@ -3,6 +3,9 @@
 @section('content')
     <div class="row justify-content-center b-container">
         <div class="col-md-12">
+            <div class="row justify-content-center">
+                <telegram-auth></telegram-auth>
+            </div>
             <router-view name="placesMap"></router-view>
             <div class="row justify-content-center">
                 <h1>Тури</h1>
