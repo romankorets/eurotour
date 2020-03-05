@@ -2859,10 +2859,14 @@ __webpack_require__.r(__webpack_exports__);
     vueTelegramLogin: vue_telegram_login__WEBPACK_IMPORTED_MODULE_0__["vueTelegramLogin"]
   },
   data: function data() {
-    return {};
+    return {
+      show: true
+    };
   },
   methods: {
     onTelegramAuth: function onTelegramAuth(user) {
+      var _this = this;
+
       axios.post('telegram', {
         'telegram_id': user.id,
         'first_name': user.first_name,
@@ -2870,6 +2874,7 @@ __webpack_require__.r(__webpack_exports__);
         'username': user.username
       }).then(function (response) {
         console.log(response);
+        _this.show = false;
       });
     }
   }
@@ -39679,10 +39684,12 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("vue-telegram-login", {
-        attrs: { mode: "callback", "telegram-login": "myeurotour_bot" },
-        on: { callback: _vm.onTelegramAuth }
-      })
+      _vm.show
+        ? _c("vue-telegram-login", {
+            attrs: { mode: "callback", "telegram-login": "myeurotour_bot" },
+            on: { callback: _vm.onTelegramAuth }
+          })
+        : _vm._e()
     ],
     1
   )

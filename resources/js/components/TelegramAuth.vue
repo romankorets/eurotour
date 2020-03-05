@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vue-telegram-login mode="callback"
+        <vue-telegram-login v-if="show" mode="callback"
                             telegram-login="myeurotour_bot"
                             @callback="onTelegramAuth"></vue-telegram-login>
     </div>
@@ -12,7 +12,9 @@
     export default {
         components: {vueTelegramLogin},
         data: function () {
-            return {}
+            return {
+                show: true
+            }
         },
 
         methods: {
@@ -24,6 +26,7 @@
                     'username': user.username,
                 }).then(response => {
                     console.log(response);
+                    this.show = false;
                 });
             },
         }
