@@ -17,16 +17,14 @@
 
         methods: {
             onTelegramAuth(user) {
-                axios.get('/login', {
-                    'email': user.first_name + ' ' + user.last_name,
-                    'user_id': user.id,
-                    'name': user.first_name,
+                axios.post('telegram', {
+                    'telegram_id': user.id,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
                     'username': user.username,
-                    'password': user.id,
                 }).then(response => {
-                    console.log(response.status);
+                    console.log(response);
                 });
-                alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
             },
         }
     }

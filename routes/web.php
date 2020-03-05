@@ -38,7 +38,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::delete('tour/{tour}', 'TourController@destroy')->name('tour.destroy')->middleware('can:delete,tour');
 });
 
-//Route::post('/login', 'LoginController@authenticate');
+Route::post('telegram', 'TelegramController@store');
 
 Route::get('api/user/roles', 'UserController@getUserRoles')->name('user.roles')->middleware('auth');
 Route::get('api/user', 'UserController@getUserId')->name('user.id')->middleware('auth');
