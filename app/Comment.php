@@ -15,11 +15,13 @@ class Comment extends Model
 
     protected $table = 'comments';
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function place(){
+    public function place()
+    {
         return$this->belongsTo(Place::class, 'place_id');
     }
 }

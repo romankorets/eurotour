@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TelegramRequest;
 use App\Telegram;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,8 @@ use Telegram\Bot\Api;
 class TelegramController extends Controller
 {
 
-    public function store(Request $request) {
+    public function store(TelegramRequest $request)
+    {
         Telegram::firstOrCreate([
             'user_id' => Auth::user()->id,
             'telegram_id' => $request->get('telegram_id'),

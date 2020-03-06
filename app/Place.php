@@ -20,15 +20,18 @@ class Place extends Model
     ];
 
 
-    public function likes(){
+    public function likes()
+    {
         return $this->hasMany(Like::class, 'place_id');
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class, 'place_id');
     }
 
-    public function tours(){
+    public function tours()
+    {
         return $this->belongsToMany(Tour::class, 'place_tour', 'place_id', 'tour_id')
             ->withPivot('isStartPlace', 'isFinishPlace');
     }

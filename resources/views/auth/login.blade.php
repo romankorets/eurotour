@@ -65,6 +65,9 @@
                             </div>
                         </div>
                     </form>
+                    <div class="row justify-content-center">
+                        <telegram-login></telegram-login>
+                    </div>
                 </div>
             </div>
         </div>

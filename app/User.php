@@ -42,27 +42,35 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function telegram() {
+    protected $redirectTo = '/home';
+
+    public function telegram()
+    {
         return $this->hasOne(Telegram::class);
     }
 
-    public function likes(){
+    public function likes()
+    {
         return $this->hasMany(Like::class);
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function roles(){
+    public function roles()
+    {
         return $this->belongsToMany(Role::class, 'role_user', 'userId', 'roleId');
     }
 
-    public function hasRole($roleSlug) : bool {
+    public function hasRole($roleSlug) : bool
+    {
         return $this->roles()->where('slug', $roleSlug)->count() == 1;
     }
 
-    public function hasAccess(array $permissions) : bool {
+    public function hasAccess(array $permissions) : bool
+    {
         foreach ($this->roles as $role){
             if($role->hasAccess($permissions)){
                 return true;

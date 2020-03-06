@@ -30,6 +30,7 @@ Vue.component('place-modal', require('./components/PlaceModal.vue').default);
 Vue.component('comments-component', require('./components/CommentsComponent.vue').default);
 Vue.component('likes-component', require('./components/LikesComponent.vue').default);
 Vue.component('telegram-auth', require('./components/TelegramAuth.vue').default);
+Vue.component('telegram-login', require('./components/TelegramLogin.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
