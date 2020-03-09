@@ -45,7 +45,7 @@ class TelegramController extends Controller
 
         $response = $telegram->sendMessage([
             'chat_id' => $request->get('telegram_id'),
-            'text' => 'You are logged in, ' . $request->get('first_name') . '!'
+            'text' => 'You successfully registered telegram to eurotour.test, ' . $request->get('first_name') . '!'
         ]);
         return $response;
     }
