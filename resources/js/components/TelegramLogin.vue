@@ -24,9 +24,12 @@
                     'last_name': user.last_name,
                     'username': user.username,
                 }).then(response => {
+                    if (response.status === 200) {
+                        window.location.href = '/home';
+                    }
                     console.log(response);
                 });
-                window.location.href = '/home'
+
             },
         }
     }

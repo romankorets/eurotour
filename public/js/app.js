@@ -2885,13 +2885,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   'last_name': user.last_name,
                   'username': user.username
                 }).then(function (response) {
+                  if (response.status === 200) {
+                    window.location.href = '/home';
+                  }
+
                   console.log(response);
                 });
 
               case 2:
-                window.location.href = '/home';
-
-              case 3:
               case "end":
                 return _context.stop();
             }
@@ -2951,7 +2952,10 @@ __webpack_require__.r(__webpack_exports__);
         'username': user.username
       }).then(function (response) {
         console.log(response);
-        _this.show = false;
+
+        if (response.status === 200) {
+          _this.show = false;
+        }
       });
     }
   }

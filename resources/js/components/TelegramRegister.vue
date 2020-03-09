@@ -26,7 +26,9 @@
                     'username': user.username,
                 }).then(response => {
                     console.log(response);
-                    this.show = false;
+                    if (response.status === 200) {
+                        this.show = false;
+                    }
                 });
             },
         }
