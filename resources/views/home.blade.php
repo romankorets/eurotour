@@ -5,7 +5,7 @@
         <div class="col-md-12">
             @if(!Illuminate\Support\Facades\Auth::user()->telegram()->exists())
                 <div class="row justify-content-center">
-                    <telegram-auth></telegram-auth>
+                    <telegram-register></telegram-register>
                 </div>
             @endif
             <router-view name="placesMap"></router-view>

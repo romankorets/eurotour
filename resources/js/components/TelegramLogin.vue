@@ -18,7 +18,7 @@
 
         methods: {
             async onTelegramAuth(user) {
-                await axios.post('telegram_login', {
+                await axios.post('telegram/login', {
                     'telegram_id': user.id,
                     'first_name': user.first_name,
                     'last_name': user.last_name,
@@ -26,7 +26,6 @@
                 }).then(response => {
                     console.log(response);
                 });
-                console.log(user);
                 window.location.href = '/home'
             },
         }

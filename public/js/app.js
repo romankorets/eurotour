@@ -2833,55 +2833,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramAuth.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TelegramAuth.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_telegram_login__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-telegram-login */ "./node_modules/vue-telegram-login/dist/vue-telegram-login.js");
-/* harmony import */ var vue_telegram_login__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_telegram_login__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    vueTelegramLogin: vue_telegram_login__WEBPACK_IMPORTED_MODULE_0__["vueTelegramLogin"]
-  },
-  data: function data() {
-    return {
-      show: true
-    };
-  },
-  methods: {
-    onTelegramAuth: function onTelegramAuth(user) {
-      var _this = this;
-
-      axios.post('telegram', {
-        'telegram_id': user.id,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'username': user.username
-      }).then(function (response) {
-        console.log(response);
-        _this.show = false;
-      });
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramLogin.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TelegramLogin.vue?vue&type=script&lang=js& ***!
@@ -2928,7 +2879,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post('telegram_login', {
+                return axios.post('telegram/login', {
                   'telegram_id': user.id,
                   'first_name': user.first_name,
                   'last_name': user.last_name,
@@ -2938,10 +2889,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 2:
-                console.log(user);
                 window.location.href = '/home';
 
-              case 4:
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -2955,6 +2905,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return onTelegramAuth;
     }()
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramRegister.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TelegramRegister.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_telegram_login__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-telegram-login */ "./node_modules/vue-telegram-login/dist/vue-telegram-login.js");
+/* harmony import */ var vue_telegram_login__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_telegram_login__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    vueTelegramLogin: vue_telegram_login__WEBPACK_IMPORTED_MODULE_0__["vueTelegramLogin"]
+  },
+  data: function data() {
+    return {
+      show: true
+    };
+  },
+  methods: {
+    onTelegramAuth: function onTelegramAuth(user) {
+      var _this = this;
+
+      axios.post('telegram', {
+        'telegram_id': user.id,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'username': user.username
+      }).then(function (response) {
+        console.log(response);
+        _this.show = false;
+      });
+    }
   }
 });
 
@@ -39744,41 +39743,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramAuth.vue?vue&type=template&id=2f8e0c98&":
-/*!***************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TelegramAuth.vue?vue&type=template&id=2f8e0c98& ***!
-  \***************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.show
-        ? _c("vue-telegram-login", {
-            attrs: { mode: "callback", "telegram-login": "myeurotour_bot" },
-            on: { callback: _vm.onTelegramAuth }
-          })
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramLogin.vue?vue&type=template&id=63f8f68d&":
 /*!****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TelegramLogin.vue?vue&type=template&id=63f8f68d& ***!
@@ -39801,6 +39765,41 @@ var render = function() {
         attrs: { mode: "callback", "telegram-login": "myeurotour_bot" },
         on: { callback: _vm.onTelegramAuth }
       })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramRegister.vue?vue&type=template&id=b12709a2&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TelegramRegister.vue?vue&type=template&id=b12709a2& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.show
+        ? _c("vue-telegram-login", {
+            attrs: { mode: "callback", "telegram-login": "myeurotour_bot" },
+            on: { callback: _vm.onTelegramAuth }
+          })
+        : _vm._e()
     ],
     1
   )
@@ -55137,7 +55136,7 @@ Vue.component('places-map', __webpack_require__(/*! ./components/PlacesMap.vue *
 Vue.component('place-modal', __webpack_require__(/*! ./components/PlaceModal.vue */ "./resources/js/components/PlaceModal.vue")["default"]);
 Vue.component('comments-component', __webpack_require__(/*! ./components/CommentsComponent.vue */ "./resources/js/components/CommentsComponent.vue")["default"]);
 Vue.component('likes-component', __webpack_require__(/*! ./components/LikesComponent.vue */ "./resources/js/components/LikesComponent.vue")["default"]);
-Vue.component('telegram-auth', __webpack_require__(/*! ./components/TelegramAuth.vue */ "./resources/js/components/TelegramAuth.vue")["default"]);
+Vue.component('telegram-register', __webpack_require__(/*! ./components/TelegramRegister.vue */ "./resources/js/components/TelegramRegister.vue")["default"]);
 Vue.component('telegram-login', __webpack_require__(/*! ./components/TelegramLogin.vue */ "./resources/js/components/TelegramLogin.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -55483,75 +55482,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/TelegramAuth.vue":
-/*!**************************************************!*\
-  !*** ./resources/js/components/TelegramAuth.vue ***!
-  \**************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _TelegramAuth_vue_vue_type_template_id_2f8e0c98___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TelegramAuth.vue?vue&type=template&id=2f8e0c98& */ "./resources/js/components/TelegramAuth.vue?vue&type=template&id=2f8e0c98&");
-/* harmony import */ var _TelegramAuth_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TelegramAuth.vue?vue&type=script&lang=js& */ "./resources/js/components/TelegramAuth.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _TelegramAuth_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _TelegramAuth_vue_vue_type_template_id_2f8e0c98___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _TelegramAuth_vue_vue_type_template_id_2f8e0c98___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/TelegramAuth.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/TelegramAuth.vue?vue&type=script&lang=js&":
-/*!***************************************************************************!*\
-  !*** ./resources/js/components/TelegramAuth.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramAuth_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TelegramAuth.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramAuth.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramAuth_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/TelegramAuth.vue?vue&type=template&id=2f8e0c98&":
-/*!*********************************************************************************!*\
-  !*** ./resources/js/components/TelegramAuth.vue?vue&type=template&id=2f8e0c98& ***!
-  \*********************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramAuth_vue_vue_type_template_id_2f8e0c98___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TelegramAuth.vue?vue&type=template&id=2f8e0c98& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramAuth.vue?vue&type=template&id=2f8e0c98&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramAuth_vue_vue_type_template_id_2f8e0c98___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramAuth_vue_vue_type_template_id_2f8e0c98___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/components/TelegramLogin.vue":
 /*!***************************************************!*\
   !*** ./resources/js/components/TelegramLogin.vue ***!
@@ -55616,6 +55546,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramLogin_vue_vue_type_template_id_63f8f68d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramLogin_vue_vue_type_template_id_63f8f68d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/TelegramRegister.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/TelegramRegister.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TelegramRegister_vue_vue_type_template_id_b12709a2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TelegramRegister.vue?vue&type=template&id=b12709a2& */ "./resources/js/components/TelegramRegister.vue?vue&type=template&id=b12709a2&");
+/* harmony import */ var _TelegramRegister_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TelegramRegister.vue?vue&type=script&lang=js& */ "./resources/js/components/TelegramRegister.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TelegramRegister_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TelegramRegister_vue_vue_type_template_id_b12709a2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TelegramRegister_vue_vue_type_template_id_b12709a2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TelegramRegister.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TelegramRegister.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/TelegramRegister.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramRegister_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TelegramRegister.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramRegister.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramRegister_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TelegramRegister.vue?vue&type=template&id=b12709a2&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/TelegramRegister.vue?vue&type=template&id=b12709a2& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramRegister_vue_vue_type_template_id_b12709a2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TelegramRegister.vue?vue&type=template&id=b12709a2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TelegramRegister.vue?vue&type=template&id=b12709a2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramRegister_vue_vue_type_template_id_b12709a2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TelegramRegister_vue_vue_type_template_id_b12709a2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

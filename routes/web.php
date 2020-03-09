@@ -39,7 +39,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 });
 
 Route::post('telegram', 'TelegramController@store');
-Route::post('telegram_login', 'TelegramAuthController@login');
+Route::post('telegram/login', 'TelegramController@login');
+
 Route::get('api/user/roles', 'UserController@getUserRoles')->name('user.roles')->middleware('auth');
 Route::get('api/user', 'UserController@getUserId')->name('user.id')->middleware('auth');
 

@@ -29,7 +29,7 @@ Vue.component('places-map', require('./components/PlacesMap.vue').default);
 Vue.component('place-modal', require('./components/PlaceModal.vue').default);
 Vue.component('comments-component', require('./components/CommentsComponent.vue').default);
 Vue.component('likes-component', require('./components/LikesComponent.vue').default);
-Vue.component('telegram-auth', require('./components/TelegramAuth.vue').default);
+Vue.component('telegram-register', require('./components/TelegramRegister.vue').default);
 Vue.component('telegram-login', require('./components/TelegramLogin.vue').default);
 
 /**
