@@ -12,9 +12,20 @@
                 places: [],
             }
         },
+
+        created() {
+
+        },
         mounted: function () {
             this.init();
             this.fetchPlaces();
+            window.Echo.channel(`places-channel`)
+                .listen('.place.new', (e) => {
+                    this.places.push(e.place);
+                    this.addMarkers();
+                    console.log('Event place');
+                    console.log(e);
+                });
             console.log('Component mounted.')
         },
         methods:{

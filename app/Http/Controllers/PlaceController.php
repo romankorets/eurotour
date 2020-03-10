@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewPlaceAdded;
 use App\Http\Requests\StorePlaceRequest;
 use App\Http\Requests\UpdatePlaceRequest;
 use App\Place;
@@ -65,7 +66,7 @@ class PlaceController extends Controller
         foreach ($request->file('photos') as $photo) {
             $photos[] = '/storage/' . $photo->store('uploads', 'public');
         }
-        Place::create([
+        $place = Place::create([
             'name' => $request->get('name'),
             'slug' => $request->get('slug'),
             'description' => $request->get('description'),
@@ -74,6 +75,7 @@ class PlaceController extends Controller
             'lat' => $request->get('lat'),
             'lng' => $request->get('lng'),
         ]);
+        event(new NewPlaceAdded($place));
         $request->session()->flash('flash_message', 'Нова локація додана');
         return redirect()->route('admin');
     }
