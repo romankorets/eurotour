@@ -37,11 +37,9 @@ class TelegramController extends Controller
         Telegram::firstOrCreate([
             'user_id' => Auth::user()->id,
             'telegram_id' => $request->get('telegram_id'),
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->get('last_name'),
         ]);
 
-        $telegram = new Api('1129203288:AAEbk0ToT5Mvfu2TjL7u33VFRUClEQmP-bU');
+        $telegram = new Api(env('TELEGRAM_TOKEN', null));
 
         $response = $telegram->sendMessage([
             'chat_id' => $request->get('telegram_id'),
@@ -62,8 +60,8 @@ class TelegramController extends Controller
     {
         $telegramModel = Telegram::where('telegram_id', $request->get('telegram_id'))->first();
         Auth::login($telegramModel->user);
-        if (Auth::user() === $telegramModel->user) {
-            $telegram = new Api('1129203288:AAEbk0ToT5Mvfu2TjL7u33VFRUClEQmP-bU');
+        if (Auth::user()->id === $telegramModel->user->id) {
+            $telegram = new Api(env('TELEGRAM_TOKEN', null));
             $telegram->sendMessage([
                 'chat_id' => $request->get('telegram_id'),
                 'text' => 'You are logged in, ' . $request->get('first_name') . '!'
