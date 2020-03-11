@@ -1975,8 +1975,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _mounted = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var _this = this;
-
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -1985,12 +1983,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return this.setUserId();
 
             case 2:
-              window.Echo.channel("place.".concat(this.id, ".comments")).listen('.comment.new', function (e) {
-                _this.localComments.push(e.comment);
-
-                console.log('Event comment');
-                console.log(e);
-              });
+              this.listenComments();
 
             case 3:
             case "end":
@@ -2007,6 +2000,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return mounted;
   }(),
   methods: {
+    listenComments: function listenComments() {
+      var _this = this;
+
+      window.Echo.channel("place.".concat(this.id, ".comments")).listen('.comment.new', function (e) {
+        _this.localComments.push(e.comment);
+
+        console.log('Event comment');
+        console.log(e);
+      });
+    },
     checkIfCurrentUserAdmin: function () {
       var _checkIfCurrentUserAdmin = _asyncToGenerator(
       /*#__PURE__*/

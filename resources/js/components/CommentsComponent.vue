@@ -45,15 +45,20 @@
 
         mounted: async function () {
             await this.setUserId();
-            window.Echo.channel(`place.${this.id}.comments`)
-                .listen('.comment.new', (e) => {
-                    this.localComments.push(e.comment);
-                    console.log('Event comment');
-                    console.log(e);
-                });
+            this.listenComments();
         },
 
         methods: {
+
+            listenComments(){
+                window.Echo.channel(`place.${this.id}.comments`)
+                    .listen('.comment.new', (e) => {
+                        this.localComments.push(e.comment);
+                        console.log('Event comment');
+                        console.log(e);
+                    });
+            },
+
             async checkIfCurrentUserAdmin() {
                 await this.setCurrentUserRoles();
                 for (let i = 0; i < this.currentUserRoles.length; i++) {
