@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\NewPlaceAdded;
+use App\Events\PlaceAdded;
 use App\Http\Requests\StorePlaceRequest;
 use App\Http\Requests\UpdatePlaceRequest;
 use App\Place;
@@ -75,7 +75,7 @@ class PlaceController extends Controller
             'lat' => $request->get('lat'),
             'lng' => $request->get('lng'),
         ]);
-        event(new NewPlaceAdded($place));
+        event(new PlaceAdded($place));
         $request->session()->flash('flash_message', 'Нова локація додана');
         return redirect()->route('admin');
     }

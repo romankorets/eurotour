@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\DeleteLike;
-use App\Events\NewLike;
+use App\Events\LikeDeleted;
+use App\Events\LikeAdded;
 use App\Http\Requests\StoreLikeRequest;
 use App\Like;
 use App\Place;
@@ -23,14 +23,14 @@ class LikeController extends Controller
             ]
         );
         $like->load('user');
-        broadcast(new NewLike($like))->toOthers();
+        broadcast(new LikeAdded($like))->toOthers();
         return $like;
     }
 
     public function destroy(Place $place)
     {
         $like = Auth::user()->likes()->where('place_id', $place->id)->first();
-        broadcast(new DeleteLike($like))->toOthers();
+        broadcast(new LikeDeleted($like))->toOthers();
         $like->delete();
     }
 }

@@ -2,38 +2,37 @@
 
 namespace App\Events;
 
-use App\Like;
+use App\Comment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewLike implements ShouldBroadcast
+class CommentAdded implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $like;
+    public $comment;
 
     /**
      * Create a new event instance.
      *
-     * @param Like $like
+     * @param Comment $comment
      */
-    public function __construct(Like $like)
+    public function __construct(Comment $comment)
     {
-        $this->like = $like;
+        $this->comment = $comment;
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel
+     * @return Channel|array
      */
     public function broadcastOn()
     {
-        return new Channel('place.' . $this->like->place->id .  '.likes');
+        return new Channel('place.' . $this->comment->place->id .  '.comments');
     }
 
     /**
@@ -43,7 +42,7 @@ class NewLike implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return ['like' => $this->like];
+        return ['comment' => $this->comment];
     }
 
     /**
@@ -53,6 +52,6 @@ class NewLike implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'like.new';
+        return 'comment.new';
     }
 }
