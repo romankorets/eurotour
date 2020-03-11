@@ -2250,7 +2250,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['likes'],
+  props: ['likes', 'id'],
   data: function data() {
     return {
       localLikes: this.likes,
@@ -2293,9 +2293,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 2:
               this.setUserLike();
+              this.listenLikes();
               console.log('likes component is mounted');
 
-            case 4:
+            case 5:
             case "end":
               return _context2.stop();
           }
@@ -2334,11 +2335,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    listenLikes: function listenLikes() {
+      var _this = this;
+
+      window.Echo.channel("place.".concat(this.id, ".likes")).listen('.like.new', function (e) {
+        var updated = false;
+
+        for (var j = 0; j < _this.localLikes.length; j++) {
+          if (_this.localLikes[j].id === e.like.id) {
+            _this.localLikes[j].value = e.like.value;
+            updated = true;
+            break;
+          }
+        }
+
+        if (updated === false) {
+          _this.localLikes.push(e["like"]);
+
+          console.log('Event like');
+          console.log(e);
+        }
+      }).listen('.like.delete', function (e) {
+        for (var j = 0; j < _this.localLikes.length; j++) {
+          if (_this.localLikes[j].id === e.like.id) {
+            _this.localLikes.splice(j, 1);
+
+            break;
+          }
+        }
+      });
+    },
     sendLike: function () {
       var _sendLike = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(value) {
-        var _this = this;
+        var _this2 = this;
 
         var like;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
@@ -2356,7 +2387,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }).then(function (response) {
                   like = response.data;
 
-                  _this.localLikes.push(like);
+                  _this2.localLikes.push(like);
                 });
 
               case 4:
@@ -2492,7 +2523,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _setUserId = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
-        var _this2 = this;
+        var _this3 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
           while (1) {
@@ -2500,9 +2531,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context6.next = 2;
                 return axios.get('api/user').then(function (response) {
-                  _this2.userId = response.data;
+                  _this3.userId = response.data;
                   console.log('UserId');
-                  console.log(_this2.userId);
+                  console.log(_this3.userId);
                 });
 
               case 2:
@@ -49597,7 +49628,10 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("likes-component", {
-                  attrs: { likes: _vm.placeToShowInPopUp.likes }
+                  attrs: {
+                    likes: _vm.placeToShowInPopUp.likes,
+                    id: _vm.placeToShowInPopUp.id
+                  }
                 }),
                 _vm._v(" "),
                 _c("div", { staticClass: "row justify-content-center" }, [

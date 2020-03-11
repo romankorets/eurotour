@@ -18,3 +18,7 @@ Broadcast::channel('places-channel', function () {
 Broadcast::channel('place.{placeId}.comments', function () {
     return true;
 });
+
+Broadcast::channel('place.{placeId}.likes', function () {
+    return true;
+});

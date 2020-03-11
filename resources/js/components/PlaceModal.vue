@@ -36,7 +36,7 @@
                     <h1>Опис</h1>
                     {{ placeToShowInPopUp.description }}
                 </div>
-                <likes-component :likes="placeToShowInPopUp.likes"></likes-component>
+                <likes-component :likes="placeToShowInPopUp.likes" :id="placeToShowInPopUp.id"></likes-component>
                 <div class="row justify-content-center">
                     <div class="rating-mini">
                         <span v-for="(rating,index) in placeToShowInPopUp.rating" class="active"/>

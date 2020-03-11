@@ -14,7 +14,7 @@
 
 <script>
     export default {
-        props: ['likes'],
+        props: ['likes', 'id'],
         data() {
             return{
                 localLikes: this.likes,
@@ -24,11 +24,12 @@
             }
         },
         created: async function () {
-            
+
         },
         mounted: async function () {
             await this.setUserId();
             this.setUserLike();
+            this.listenLikes();
             console.log('likes component is mounted');
         },
 
@@ -54,6 +55,33 @@
         },
 
         methods: {
+
+            listenLikes() {
+                window.Echo.channel(`place.${this.id}.likes`)
+                    .listen('.like.new', (e) => {
+                        let updated = false;
+                        for (let j = 0; j < this.localLikes.length; j++) {
+                            if (this.localLikes[j].id === e.like.id) {
+                                this.localLikes[j].value = e.like.value;
+                                updated = true;
+                                break;
+                            }
+                        }
+                        if (updated === false) {
+                            this.localLikes.push(e["like"]);
+                            console.log('Event like');
+                            console.log(e);
+                        }
+                    })
+                    .listen('.like.delete', (e) => {
+                        for (let j = 0; j < this.localLikes.length; j++) {
+                            if (this.localLikes[j].id === e.like.id) {
+                                this.localLikes.splice(j, 1);
+                                break;
+                            }
+                        }
+                    });
+            },
 
             async sendLike(value) {
                 if (value === 'like') {
@@ -90,7 +118,7 @@
                     }
                 }
             },
-            
+
             toggleLike(value) {
                 if (!this.isLike && !this.isDislike) {  // create like if it doesn't exist
                     this.sendLike(value);
