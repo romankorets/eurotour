@@ -33,7 +33,7 @@
 <script>
     export default {
         name: 'comments-component',
-        props: ['comments'],
+        props: ['comments', 'id'],
         data() {
             return {
                 localComments: this.comments,
@@ -45,6 +45,12 @@
 
         mounted: async function () {
             await this.setUserId();
+            window.Echo.channel(`place.${this.id}.comments`)
+                .listen('.comment.new', (e) => {
+                    this.localComments.push(e.comment);
+                    console.log('Event comment');
+                    console.log(e);
+                });
         },
 
         methods: {

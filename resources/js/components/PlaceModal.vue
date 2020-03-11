@@ -44,7 +44,7 @@
                               v-for="(rating,index) in 10 - placeToShowInPopUp.rating"/>
                     </div>
                 </div>
-                <comments-component :comments="placeToShowInPopUp.comments"></comments-component>
+                <comments-component :comments="placeToShowInPopUp.comments" :id="placeToShowInPopUp.id"></comments-component>
             </div>
         </div>
     </div>

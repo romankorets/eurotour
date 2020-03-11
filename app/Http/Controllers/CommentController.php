@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Events\NewCommentPosted;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Place;
@@ -19,6 +20,7 @@ class CommentController extends Controller
             'body' => $request->get('body'),
         ]);
         $comment->load('user');
+        broadcast(new NewCommentPosted($comment))->toOthers();
         return $comment;
     }
 

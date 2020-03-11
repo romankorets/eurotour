@@ -14,3 +14,7 @@
 Broadcast::channel('places-channel', function () {
     return true;
 });
+
+Broadcast::channel('place.{placeId}.comments', function () {
+    return true;
+});

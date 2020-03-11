@@ -1962,7 +1962,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'comments-component',
-  props: ['comments'],
+  props: ['comments', 'id'],
   data: function data() {
     return {
       localComments: this.comments,
@@ -1975,6 +1975,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _mounted = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var _this = this;
+
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -1983,6 +1985,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return this.setUserId();
 
             case 2:
+              window.Echo.channel("place.".concat(this.id, ".comments")).listen('.comment.new', function (e) {
+                _this.localComments.push(e.comment);
+
+                console.log('Event comment');
+                console.log(e);
+              });
+
+            case 3:
             case "end":
               return _context.stop();
           }
@@ -2140,7 +2150,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _setUserId = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
-        var _this = this;
+        var _this2 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
@@ -2148,9 +2158,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context5.next = 2;
                 return axios.get('api/user').then(function (response) {
-                  _this.userId = response.data;
+                  _this2.userId = response.data;
                   console.log('UserId');
-                  console.log(_this.userId);
+                  console.log(_this2.userId);
                 });
 
               case 2:
@@ -2171,7 +2181,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _setCurrentUserRoles = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
-        var _this2 = this;
+        var _this3 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
           while (1) {
@@ -2184,9 +2194,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _context6.next = 3;
                 return axios.get('api/user/roles').then(function (response) {
-                  _this2.currentUserRoles = response.data;
+                  _this3.currentUserRoles = response.data;
                   console.log('Ролі користувача');
-                  console.log(_this2.currentUserRoles);
+                  console.log(_this3.currentUserRoles);
                 });
 
               case 3:
@@ -49616,7 +49626,10 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("comments-component", {
-                  attrs: { comments: _vm.placeToShowInPopUp.comments }
+                  attrs: {
+                    comments: _vm.placeToShowInPopUp.comments,
+                    id: _vm.placeToShowInPopUp.id
+                  }
                 })
               ],
               1
