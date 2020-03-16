@@ -52,7 +52,6 @@ class RouteServiceProvider extends ServiceProvider
                 return Tour::where('slug', $value)->first() ?? abort(404);
             }
         });
-//        Route::model('tour', Tour::class);
         Route::model('comment', Comment::class);
     }
 
