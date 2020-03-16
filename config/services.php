@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'telegram' => [
+        'client_id' => env('TELEGRAM_API_KEY'),
+        'client_secret' => 'TELEGRAM_API_HASH',
+        'redirect' => '/login'
+    ]
+
 ];

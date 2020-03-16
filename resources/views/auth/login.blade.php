@@ -68,6 +68,7 @@
                     <div class="row justify-content-center">
                         <telegram-login></telegram-login>
                     </div>
+                    <a class="btn btn-primary" href="{{ route('login.telegram') }}" target="_blank">Telegram</a>
                 </div>
             </div>
         </div>
