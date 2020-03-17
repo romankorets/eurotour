@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTelegramsTable extends Migration
+class CreateSocialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateTelegramsTable extends Migration
      */
     public function up()
     {
-        Schema::create('telegrams', function (Blueprint $table) {
+        Schema::create('socials', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('telegram_id')->nullable();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('username')->nullable();
+            $table->integer('provider_user_id');
+            $table->string('provider');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
@@ -32,6 +30,6 @@ class CreateTelegramsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('telegrams');
+        Schema::dropIfExists('socials');
     }
 }

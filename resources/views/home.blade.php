@@ -3,7 +3,7 @@
 @section('content')
     <div class="row justify-content-center b-container">
         <div class="col-md-12">
-            @if(!Illuminate\Support\Facades\Auth::user()->telegram()->exists())
+            @if(!Illuminate\Support\Facades\Auth::user()->social()->where('provider', 'telegram')->exists())
                 <div class="row justify-content-center">
                     <telegram-register></telegram-register>
                 </div>

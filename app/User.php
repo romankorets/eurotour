@@ -6,7 +6,6 @@ use App\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -44,9 +43,9 @@ class User extends Authenticatable
 
     protected $redirectTo = '/home';
 
-    public function telegram()
+    public function social()
     {
-        return $this->hasOne(Telegram::class);
+        return $this->hasMany(Social::class);
     }
 
     public function likes()

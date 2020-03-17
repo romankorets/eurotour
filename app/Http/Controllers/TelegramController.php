@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TelegramRequest;
 use App\Providers\RouteServiceProvider;
-use App\Telegram;
+use App\Social;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -14,16 +14,6 @@ use Telegram\Bot\Objects\Message;
 
 class TelegramController extends Controller
 {
-
-    use AuthenticatesUsers;
-
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
-
     /**
      * Store user telegram
      *
@@ -34,9 +24,10 @@ class TelegramController extends Controller
 
     public function store(TelegramRequest $request)
     {
-        Telegram::firstOrCreate([
+        Social::create([
             'user_id' => Auth::user()->id,
-            'telegram_id' => $request->get('telegram_id'),
+            'provider_user_id' => $request->get('telegram_id'),
+            'provider' => 'telegram',
         ]);
 
         $telegram = new Api(env('TELEGRAM_TOKEN', null));
@@ -58,7 +49,9 @@ class TelegramController extends Controller
 
     public function login(TelegramRequest $request)
     {
-        $telegramModel = Telegram::where('telegram_id', $request->get('telegram_id'))->first();
+        $telegramModel = Social::where('provider_user_id', $request->get('telegram_id'))
+            ->where('provider', 'telegram')
+            ->first();
         Auth::login($telegramModel->user);
         if (Auth::user()->id === $telegramModel->user->id) {
             $telegram = new Api(env('TELEGRAM_TOKEN', null));

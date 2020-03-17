@@ -4,14 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Telegram extends Model
+class Social extends Model
 {
     protected $fillable = [
+        'provider',
+        'provider_user_id',
         'user_id',
-        'first_name',
-        'last_name',
-        'username',
-        'telegram_id',
     ];
 
     public function user()

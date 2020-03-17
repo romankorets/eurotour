@@ -25,7 +25,6 @@
                     'last_name': user.last_name,
                     'username': user.username,
                 }).then(response => {
-                    console.log(response);
                     if (response.status === 200) {
                         this.show = false;
                     }

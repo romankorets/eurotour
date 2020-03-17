@@ -15,7 +15,7 @@
         </introspection-scope>
       </schema-mapping>
       <ssh-properties>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
         <proxy-host>127.0.0.1</proxy-host>
         <proxy-port>2222</proxy-port>
         <user>vagrant</user>
